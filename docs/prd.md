@@ -1,126 +1,158 @@
-# Product Requirements Document: RM Group Strategies AI Agent
+# Product Requirements Document: RM Group Strategies Website
 
 ## 1. Overview
 
-RM Group Strategies will build a web-based AI agent that helps users upload, analyze, summarize, and generate business outputs from source documents such as PDFs, client materials, strategy notes, proposals, reports, and intake forms.
+RM Group Strategies will build a professional marketing website that presents the company, communicates its services, captures qualified leads, and provides a reliable way for visitors to contact the business.
 
-The planned technology stack is PHP, MySQL, Tailwind CSS, HTML5, CSS3, custom mail, and Namecheap hosting.
+The website will use PHP, MySQL, Tailwind CSS, HTML5, CSS3, custom mail, and Namecheap hosting.
 
 ## 2. Current repository state
 
-As of this PRD, the repository contains the Apache License 2.0 file and this initial product document. No PDF files are currently present in the repository, so document-specific requirements below are based on the intended product workflow rather than extracted PDF content.
+As of this PRD update, the repository contains the Apache License 2.0 file and this product requirements document. No source PDFs are currently present in the repository, so this PRD focuses on the website requirements provided by the project owner rather than PDF-derived content.
 
-## 3. Goals
+## 3. Product goals
 
-- Provide a secure AI-assisted document analysis workflow for RM Group Strategies.
-- Allow users to upload PDFs and ask questions about their contents.
-- Generate structured business deliverables such as summaries, action plans, strategy briefs, and product requirements documents.
-- Support a practical PHP/MySQL hosting model suitable for Namecheap shared or business hosting environments.
-- Provide a simple, responsive interface using Tailwind CSS, HTML5, and CSS3.
+- Create a polished public website for RM Group Strategies.
+- Clearly communicate the company's value proposition, services, and credibility.
+- Convert visitors into leads through contact forms and calls to action.
+- Provide an easy-to-maintain PHP/MySQL foundation that works well on Namecheap hosting.
+- Use Tailwind CSS, HTML5, and CSS3 to deliver a responsive, modern user experience.
+- Support custom email notifications for inquiries and form submissions.
 
 ## 4. Non-goals
 
-- The MVP will not include full CRM synchronization.
-- The MVP will not send autonomous outreach emails without user review.
-- The MVP will not require a custom-trained model.
-- The MVP will not depend on a heavy JavaScript single-page application framework.
-- The MVP will not store documents across unrelated client workspaces without access controls.
+- This project is not an AI agent product.
+- This project is not a document-analysis application.
+- This project will not require user-uploaded PDFs in the MVP.
+- This project will not require a custom-trained AI model.
+- This project will not use a heavy JavaScript single-page application framework for the MVP.
+- This project will not include complex CRM automation in the initial launch.
 
-## 5. Target users
+## 5. Target audiences
 
-### 5.1 Internal strategist
+### 5.1 Prospective clients
 
-An RM Group Strategies team member who needs to review client documents, extract key findings, and prepare recommendations quickly.
+Business owners, executives, or decision-makers who want to understand RM Group Strategies' services and request help.
 
-### 5.2 Client-facing consultant
+### 5.2 Referral partners
 
-A consultant who needs client-ready summaries, meeting briefs, follow-up emails, and strategy memos generated from uploaded documents.
+People or organizations who need a clear website to evaluate the company before referring prospects.
 
-### 5.3 Administrator
+### 5.3 Internal administrators
 
-A user responsible for managing users, uploaded documents, AI usage, mail settings, and retention controls.
+RM Group Strategies team members who need to receive inquiries, review contact submissions, and maintain basic website content.
 
 ## 6. Core user stories
 
-- As a user, I want to upload a PDF so that the AI agent can analyze its contents.
-- As a user, I want to ask questions about uploaded documents so that I can find answers quickly.
-- As a user, I want the AI agent to cite the source document and page where possible so that I can verify answers.
-- As a user, I want to generate an executive summary so that I can brief stakeholders quickly.
-- As a user, I want to generate a PRD from source materials so that implementation teams have structured requirements.
-- As a user, I want to export generated outputs so that I can share them with stakeholders.
-- As an administrator, I want to manage users and documents so that client data remains organized and secure.
+- As a visitor, I want to quickly understand what RM Group Strategies does so that I can decide whether the company can help me.
+- As a visitor, I want to view services so that I can understand the problems RM Group Strategies solves.
+- As a visitor, I want to see proof points, testimonials, or credibility indicators so that I can trust the company.
+- As a visitor, I want to submit a contact form so that RM Group Strategies can follow up with me.
+- As a visitor, I want to use the website on mobile so that I can contact the company from any device.
+- As an administrator, I want contact submissions stored in MySQL so that inquiries are not lost if email delivery fails.
+- As an administrator, I want contact notifications sent by custom mail so that the team can respond quickly.
 
-## 7. MVP features
+## 7. MVP website pages
 
-### 7.1 User authentication
+### 7.1 Home page
 
-- Email and password login.
-- Password reset through custom mail.
-- Role support for admin and standard user.
-- Session management using secure PHP sessions.
+The home page should include:
 
-### 7.2 Workspace and document management
+- Hero section with headline, subheadline, and primary call to action.
+- Short explanation of RM Group Strategies' value proposition.
+- Service overview cards.
+- Trust-building section such as results, process, client types, or testimonials.
+- Secondary call to action.
+- Footer with navigation and contact details.
 
-- Create a workspace or project for each client or initiative.
-- Upload one or more PDFs to a workspace.
-- Store original file metadata in MySQL.
-- Store uploaded files on the server filesystem or Namecheap-compatible storage path.
-- Allow users to delete documents from a workspace.
+### 7.2 About page
 
-### 7.3 PDF processing
+The about page should include:
 
-- Extract text from machine-readable PDFs.
-- Detect PDFs that require OCR and show a user-facing warning if OCR is unavailable in the hosting environment.
-- Split extracted text into chunks suitable for AI retrieval.
-- Store chunk metadata, including document ID, chunk order, and page reference when available.
+- Company overview.
+- Mission or positioning statement.
+- Team or founder section if content is available.
+- Differentiators that explain why visitors should choose RM Group Strategies.
 
-### 7.4 AI chat over documents
+### 7.3 Services page
 
-- Provide a chat interface scoped to a selected workspace.
-- Retrieve relevant document chunks before generating an answer.
-- Require answers to be grounded in uploaded content when the user asks document-specific questions.
-- Display source references when available.
-- Warn the user when an answer is based on general reasoning rather than uploaded documents.
+The services page should include:
 
-### 7.5 Structured AI outputs
+- List of core services.
+- Description of each service.
+- Problems each service solves.
+- Suggested next step for visitors who are interested.
 
-The MVP should include prompt templates for:
+### 7.4 Contact page
 
-- Executive summary
-- Key findings
-- Risk assessment
-- Opportunity analysis
-- Action plan
-- Meeting brief
-- Follow-up email draft
-- Product requirements document
+The contact page should include:
 
-### 7.6 Custom mail
+- Contact form.
+- Business contact information.
+- Optional scheduling or consultation call-to-action.
+- Confirmation message after submission.
 
-- Send password reset messages.
-- Send document-processing completion notices when processing is asynchronous.
-- Send generated report links to approved recipients.
-- Use SMTP settings compatible with Namecheap email hosting or a configured SMTP provider.
+### 7.5 Privacy policy page
 
-### 7.7 Export
+The privacy policy page should explain:
 
-- Export generated outputs as Markdown or HTML in the MVP.
-- Consider PDF export as a post-MVP enhancement if server dependencies are supported by the hosting plan.
+- What information is collected through forms.
+- How submitted information is used.
+- How users can request removal or correction of their information.
 
-## 8. Recommended information architecture
+## 8. MVP features
 
-- Dashboard
-- Workspaces
-- Workspace detail
-- Documents
-- AI chat
-- Generated outputs
-- Settings
-- Admin panel
+### 8.1 Responsive public website
 
-## 9. Data model
+- Build mobile-first pages using HTML5 and Tailwind CSS.
+- Use CSS3 for custom brand refinements.
+- Support common screen sizes from mobile to desktop.
+- Keep the interface fast, readable, and professional.
 
-### 9.1 users
+### 8.2 Contact form
+
+- Capture name, email, phone number, company, selected service, and message.
+- Validate required fields server-side in PHP.
+- Sanitize submitted data before storage and display.
+- Store submissions in MySQL.
+- Send a custom email notification to the RM Group Strategies team.
+- Show a success or error message after submission.
+
+### 8.3 Lead management admin view
+
+- Provide a protected admin login.
+- List contact submissions from MySQL.
+- View inquiry details.
+- Mark submissions as new, contacted, qualified, closed, or spam.
+- Add internal notes to submissions.
+
+### 8.4 Content structure
+
+- Store configurable site content in PHP templates or MySQL, depending on implementation complexity.
+- Keep reusable layout sections for header, footer, navigation, and calls to action.
+- Make future page additions straightforward.
+
+### 8.5 Custom mail
+
+- Send inquiry notifications through SMTP.
+- Support configurable sender name, sender email, and recipient email.
+- Use email templates for consistent branding.
+- Log email delivery attempts for troubleshooting.
+
+## 9. Recommended information architecture
+
+- Home
+- About
+- Services
+- Contact
+- Privacy Policy
+- Admin Login
+- Admin Dashboard
+- Lead Detail
+
+## 10. Data model
+
+### 10.1 users
 
 - id
 - name
@@ -130,176 +162,153 @@ The MVP should include prompt templates for:
 - created_at
 - updated_at
 
-### 9.2 workspaces
+### 10.2 contact_submissions
 
 - id
 - name
-- description
-- owner_user_id
-- created_at
-- updated_at
-
-### 9.3 documents
-
-- id
-- workspace_id
-- original_filename
-- stored_filename
-- mime_type
-- file_size
+- email
+- phone
+- company
+- service_interest
+- message
 - status
-- extracted_text_path
-- uploaded_by_user_id
+- source_page
+- ip_address
+- user_agent
 - created_at
 - updated_at
 
-### 9.4 document_chunks
+### 10.3 contact_notes
 
 - id
-- document_id
-- chunk_index
-- page_number
-- content
-- embedding_reference
-- created_at
-
-### 9.5 conversations
-
-- id
-- workspace_id
+- contact_submission_id
 - user_id
-- title
+- note
 - created_at
 - updated_at
 
-### 9.6 messages
+### 10.4 email_logs
 
 - id
-- conversation_id
-- role
-- content
-- citations_json
+- contact_submission_id
+- recipient_email
+- subject
+- status
+- error_message
 - created_at
 
-### 9.7 generated_outputs
+### 10.5 site_settings
 
 - id
-- workspace_id
-- user_id
-- output_type
-- title
-- content
-- created_at
+- setting_key
+- setting_value
 - updated_at
 
-## 10. Technical requirements
+## 11. Technical requirements
 
-### 10.1 Backend
+### 11.1 Backend
 
-- PHP 8.2 or newer where supported by the hosting plan.
-- MySQL 8 or compatible Namecheap-provided MySQL version.
-- PDO for database access.
-- Composer for dependency management if the hosting plan allows it.
-- Environment-based configuration for database, SMTP, and AI provider credentials.
+- Use PHP 8.2 or the newest stable PHP version supported by the selected Namecheap plan.
+- Use MySQL through PDO prepared statements.
+- Use secure PHP sessions for admin authentication.
+- Keep configuration values outside committed source files when possible.
+- Structure the app so the public web root exposes only public assets and entry files.
 
-### 10.2 Frontend
+### 11.2 Frontend
 
-- HTML5 semantic markup.
-- Tailwind CSS for layout and components.
-- CSS3 for custom brand styling.
-- Progressive enhancement with minimal JavaScript.
-- Responsive design for desktop, tablet, and mobile.
+- Use semantic HTML5.
+- Use Tailwind CSS for responsive layouts and components.
+- Use CSS3 for custom styling, transitions, and brand details.
+- Avoid unnecessary JavaScript for the MVP.
+- Ensure forms are usable on mobile devices.
 
-### 10.3 Hosting
+### 11.3 Hosting
 
-- Namecheap hosting deployment target.
-- Public web root should expose only front-controller or public assets.
-- Uploaded documents should not be directly web-accessible unless protected by signed or authenticated routes.
-- Cron jobs may be used for background processing if available on the selected plan.
+- Deploy to Namecheap hosting.
+- Confirm PHP and MySQL versions available on the selected plan before implementation.
+- Use Namecheap cPanel or deployment process for database setup, file upload, SSL, and email configuration.
+- Keep uploaded or private files outside public access if future file features are added.
 
-### 10.4 Mail
+### 11.4 Mail
 
-- SMTP-based custom mail configuration.
-- Configurable sender name and sender address.
-- Email templates for password reset and notification messages.
+- Use SMTP-compatible custom mail.
+- Store SMTP credentials securely outside public files.
+- Support form-submission notifications.
+- Consider autoresponder emails after the core contact workflow is stable.
 
-### 10.5 AI integration
+## 12. Security and privacy requirements
 
-- Use a server-side AI service integration; do not expose AI API keys to the browser.
-- Keep prompts and retrieval logic on the backend.
-- Log request metadata needed for debugging, but avoid storing sensitive prompts unnecessarily.
-- Add clear fallback messages when AI service calls fail.
+- Hash admin passwords using PHP `password_hash`.
+- Use prepared statements for all database queries.
+- Validate and sanitize all form submissions.
+- Escape output to protect against cross-site scripting.
+- Use CSRF protection on forms.
+- Rate-limit or add spam prevention to the contact form.
+- Do not commit passwords, API keys, SMTP credentials, or database credentials.
+- Use HTTPS in production.
+- Provide a privacy policy for visitor-submitted contact information.
 
-## 11. Security and privacy requirements
+## 13. UX requirements
 
-- Hash passwords using PHP `password_hash`.
-- Validate uploaded file types and sizes.
-- Restrict uploads to PDF for the MVP.
-- Store secrets outside source control.
-- Protect against SQL injection using prepared statements.
-- Protect against cross-site scripting by escaping output.
-- Protect form submissions with CSRF tokens.
-- Ensure users can only access documents in authorized workspaces.
-- Provide a document deletion flow for sensitive client material.
+- The site should feel professional, credible, and easy to navigate.
+- Primary calls to action should be visible on the home, services, and contact pages.
+- Contact form errors should be specific and easy to fix.
+- The success message should tell the visitor what happens next.
+- Page loading should be fast on mobile connections.
+- Navigation should remain simple and consistent across pages.
 
-## 12. UX requirements
+## 14. Success metrics
 
-- The dashboard should show recent workspaces, uploaded documents, and generated outputs.
-- Upload state should clearly show pending, processing, complete, or failed.
-- AI answers should distinguish cited document facts from general recommendations.
-- Generated outputs should be editable before export or email.
-- Error messages should be human-readable and action-oriented.
+- Visitors can understand RM Group Strategies' services within the first screen of the home page.
+- Visitors can submit the contact form successfully from desktop and mobile devices.
+- Form submissions are stored in MySQL.
+- Custom email notifications are delivered to the configured recipient.
+- Administrators can review and update lead statuses.
+- The website can be deployed successfully to Namecheap hosting.
 
-## 13. Success metrics
+## 15. Implementation phases
 
-- A user can upload and process a readable PDF successfully.
-- A user can ask a question and receive a grounded answer with citations.
-- A user can generate a structured executive summary in under two minutes.
-- A user can export or copy generated output for client use.
-- Administrators can manage users and remove documents.
-
-## 14. Implementation phases
-
-### Phase 1: Foundation
+### Phase 1: Project foundation
 
 - Set up PHP project structure.
-- Add Tailwind CSS build process or CDN fallback.
-- Create MySQL schema and migrations.
-- Implement authentication and base layout.
+- Add reusable layout partials for header, footer, and navigation.
+- Configure Tailwind CSS or a CDN fallback.
+- Create initial database schema.
 
-### Phase 2: Document workflow
+### Phase 2: Public website
 
-- Add workspace management.
-- Add PDF upload and validation.
-- Add text extraction pipeline.
-- Add document status tracking.
+- Build home page.
+- Build about page.
+- Build services page.
+- Build contact page.
+- Build privacy policy page.
 
-### Phase 3: AI workflow
+### Phase 3: Contact workflow
 
-- Add document chunking.
-- Add retrieval and AI response generation.
-- Add citations.
-- Add prompt templates for MVP outputs.
+- Implement contact form validation.
+- Store submissions in MySQL.
+- Send custom mail notifications.
+- Add success and error handling.
 
-### Phase 4: Mail and export
+### Phase 4: Admin workflow
 
-- Configure SMTP custom mail.
-- Add password reset.
-- Add generated output storage.
-- Add Markdown or HTML export.
+- Implement admin login.
+- Add admin dashboard.
+- Add lead detail view.
+- Add status updates and internal notes.
 
-### Phase 5: Hardening and launch
+### Phase 5: Deployment and launch
 
-- Add audit logging.
-- Add admin controls.
-- Add deployment documentation for Namecheap.
-- Complete security review and end-to-end testing.
+- Prepare Namecheap deployment instructions.
+- Configure production database and mail settings.
+- Enable HTTPS.
+- Run final responsive, form, security, and mail checks.
 
-## 15. Open questions
+## 16. Open questions
 
-- Which AI provider and model should be used?
-- Will Namecheap hosting support required PDF extraction binaries, or should extraction run through an external service?
-- Are uploaded documents expected to include scanned PDFs that require OCR?
-- What file-size limit should the MVP support?
-- Should generated deliverables use RM Group Strategies branding templates?
-- Should users be able to invite external clients, or is the MVP internal-only?
+- What exact services should be listed on the services page?
+- What brand colors, typography, and logo assets should be used?
+- Should the site include testimonials, case studies, or client logos?
+- What email address should receive contact form notifications?
+- Does the selected Namecheap plan support the desired PHP version and SMTP configuration?
+- Should there be a blog or resources section after the MVP launch?
