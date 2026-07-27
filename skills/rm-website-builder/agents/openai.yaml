@@ -1,0 +1,4 @@
+interface:
+  display_name: "RM Website Builder"
+  short_description: "Build RM Group Strategies website UI/UX."
+  default_prompt: "Use this skill to build or refine the RM Group Strategies LLC website with the approved brand, pages, lead forms, UI/UX, HCI, accessibility, and design-law guidance."
