@@ -1,0 +1,13 @@
+TO: contracts@rmgroupstrategies.com
+SUBJECT: New Website Lead: Capability
+
+New inquiry submitted via RM Group Strategies Website:
+
+Inquiry Type: Capability
+Name: Jane Smith
+Email: jane@test.com
+Phone: 702-555-0199
+Company: Testing Partner
+Agency: Department of Defense
+Description:
+This is a capability statement request test.
