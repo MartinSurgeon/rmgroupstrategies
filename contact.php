@@ -19,41 +19,41 @@ if (!isset($_SESSION['captcha_num1']) || !isset($_SESSION['captcha_num2'])) {
 
 $captcha_question = "What is " . $_SESSION['captcha_num1'] . " + " . $_SESSION['captcha_num2'] . "?";
 
-// Local SQLite DB fallback setup
-$db_path = __DIR__ . '/includes/database.sqlite';
+// Database Connection (MySQL)
 try {
-    $db = new PDO("sqlite:" . $db_path);
+    $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4";
+    $db = new PDO($dsn, DB_USER, DB_PASS);
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
     // Create lead_submissions table
     $db->exec("CREATE TABLE IF NOT EXISTS lead_submissions (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        inquiry_type TEXT NOT NULL,
-        name TEXT NOT NULL,
-        company TEXT,
-        agency TEXT,
-        email TEXT NOT NULL,
-        phone TEXT,
-        service_interest TEXT,
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        inquiry_type VARCHAR(100) NOT NULL,
+        name VARCHAR(255) NOT NULL,
+        company VARCHAR(255),
+        agency VARCHAR(255),
+        email VARCHAR(255) NOT NULL,
+        phone VARCHAR(50),
+        service_interest VARCHAR(255),
         project_description TEXT,
-        trades_licenses TEXT,
-        status TEXT DEFAULT 'new',
-        source_page TEXT,
-        ip_address TEXT,
+        trades_licenses VARCHAR(255),
+        status VARCHAR(50) DEFAULT 'new',
+        source_page VARCHAR(255),
+        ip_address VARCHAR(45),
         user_agent TEXT,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     )");
     
     // Create email_logs table
     $db->exec("CREATE TABLE IF NOT EXISTS email_logs (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        lead_submission_id INTEGER,
-        recipient_email TEXT NOT NULL,
-        subject TEXT NOT NULL,
-        status TEXT NOT NULL,
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        lead_submission_id INT,
+        recipient_email VARCHAR(255) NOT NULL,
+        subject VARCHAR(255) NOT NULL,
+        status VARCHAR(50) NOT NULL,
         error_message TEXT,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )");
 } catch (PDOException $e) {
     $db_error = "Database setup failed: " . $e->getMessage();
@@ -171,7 +171,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!empty($trades_licenses)) $mail_body .= "Trades/Licenses: $trades_licenses\n";
             if (!empty($project_description)) $mail_body .= "Description:\n$project_description\n";
             
-            // Write simulated email preview to scratch/
+            // Write simulated email preview to scratch/ as a backup log
             $log_dir = __DIR__ . '/scratch';
             if (!file_exists($log_dir)) {
                 mkdir($log_dir, 0777, true);
@@ -179,13 +179,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mail_preview_path = $log_dir . '/email_preview_' . $lead_id . '.txt';
             file_put_contents($mail_preview_path, "TO: $to\nSUBJECT: $subject\n\n$mail_body");
             
-            // Log delivery attempt in local DB
+            // Build SMTP-compliant headers
+            $headers = "From: " . SITE_NAME . " <" . EMAIL_SUPPORT . ">\r\n";
+            $headers .= "Reply-To: " . $_POST['email'] . "\r\n";
+            $headers .= "MIME-Version: 1.0\r\n";
+            $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+            $headers .= "X-Mailer: PHP/" . phpversion();
+
+            // Send actual email (only if on live server; fallback to simulated on localhost)
+            if (in_array($_SERVER['HTTP_HOST'], ['localhost', '127.0.0.1'])) {
+                $status = 'simulated';
+            } else {
+                $mail_sent = mail($to, $subject, $mail_body, $headers);
+                $status = $mail_sent ? 'sent' : 'failed';
+            }
+            
+            // Log delivery attempt in database
             $log_stmt = $db->prepare("INSERT INTO email_logs (lead_submission_id, recipient_email, subject, status) VALUES (:lead_id, :recipient, :subject, :status)");
             $log_stmt->execute([
                 ':lead_id' => $lead_id,
                 ':recipient' => $to,
                 ':subject' => $subject,
-                ':status' => 'simulated'
+                ':status' => $status
             ]);
             
             $success_msg = "Thank you! Your submission has been received. Our business development team will contact you shortly.";
