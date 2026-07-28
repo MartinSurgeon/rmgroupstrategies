@@ -380,43 +380,69 @@ $current_page = 'government-contracting';
 
                 <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 animate-on-scroll mt-8">
                     
-                    <!-- Vehicle 1 -->
-                    <div class="stagger-child bg-brand-black rounded-lg border-l-4 border-l-brand-gold border-t border-r border-b border-white/5 p-5">
-                        <h3 class="text-white font-bold text-sm mb-2">Federal Agencies</h3>
-                        <p class="text-white/40 text-[11px] leading-relaxed">
-                            Pursuing procurement and service support opportunities with defense and civilian federal branches.
+                    <!-- Vehicle 1: Federal Agencies -->
+                    <div class="stagger-child group bg-brand-dark-gray/50 backdrop-blur-md rounded-xl border border-white/10 border-t-2 border-t-brand-gold p-6 hover:-translate-y-1.5 hover:border-brand-gold/40 hover:shadow-xl hover:shadow-brand-gold/10 transition-all duration-300">
+                        <div class="w-10 h-10 mb-4 rounded-lg bg-brand-gold/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-5 h-5 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.5M4.5 21V10.5M3 21h18M12 6.75h.008v.008H12V6.75z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-white font-bold text-sm mb-2 group-hover:text-brand-gold transition-colors duration-300">Federal Agencies</h3>
+                        <p class="text-white/70 text-xs leading-relaxed">
+                            Defense and civilian federal procurement and service support contracts.
                         </p>
                     </div>
 
-                    <!-- Vehicle 2 -->
-                    <div class="stagger-child bg-brand-black rounded-lg border-l-4 border-l-brand-gold border-t border-r border-b border-white/5 p-5">
-                        <h3 class="text-white font-bold text-sm mb-2">State Agencies</h3>
-                        <p class="text-white/40 text-[11px] leading-relaxed">
-                            Coordinating infrastructure, state fleet leasing, logistics, and remodeling support agreements.
+                    <!-- Vehicle 2: State Agencies -->
+                    <div class="stagger-child group bg-brand-dark-gray/50 backdrop-blur-md rounded-xl border border-white/10 border-t-2 border-t-brand-gold p-6 hover:-translate-y-1.5 hover:border-brand-gold/40 hover:shadow-xl hover:shadow-brand-gold/10 transition-all duration-300">
+                        <div class="w-10 h-10 mb-4 rounded-lg bg-brand-gold/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-5 h-5 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a.75.75 0 00.584-.73V4.26a.75.75 0 00-.916-.736l-2.884.679a9 9 0 01-6.086-.71l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-white font-bold text-sm mb-2 group-hover:text-brand-gold transition-colors duration-300">State Agencies</h3>
+                        <p class="text-white/70 text-xs leading-relaxed">
+                            State infrastructure, fleet leasing, and regional logistics agreements.
                         </p>
                     </div>
 
-                    <!-- Vehicle 3 -->
-                    <div class="stagger-child bg-brand-black rounded-lg border-l-4 border-l-brand-gold border-t border-r border-b border-white/5 p-5">
-                        <h3 class="text-white font-bold text-sm mb-2">Municipalities</h3>
-                        <p class="text-white/40 text-[11px] leading-relaxed">
-                            Serving local, county, and municipal public works departments, vehicle pools, and office facilities.
+                    <!-- Vehicle 3: Municipalities -->
+                    <div class="stagger-child group bg-brand-dark-gray/50 backdrop-blur-md rounded-xl border border-white/10 border-t-2 border-t-brand-gold p-6 hover:-translate-y-1.5 hover:border-brand-gold/40 hover:shadow-xl hover:shadow-brand-gold/10 transition-all duration-300">
+                        <div class="w-10 h-10 mb-4 rounded-lg bg-brand-gold/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-5 h-5 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-white font-bold text-sm mb-2 group-hover:text-brand-gold transition-colors duration-300">Municipalities</h3>
+                        <p class="text-white/70 text-xs leading-relaxed">
+                            Local public works, vehicle pools, and municipal facility support.
                         </p>
                     </div>
 
-                    <!-- Vehicle 4 -->
-                    <div class="stagger-child bg-brand-black rounded-lg border-l-4 border-l-brand-gold border-t border-r border-b border-white/5 p-5">
-                        <h3 class="text-white font-bold text-sm mb-2">Education</h3>
-                        <p class="text-white/40 text-[11px] leading-relaxed">
-                            Fulfilling logistics, facility remodeling, and equipment leasing needs for school districts and universities.
+                    <!-- Vehicle 4: Education -->
+                    <div class="stagger-child group bg-brand-dark-gray/50 backdrop-blur-md rounded-xl border border-white/10 border-t-2 border-t-brand-gold p-6 hover:-translate-y-1.5 hover:border-brand-gold/40 hover:shadow-xl hover:shadow-brand-gold/10 transition-all duration-300">
+                        <div class="w-10 h-10 mb-4 rounded-lg bg-brand-gold/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-5 h-5 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147L12 14.634l7.74-4.487L12 5.658 4.26 10.147zm0 0v4.487l7.74 4.487v-4.487L4.26 10.147z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 12v4.5M12 19.121l7.74-4.487"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-white font-bold text-sm mb-2 group-hover:text-brand-gold transition-colors duration-300">Education</h3>
+                        <p class="text-white/70 text-xs leading-relaxed">
+                            School district logistics, facility remodeling, and equipment leasing.
                         </p>
                     </div>
 
-                    <!-- Vehicle 5 -->
-                    <div class="stagger-child bg-brand-black rounded-lg border-l-4 border-l-brand-gold border-t border-r border-b border-white/5 p-5 col-span-1 md:col-span-3 lg:col-span-1">
-                        <h3 class="text-white font-bold text-sm mb-2">Prime Partners</h3>
-                        <p class="text-white/40 text-[11px] leading-relaxed">
-                            Partnering as a subcontractor, helping prime contractors satisfy small and minority-owned business goals.
+                    <!-- Vehicle 5: Prime Partners -->
+                    <div class="stagger-child group bg-brand-dark-gray/50 backdrop-blur-md rounded-xl border border-white/10 border-t-2 border-t-brand-gold p-6 hover:-translate-y-1.5 hover:border-brand-gold/40 hover:shadow-xl hover:shadow-brand-gold/10 transition-all duration-300 col-span-1 md:col-span-3 lg:col-span-1">
+                        <div class="w-10 h-10 mb-4 rounded-lg bg-brand-gold/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-5 h-5 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a5.97 5.97 0 00-.942 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-white font-bold text-sm mb-2 group-hover:text-brand-gold transition-colors duration-300">Prime Partners</h3>
+                        <p class="text-white/70 text-xs leading-relaxed">
+                            Subcontracting partner helping prime contractors meet small business goals.
                         </p>
                     </div>
 

@@ -400,17 +400,6 @@ if (!empty($inquiry_type)) {
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Division Addresses list -->
-                        <div class="border-t border-white/5 pt-8">
-                            <h3 class="text-xs uppercase tracking-[0.2em] text-brand-gold/70 font-semibold mb-4">Division Routing Addresses</h3>
-                            <ul class="space-y-2 text-[11px] text-white/50">
-                                <li><span class="text-white/30">RM Fleet:</span> <span class="text-white/80 font-mono"><?php echo EMAIL_FLEET; ?></span></li>
-                                <li><span class="text-white/30">RM Remodeling:</span> <span class="text-white/80 font-mono"><?php echo EMAIL_REMODELING; ?></span></li>
-                                <li><span class="text-white/30">RM Tools &amp; Equipment:</span> <span class="text-white/80 font-mono"><?php echo EMAIL_EQUIPMENT; ?></span></li>
-                                <li><span class="text-white/30">RM Transport:</span> <span class="text-white/80 font-mono"><?php echo EMAIL_TRANSPORT; ?></span></li>
-                            </ul>
-                        </div>
                     </div>
 
                     <!-- Right: Dynamic Lead Form (col-span-8) -->

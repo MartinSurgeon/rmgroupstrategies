@@ -1,13 +1,13 @@
-TO: contracts@rmgroupstrategies.com
-SUBJECT: New Website Lead: Capability
+TO: erm@rmgroupstrategies.com
+SUBJECT: New Website Lead: Consultation
 
 New inquiry submitted via RM Group Strategies Website:
 
-Inquiry Type: Capability
-Name: Jane Smith
-Email: jane@test.com
-Phone: 702-555-0199
-Company: Testing Partner
-Agency: Department of Defense
+Inquiry Type: Consultation
+Name: Martin Kwame Agbenyenuse
+Email: agbenyenusemartin@gmail.com
+Phone: 0557869989
+Company: blakpuzzle.net
+Service Interest: general_consulting
 Description:
-This is a capability statement request test.
+test
