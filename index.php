@@ -52,7 +52,7 @@ $current_page = 'home';
     </script>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/rmgroupstrategies/assets/css/custom.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/custom.css">
 </head>
 
 <body class="font-inter bg-brand-black text-brand-white">
@@ -66,7 +66,7 @@ $current_page = 'home';
              ═══════════════════════════════════════════════════════ -->
         <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden">
             <!-- Background Image -->
-            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('/rmgroupstrategies/assets/images/hero-bg.png');"></div>
+            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('<?php echo BASE_URL; ?>/assets/images/hero-bg.png');"></div>
             <!-- Dark Overlay -->
             <div class="absolute inset-0 hero-overlay"></div>
 
@@ -111,13 +111,13 @@ $current_page = 'home';
 
                 <!-- CTA Buttons -->
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up animate-delay-500">
-                    <a href="/rmgroupstrategies/contact.php" class="btn-gold">
+                    <a href="<?php echo BASE_URL; ?>/contact.php" class="btn-gold">
                         Request Consultation
                     </a>
-                    <a href="/rmgroupstrategies/government-contracting.php" class="btn-outline-gold">
+                    <a href="<?php echo BASE_URL; ?>/government-contracting.php" class="btn-outline-gold">
                         Government Contracting
                     </a>
-                    <a href="/rmgroupstrategies/contact.php" class="btn-outline-white">
+                    <a href="<?php echo BASE_URL; ?>/contact.php" class="btn-outline-white">
                         Contact Us
                     </a>
                 </div>
@@ -200,7 +200,7 @@ $current_page = 'home';
 
                     <!-- Learn More Link -->
                     <div class="text-center">
-                        <a href="/rmgroupstrategies/about.php" class="gold-link inline-flex items-center gap-2 text-sm">
+                        <a href="<?php echo BASE_URL; ?>/about.php" class="gold-link inline-flex items-center gap-2 text-sm">
                             Learn More About Us
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
@@ -236,7 +236,7 @@ $current_page = 'home';
                         </div>
                         <h3 class="text-white font-semibold text-sm mb-2 tracking-wide">Government Contracting</h3>
                         <p class="text-white/50 text-xs leading-relaxed mb-4">Federal, state, and local contracting capabilities with full procurement readiness.</p>
-                        <a href="/rmgroupstrategies/government-contracting.php" class="gold-link inline-flex items-center gap-1 text-xs">
+                        <a href="<?php echo BASE_URL; ?>/government-contracting.php" class="gold-link inline-flex items-center gap-1 text-xs">
                             Learn More
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
                         </a>
@@ -251,7 +251,7 @@ $current_page = 'home';
                         </div>
                         <h3 class="text-white font-semibold text-sm mb-2 tracking-wide">Transportation & Logistics</h3>
                         <p class="text-white/50 text-xs leading-relaxed mb-4">Freight transportation, delivery services, and government logistics contracts.</p>
-                        <a href="/rmgroupstrategies/rm-transport.php" class="gold-link inline-flex items-center gap-1 text-xs">
+                        <a href="<?php echo BASE_URL; ?>/rm-transport.php" class="gold-link inline-flex items-center gap-1 text-xs">
                             Learn More
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
                         </a>
@@ -267,7 +267,7 @@ $current_page = 'home';
                         </div>
                         <h3 class="text-white font-semibold text-sm mb-2 tracking-wide">Fleet Management</h3>
                         <p class="text-white/50 text-xs leading-relaxed mb-4">Vehicle acquisition, fleet leasing, maintenance coordination, and government fleet support.</p>
-                        <a href="/rmgroupstrategies/rm-fleet.php" class="gold-link inline-flex items-center gap-1 text-xs">
+                        <a href="<?php echo BASE_URL; ?>/rm-fleet.php" class="gold-link inline-flex items-center gap-1 text-xs">
                             Learn More
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
                         </a>
@@ -282,7 +282,7 @@ $current_page = 'home';
                         </div>
                         <h3 class="text-white font-semibold text-sm mb-2 tracking-wide">Construction & Remodeling</h3>
                         <p class="text-white/50 text-xs leading-relaxed mb-4">Residential renovations, commercial improvements, property rehabilitation, and general contracting.</p>
-                        <a href="/rmgroupstrategies/rm-remodeling.php" class="gold-link inline-flex items-center gap-1 text-xs">
+                        <a href="<?php echo BASE_URL; ?>/rm-remodeling.php" class="gold-link inline-flex items-center gap-1 text-xs">
                             Learn More
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
                         </a>
@@ -297,7 +297,7 @@ $current_page = 'home';
                         </div>
                         <h3 class="text-white font-semibold text-sm mb-2 tracking-wide">Equipment Rental</h3>
                         <p class="text-white/50 text-xs leading-relaxed mb-4">Construction equipment, tools and machinery, jobsite equipment, and contractor supplies.</p>
-                        <a href="/rmgroupstrategies/rm-tools-equipment.php" class="gold-link inline-flex items-center gap-1 text-xs">
+                        <a href="<?php echo BASE_URL; ?>/rm-tools-equipment.php" class="gold-link inline-flex items-center gap-1 text-xs">
                             Learn More
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
                         </a>
@@ -312,7 +312,7 @@ $current_page = 'home';
                         </div>
                         <h3 class="text-white font-semibold text-sm mb-2 tracking-wide">Procurement Solutions</h3>
                         <p class="text-white/50 text-xs leading-relaxed mb-4">Procurement assistance, vendor management, and supply chain coordination.</p>
-                        <a href="/rmgroupstrategies/contact.php" class="gold-link inline-flex items-center gap-1 text-xs">
+                        <a href="<?php echo BASE_URL; ?>/contact.php" class="gold-link inline-flex items-center gap-1 text-xs">
                             Learn More
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
                         </a>
@@ -327,7 +327,7 @@ $current_page = 'home';
                         </div>
                         <h3 class="text-white font-semibold text-sm mb-2 tracking-wide">Business Consulting</h3>
                         <p class="text-white/50 text-xs leading-relaxed mb-4">Strategic business development, management consulting, and growth advisory services.</p>
-                        <a href="/rmgroupstrategies/contact.php" class="gold-link inline-flex items-center gap-1 text-xs">
+                        <a href="<?php echo BASE_URL; ?>/contact.php" class="gold-link inline-flex items-center gap-1 text-xs">
                             Learn More
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
                         </a>
@@ -360,7 +360,7 @@ $current_page = 'home';
                         </div>
                         <h3 class="text-white font-semibold text-sm mb-2">RM Fleet</h3>
                         <p class="text-white/40 text-xs leading-relaxed mb-4">Fleet leasing, acquisition, and vehicle management solutions.</p>
-                        <a href="/rmgroupstrategies/rm-fleet.php" class="gold-link text-xs inline-flex items-center gap-1">
+                        <a href="<?php echo BASE_URL; ?>/rm-fleet.php" class="gold-link text-xs inline-flex items-center gap-1">
                             Learn More
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
                         </a>
@@ -373,7 +373,7 @@ $current_page = 'home';
                         </div>
                         <h3 class="text-white font-semibold text-sm mb-2">RM Remodeling</h3>
                         <p class="text-white/40 text-xs leading-relaxed mb-4">Residential and commercial construction and renovation services.</p>
-                        <a href="/rmgroupstrategies/rm-remodeling.php" class="gold-link text-xs inline-flex items-center gap-1">
+                        <a href="<?php echo BASE_URL; ?>/rm-remodeling.php" class="gold-link text-xs inline-flex items-center gap-1">
                             Learn More
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
                         </a>
@@ -386,7 +386,7 @@ $current_page = 'home';
                         </div>
                         <h3 class="text-white font-semibold text-sm mb-2">RM Tools & Equipment</h3>
                         <p class="text-white/40 text-xs leading-relaxed mb-4">Equipment rental, tools, machinery, and contractor supply solutions.</p>
-                        <a href="/rmgroupstrategies/rm-tools-equipment.php" class="gold-link text-xs inline-flex items-center gap-1">
+                        <a href="<?php echo BASE_URL; ?>/rm-tools-equipment.php" class="gold-link text-xs inline-flex items-center gap-1">
                             Learn More
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
                         </a>
@@ -399,7 +399,7 @@ $current_page = 'home';
                         </div>
                         <h3 class="text-white font-semibold text-sm mb-2">RM Transport</h3>
                         <p class="text-white/40 text-xs leading-relaxed mb-4">Freight transportation, logistics support, and delivery services.</p>
-                        <a href="/rmgroupstrategies/rm-transport.php" class="gold-link text-xs inline-flex items-center gap-1">
+                        <a href="<?php echo BASE_URL; ?>/rm-transport.php" class="gold-link text-xs inline-flex items-center gap-1">
                             Learn More
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
                         </a>
@@ -449,7 +449,7 @@ $current_page = 'home';
 
                     <!-- CTA Link -->
                     <div class="text-center">
-                        <a href="/rmgroupstrategies/government-contracting.php" class="gold-link inline-flex items-center gap-2 text-sm">
+                        <a href="<?php echo BASE_URL; ?>/government-contracting.php" class="gold-link inline-flex items-center gap-2 text-sm">
                             View Our Capabilities
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
                         </a>
@@ -473,7 +473,7 @@ $current_page = 'home';
                 <p class="text-white/60 text-base sm:text-lg leading-relaxed mb-10 max-w-2xl mx-auto">
                     Partner with a team that delivers strategic solutions for government, commercial, and private-sector clients across the United States.
                 </p>
-                <a href="/rmgroupstrategies/contact.php" class="btn-gold text-base px-8 py-4">
+                <a href="<?php echo BASE_URL; ?>/contact.php" class="btn-gold text-base px-8 py-4">
                     Request Consultation
                 </a>
                 <p class="mt-6 text-sm text-white/40">
@@ -513,3 +513,4 @@ $current_page = 'home';
 
 </body>
 </html>
+

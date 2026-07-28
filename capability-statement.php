@@ -52,7 +52,7 @@ $current_page = 'government-contracting'; // Belongs to Government Contracting c
     </script>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/rmgroupstrategies/assets/css/custom.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/custom.css">
     
     <style>
         /* Printable layout visual improvements */
@@ -107,11 +107,11 @@ $current_page = 'government-contracting'; // Belongs to Government Contracting c
                         <nav class="flex justify-center md:justify-start text-xs tracking-wider uppercase text-white/40" aria-label="Breadcrumb">
                             <ol class="inline-flex items-center space-x-2">
                                 <li>
-                                    <a href="/rmgroupstrategies/" class="hover:text-brand-gold transition-colors duration-300">Home</a>
+                                    <a href="<?php echo BASE_URL; ?>/" class="hover:text-brand-gold transition-colors duration-300">Home</a>
                                 </li>
                                 <li class="flex items-center gap-2">
                                     <span>/</span>
-                                    <a href="/rmgroupstrategies/government-contracting.php" class="hover:text-brand-gold transition-colors duration-300">Government Contracting</a>
+                                    <a href="<?php echo BASE_URL; ?>/government-contracting.php" class="hover:text-brand-gold transition-colors duration-300">Government Contracting</a>
                                 </li>
                                 <li class="flex items-center gap-2">
                                     <span>/</span>
@@ -123,7 +123,7 @@ $current_page = 'government-contracting'; // Belongs to Government Contracting c
 
                     <!-- Right: Quick CTA Button -->
                     <div class="w-full md:w-auto">
-                        <a href="/rmgroupstrategies/contact.php?type=capability" class="btn-gold w-full md:w-auto text-xs py-3 px-6">
+                        <a href="<?php echo BASE_URL; ?>/contact.php?type=capability" class="btn-gold w-full md:w-auto text-xs py-3 px-6">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
                             Request PDF Version
                         </a>
@@ -362,7 +362,7 @@ $current_page = 'government-contracting'; // Belongs to Government Contracting c
                 <p class="text-white/60 text-sm leading-relaxed mb-8 max-w-lg mx-auto">
                     Submit a formal request to our business development group. A PDF copy of our capability statement will be emailed to your inbox within 24 hours.
                 </p>
-                <a href="/rmgroupstrategies/contact.php?type=capability" class="btn-gold text-sm px-8 py-3.5">
+                <a href="<?php echo BASE_URL; ?>/contact.php?type=capability" class="btn-gold text-sm px-8 py-3.5">
                     Request PDF Capability Statement
                 </a>
             </div>
@@ -394,3 +394,4 @@ $current_page = 'government-contracting'; // Belongs to Government Contracting c
 
 </body>
 </html>
+

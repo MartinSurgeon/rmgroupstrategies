@@ -52,7 +52,7 @@ $current_page = 'about';
     </script>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/rmgroupstrategies/assets/css/custom.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/custom.css">
     
     <style>
         /* Specific CSS flowchart connector lines */
@@ -104,7 +104,7 @@ $current_page = 'about';
                 <nav class="flex justify-center text-xs tracking-wider uppercase text-white/40" aria-label="Breadcrumb">
                     <ol class="inline-flex items-center space-x-2">
                         <li>
-                            <a href="/rmgroupstrategies/" class="hover:text-brand-gold transition-colors duration-300">Home</a>
+                            <a href="<?php echo BASE_URL; ?>/" class="hover:text-brand-gold transition-colors duration-300">Home</a>
                         </li>
                         <li class="flex items-center gap-2">
                             <span>/</span>
@@ -384,7 +384,7 @@ $current_page = 'about';
                 <p class="text-white/60 text-base leading-relaxed mb-10 max-w-xl mx-auto">
                     Speak with our business development team today about government contracting, prime partnership, or commercial opportunities.
                 </p>
-                <a href="/rmgroupstrategies/contact.php" class="btn-gold text-base px-8 py-4">
+                <a href="<?php echo BASE_URL; ?>/contact.php" class="btn-gold text-base px-8 py-4">
                     Contact Our Team
                 </a>
             </div>
@@ -416,3 +416,4 @@ $current_page = 'about';
 
 </body>
 </html>
+

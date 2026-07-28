@@ -39,27 +39,27 @@
                 </h3>
                 <ul class="space-y-3">
                     <li>
-                        <a href="/rmgroupstrategies/" class="text-sm text-white/60 hover:text-brand-gold transition-colors duration-300">
+                        <a href="<?php echo BASE_URL; ?>/" class="text-sm text-white/60 hover:text-brand-gold transition-colors duration-300">
                             Home
                         </a>
                     </li>
                     <li>
-                        <a href="/rmgroupstrategies/about.php" class="text-sm text-white/60 hover:text-brand-gold transition-colors duration-300">
+                        <a href="<?php echo BASE_URL; ?>/about.php" class="text-sm text-white/60 hover:text-brand-gold transition-colors duration-300">
                             About
                         </a>
                     </li>
                     <li>
-                        <a href="/rmgroupstrategies/government-contracting.php" class="text-sm text-white/60 hover:text-brand-gold transition-colors duration-300">
+                        <a href="<?php echo BASE_URL; ?>/government-contracting.php" class="text-sm text-white/60 hover:text-brand-gold transition-colors duration-300">
                             Government Contracting
                         </a>
                     </li>
                     <li>
-                        <a href="/rmgroupstrategies/capability-statement.php" class="text-sm text-white/60 hover:text-brand-gold transition-colors duration-300">
+                        <a href="<?php echo BASE_URL; ?>/capability-statement.php" class="text-sm text-white/60 hover:text-brand-gold transition-colors duration-300">
                             Capability Statement
                         </a>
                     </li>
                     <li>
-                        <a href="/rmgroupstrategies/contact.php" class="text-sm text-white/60 hover:text-brand-gold transition-colors duration-300">
+                        <a href="<?php echo BASE_URL; ?>/contact.php" class="text-sm text-white/60 hover:text-brand-gold transition-colors duration-300">
                             Contact
                         </a>
                     </li>
@@ -111,9 +111,10 @@
             <p class="text-xs text-white/25 tracking-wide">
                 &copy; <?php echo SITE_YEAR; ?> <?php echo SITE_NAME; ?>. All rights reserved.
             </p>
-            <a href="/rmgroupstrategies/privacy-policy.php" class="text-xs text-white/25 hover:text-brand-gold transition-colors duration-300 tracking-wide">
+            <a href="<?php echo BASE_URL; ?>/privacy-policy.php" class="text-xs text-white/25 hover:text-brand-gold transition-colors duration-300 tracking-wide">
                 Privacy Policy
             </a>
         </div>
     </div>
 </footer>
+

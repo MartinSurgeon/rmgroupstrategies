@@ -21,7 +21,7 @@ if (!isset($current_page)) {
         <div class="flex items-center justify-between h-16 lg:h-20">
 
             <!-- Logo / Brand -->
-            <a href="/rmgroupstrategies/" class="flex items-center gap-3 group" aria-label="RM Group Strategies Home">
+            <a href="<?php echo BASE_URL; ?>/" class="flex items-center gap-3 group" aria-label="RM Group Strategies Home">
                 <div class="shield shield-sm">
                     <div class="shield-border"></div>
                     <div class="shield-bg"></div>
@@ -69,7 +69,7 @@ if (!isset($current_page)) {
             </div>
 
             <!-- Desktop Contact CTA -->
-            <a href="/rmgroupstrategies/contact.php" class="hidden lg:inline-flex btn-gold text-xs py-2.5 px-5">
+            <a href="<?php echo BASE_URL; ?>/contact.php" class="hidden lg:inline-flex btn-gold text-xs py-2.5 px-5">
                 Contact Us
             </a>
 
@@ -99,7 +99,7 @@ if (!isset($current_page)) {
                     <?php endif; ?>
                 <?php endforeach; ?>
                 <div class="pt-3 px-3">
-                    <a href="/rmgroupstrategies/contact.php" class="btn-gold w-full text-center text-xs py-2.5">
+                    <a href="<?php echo BASE_URL; ?>/contact.php" class="btn-gold w-full text-center text-xs py-2.5">
                         Contact Us
                     </a>
                 </div>
@@ -130,3 +130,4 @@ document.getElementById('mobile-menu-btn').addEventListener('click', function() 
     }
 });
 </script>
+

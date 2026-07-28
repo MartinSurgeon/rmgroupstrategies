@@ -255,7 +255,7 @@ if (!empty($inquiry_type)) {
     </script>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/rmgroupstrategies/assets/css/custom.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/custom.css">
     
     <style>
         .form-input {
@@ -307,7 +307,7 @@ if (!empty($inquiry_type)) {
                 <nav class="flex justify-center text-xs tracking-wider uppercase text-white/40" aria-label="Breadcrumb">
                     <ol class="inline-flex items-center space-x-2">
                         <li>
-                            <a href="/rmgroupstrategies/" class="hover:text-brand-gold transition-colors duration-300">Home</a>
+                            <a href="<?php echo BASE_URL; ?>/" class="hover:text-brand-gold transition-colors duration-300">Home</a>
                         </li>
                         <li class="flex items-center gap-2">
                             <span>/</span>
@@ -419,7 +419,7 @@ if (!empty($inquiry_type)) {
                         <?php endif; ?>
 
                         <!-- Form Start -->
-                        <form action="/rmgroupstrategies/contact.php" method="POST" id="contact-portal-form" class="space-y-6">
+                        <form action="<?php echo BASE_URL; ?>/contact.php" method="POST" id="contact-portal-form" class="space-y-6">
                             
                             <!-- Hidden honeypot field for spam prevention -->
                             <div class="hidden" aria-hidden="true">
@@ -604,3 +604,4 @@ if (!empty($inquiry_type)) {
 
 </body>
 </html>
+

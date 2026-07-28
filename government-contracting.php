@@ -52,7 +52,7 @@ $current_page = 'government-contracting';
     </script>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/rmgroupstrategies/assets/css/custom.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/custom.css">
 </head>
 
 <body class="font-inter bg-brand-black text-brand-white">
@@ -79,7 +79,7 @@ $current_page = 'government-contracting';
                 <nav class="flex justify-center text-xs tracking-wider uppercase text-white/40" aria-label="Breadcrumb">
                     <ol class="inline-flex items-center space-x-2">
                         <li>
-                            <a href="/rmgroupstrategies/" class="hover:text-brand-gold transition-colors duration-300">Home</a>
+                            <a href="<?php echo BASE_URL; ?>/" class="hover:text-brand-gold transition-colors duration-300">Home</a>
                         </li>
                         <li class="flex items-center gap-2">
                             <span>/</span>
@@ -442,10 +442,10 @@ $current_page = 'government-contracting';
                     </p>
                     
                     <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                        <a href="/rmgroupstrategies/contact.php" class="btn-gold w-full sm:w-auto">
+                        <a href="<?php echo BASE_URL; ?>/contact.php" class="btn-gold w-full sm:w-auto">
                             Submit Opportunity Inquiry
                         </a>
-                        <a href="/rmgroupstrategies/contact.php" class="btn-outline-gold w-full sm:w-auto">
+                        <a href="<?php echo BASE_URL; ?>/contact.php" class="btn-outline-gold w-full sm:w-auto">
                             Request Capability Statement
                         </a>
                     </div>
@@ -479,3 +479,4 @@ $current_page = 'government-contracting';
 
 </body>
 </html>
+

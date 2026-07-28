@@ -52,7 +52,7 @@ $current_page = 'companies'; // Matches companies category in nav dropdowns
     </script>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/rmgroupstrategies/assets/css/custom.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/custom.css">
 </head>
 
 <body class="font-inter bg-brand-black text-brand-white">
@@ -79,7 +79,7 @@ $current_page = 'companies'; // Matches companies category in nav dropdowns
                 <nav class="flex justify-center text-xs tracking-wider uppercase text-white/40" aria-label="Breadcrumb">
                     <ol class="inline-flex items-center space-x-2">
                         <li>
-                            <a href="/rmgroupstrategies/" class="hover:text-brand-gold transition-colors duration-300">Home</a>
+                            <a href="<?php echo BASE_URL; ?>/" class="hover:text-brand-gold transition-colors duration-300">Home</a>
                         </li>
                         <li class="flex items-center gap-2">
                             <span>/</span>
@@ -192,7 +192,7 @@ $current_page = 'companies'; // Matches companies category in nav dropdowns
                                 </li>
                             </ul>
                         </div>
-                        <a href="/rmgroupstrategies/rm-fleet.php" class="btn-outline-gold w-full text-center text-xs py-3">
+                        <a href="<?php echo BASE_URL; ?>/rm-fleet.php" class="btn-outline-gold w-full text-center text-xs py-3">
                             View Fleet Division
                         </a>
                     </div>
@@ -228,7 +228,7 @@ $current_page = 'companies'; // Matches companies category in nav dropdowns
                                 </li>
                             </ul>
                         </div>
-                        <a href="/rmgroupstrategies/rm-remodeling.php" class="btn-outline-gold w-full text-center text-xs py-3">
+                        <a href="<?php echo BASE_URL; ?>/rm-remodeling.php" class="btn-outline-gold w-full text-center text-xs py-3">
                             View Remodeling Division
                         </a>
                     </div>
@@ -264,7 +264,7 @@ $current_page = 'companies'; // Matches companies category in nav dropdowns
                                 </li>
                             </ul>
                         </div>
-                        <a href="/rmgroupstrategies/rm-tools-equipment.php" class="btn-outline-gold w-full text-center text-xs py-3">
+                        <a href="<?php echo BASE_URL; ?>/rm-tools-equipment.php" class="btn-outline-gold w-full text-center text-xs py-3">
                             View Equipment Division
                         </a>
                     </div>
@@ -300,7 +300,7 @@ $current_page = 'companies'; // Matches companies category in nav dropdowns
                                 </li>
                             </ul>
                         </div>
-                        <a href="/rmgroupstrategies/rm-transport.php" class="btn-outline-gold w-full text-center text-xs py-3">
+                        <a href="<?php echo BASE_URL; ?>/rm-transport.php" class="btn-outline-gold w-full text-center text-xs py-3">
                             View Transport Division
                         </a>
                     </div>
@@ -324,7 +324,7 @@ $current_page = 'companies'; // Matches companies category in nav dropdowns
                 <p class="text-white/60 text-sm leading-relaxed mb-8 max-w-lg mx-auto">
                     Our divisions coordinate under RM Group Strategies LLC to deliver turnkey logistics, construction, equipment, and fleet solutions.
                 </p>
-                <a href="/rmgroupstrategies/contact.php?type=consultation" class="btn-gold text-sm px-8 py-3.5">
+                <a href="<?php echo BASE_URL; ?>/contact.php?type=consultation" class="btn-gold text-sm px-8 py-3.5">
                     Request Division Consultation
                 </a>
             </div>
@@ -356,3 +356,4 @@ $current_page = 'companies'; // Matches companies category in nav dropdowns
 
 </body>
 </html>
+

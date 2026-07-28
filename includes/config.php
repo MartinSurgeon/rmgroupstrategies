@@ -25,6 +25,7 @@ define('EMAIL_SUPPORT',       'support@rmgroupstrategies.com');
 define('EMAIL_TRANSPORT',     'transports@rmgroupstrategies.com');
 define('SITE_LOCATION',       'Las Vegas, Nevada');
 define('SITE_URL',            'https://rmgroupstrategies.com');
+define('BASE_URL',            (in_array($_SERVER['HTTP_HOST'], ['localhost', '127.0.0.1']) ? '/rmgroupstrategies' : ''));
 define('SITE_YEAR',           date('Y'));
 
 // ─── Brand Colors (for reference in PHP-generated content) ─────────
@@ -38,22 +39,22 @@ define('COLOR_DARK_GRAY',  '#1E1E1E');
 $navigation = [
     [
         'title' => 'Home',
-        'url'   => '/rmgroupstrategies/',
+        'url'   => BASE_URL . '/',
         'slug'  => 'home',
     ],
     [
         'title' => 'About',
-        'url'   => '/rmgroupstrategies/about.php',
+        'url'   => BASE_URL . '/about.php',
         'slug'  => 'about',
     ],
     [
         'title'    => 'Government Contracting',
-        'url'      => '/rmgroupstrategies/government-contracting.php',
+        'url'      => BASE_URL . '/government-contracting.php',
         'slug'     => 'government-contracting',
         'children' => [
             [
                 'title' => 'Capability Statement',
-                'url'   => '/rmgroupstrategies/capability-statement.php',
+                'url'   => BASE_URL . '/capability-statement.php',
                 'slug'  => 'capability-statement',
             ],
         ],
@@ -65,34 +66,34 @@ $navigation = [
         'children' => [
             [
                 'title' => 'RM Nevada Series LLC',
-                'url'   => '/rmgroupstrategies/rm-nevada-series.php',
+                'url'   => BASE_URL . '/rm-nevada-series.php',
                 'slug'  => 'rm-nevada-series',
             ],
             [
                 'title' => 'RM Fleet',
-                'url'   => '/rmgroupstrategies/rm-fleet.php',
+                'url'   => BASE_URL . '/rm-fleet.php',
                 'slug'  => 'rm-fleet',
             ],
             [
                 'title' => 'RM Remodeling',
-                'url'   => '/rmgroupstrategies/rm-remodeling.php',
+                'url'   => BASE_URL . '/rm-remodeling.php',
                 'slug'  => 'rm-remodeling',
             ],
             [
                 'title' => 'RM Tools & Equipment',
-                'url'   => '/rmgroupstrategies/rm-tools-equipment.php',
+                'url'   => BASE_URL . '/rm-tools-equipment.php',
                 'slug'  => 'rm-tools-equipment',
             ],
             [
                 'title' => 'RM Transport',
-                'url'   => '/rmgroupstrategies/rm-transport.php',
+                'url'   => BASE_URL . '/rm-transport.php',
                 'slug'  => 'rm-transport',
             ],
         ],
     ],
     [
         'title' => 'Contact',
-        'url'   => '/rmgroupstrategies/contact.php',
+        'url'   => BASE_URL . '/contact.php',
         'slug'  => 'contact',
     ],
 ];
