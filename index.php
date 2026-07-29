@@ -77,28 +77,42 @@ $current_page = 'home';
 
             <!-- Hero Content -->
             <div class="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6">
-                <!-- Company Logo -->
-                <div class="flex justify-center mb-6 sm:mb-8 animate-fade-in-up animate-delay-100">
-                    <img src="<?php echo BASE_URL; ?>/assets/images/icon.jpeg" alt="<?php echo SITE_NAME; ?> Logo" class="h-20 sm:h-32 w-auto object-contain rounded-xl shadow-2xl border border-brand-gold/30 p-1.5 bg-black/40 backdrop-blur-sm" />
-                </div>
-
                 <!-- Company Name -->
-                <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-[0.15em] uppercase mb-4 animate-fade-in-up animate-delay-200">
-                    <?php echo SITE_NAME_SHORT; ?> <span class="font-normal text-brand-gold">LLC</span>
+                <h1 class="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight sm:tracking-[0.12em] uppercase mb-6 animate-fade-in-up animate-delay-100 break-words drop-shadow-lg">
+                    <span class="text-white"><?php echo SITE_NAME_SHORT; ?></span> <span class="text-brand-gold font-bold">LLC</span>
                 </h1>
 
-                <!-- Service Line -->
-                <p class="text-xs sm:text-sm text-brand-gold tracking-wider mb-6 animate-fade-in-up animate-delay-300 leading-relaxed px-2">
-                    <span>Business Development</span>
-                    <span class="dot-separator"></span>
-                    <span>Government Contracting</span>
-                    <span class="dot-separator"></span>
-                    <span>Transportation</span>
-                    <span class="dot-separator"></span>
-                    <span>Construction</span>
-                    <span class="dot-separator"></span>
-                    <span>Fleet Solutions</span>
-                </p>
+                <!-- Service Line Ticker -->
+                <div class="service-ticker-wrapper animate-fade-in-up animate-delay-300">
+                    <div class="service-ticker-track py-1">
+                        <!-- First Set -->
+                        <div class="flex items-center gap-4 px-4">
+                            <span class="service-ticker-item">Business Development</span>
+                            <span class="dot-separator"></span>
+                            <span class="service-ticker-item">Government Contracting</span>
+                            <span class="dot-separator"></span>
+                            <span class="service-ticker-item">Transportation</span>
+                            <span class="dot-separator"></span>
+                            <span class="service-ticker-item">Construction</span>
+                            <span class="dot-separator"></span>
+                            <span class="service-ticker-item">Fleet Solutions</span>
+                            <span class="dot-separator"></span>
+                        </div>
+                        <!-- Duplicated Set for Seamless Infinite Loop -->
+                        <div class="flex items-center gap-4 px-4" aria-hidden="true">
+                            <span class="service-ticker-item">Business Development</span>
+                            <span class="dot-separator"></span>
+                            <span class="service-ticker-item">Government Contracting</span>
+                            <span class="dot-separator"></span>
+                            <span class="service-ticker-item">Transportation</span>
+                            <span class="dot-separator"></span>
+                            <span class="service-ticker-item">Construction</span>
+                            <span class="dot-separator"></span>
+                            <span class="service-ticker-item">Fleet Solutions</span>
+                            <span class="dot-separator"></span>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Gold Divider -->
                 <div class="flex justify-center mb-6 animate-fade-in-up animate-delay-300">
@@ -106,19 +120,19 @@ $current_page = 'home';
                 </div>
 
                 <!-- Tagline -->
-                <p class="text-lg sm:text-xl md:text-2xl text-white/90 mb-10 animate-fade-in-up animate-delay-400 leading-relaxed px-4">
-                    <?php echo SITE_TAGLINE; ?>
+                <p class="text-xs sm:text-lg md:text-xl text-white/90 mb-8 sm:mb-10 animate-fade-in-up animate-delay-400 leading-normal sm:leading-relaxed max-w-xs sm:max-w-2xl mx-auto px-2 font-normal">
+                    Building Strategic Partnerships,<br class="block sm:hidden" /> Delivering Reliable Solutions.
                 </p>
 
                 <!-- CTA Buttons -->
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up animate-delay-500">
-                    <a href="<?php echo BASE_URL; ?>/contact.php" class="btn-gold">
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 animate-fade-in-up animate-delay-500 w-full mx-auto px-4">
+                    <a href="<?php echo BASE_URL; ?>/contact.php" class="btn-gold w-64 sm:w-auto text-center justify-center rounded-lg shadow-lg">
                         Request Consultation
                     </a>
-                    <a href="<?php echo BASE_URL; ?>/government-contracting.php" class="btn-outline-gold">
+                    <a href="<?php echo BASE_URL; ?>/government-contracting.php" class="btn-outline-gold w-64 sm:w-auto text-center justify-center rounded-lg">
                         Government Contracting
                     </a>
-                    <a href="<?php echo BASE_URL; ?>/contact.php" class="btn-outline-white">
+                    <a href="<?php echo BASE_URL; ?>/contact.php" class="btn-outline-white w-64 sm:w-auto text-center justify-center rounded-lg">
                         Contact Us
                     </a>
                 </div>
