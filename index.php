@@ -84,32 +84,32 @@ $current_page = 'home';
 
                 <!-- Service Line Ticker -->
                 <div class="service-ticker-wrapper animate-fade-in-up animate-delay-300">
-                    <div class="service-ticker-track py-1">
+                    <div class="service-ticker-track py-1 flex items-center whitespace-nowrap flex-nowrap">
                         <!-- First Set -->
-                        <div class="flex items-center gap-4 px-4">
-                            <span class="service-ticker-item">Business Development</span>
-                            <span class="dot-separator"></span>
-                            <span class="service-ticker-item">Government Contracting</span>
-                            <span class="dot-separator"></span>
-                            <span class="service-ticker-item">Transportation</span>
-                            <span class="dot-separator"></span>
-                            <span class="service-ticker-item">Construction</span>
-                            <span class="dot-separator"></span>
-                            <span class="service-ticker-item">Fleet Solutions</span>
-                            <span class="dot-separator"></span>
+                        <div class="flex items-center gap-4 px-4 whitespace-nowrap flex-nowrap flex-shrink-0">
+                            <span class="service-ticker-item whitespace-nowrap flex-shrink-0">Business Development</span>
+                            <span class="dot-separator flex-shrink-0"></span>
+                            <span class="service-ticker-item whitespace-nowrap flex-shrink-0">Government Contracting</span>
+                            <span class="dot-separator flex-shrink-0"></span>
+                            <span class="service-ticker-item whitespace-nowrap flex-shrink-0">Transportation</span>
+                            <span class="dot-separator flex-shrink-0"></span>
+                            <span class="service-ticker-item whitespace-nowrap flex-shrink-0">Construction</span>
+                            <span class="dot-separator flex-shrink-0"></span>
+                            <span class="service-ticker-item whitespace-nowrap flex-shrink-0">Fleet Solutions</span>
+                            <span class="dot-separator flex-shrink-0"></span>
                         </div>
                         <!-- Duplicated Set for Seamless Infinite Loop -->
-                        <div class="flex items-center gap-4 px-4" aria-hidden="true">
-                            <span class="service-ticker-item">Business Development</span>
-                            <span class="dot-separator"></span>
-                            <span class="service-ticker-item">Government Contracting</span>
-                            <span class="dot-separator"></span>
-                            <span class="service-ticker-item">Transportation</span>
-                            <span class="dot-separator"></span>
-                            <span class="service-ticker-item">Construction</span>
-                            <span class="dot-separator"></span>
-                            <span class="service-ticker-item">Fleet Solutions</span>
-                            <span class="dot-separator"></span>
+                        <div class="flex items-center gap-4 px-4 whitespace-nowrap flex-nowrap flex-shrink-0" aria-hidden="true">
+                            <span class="service-ticker-item whitespace-nowrap flex-shrink-0">Business Development</span>
+                            <span class="dot-separator flex-shrink-0"></span>
+                            <span class="service-ticker-item whitespace-nowrap flex-shrink-0">Government Contracting</span>
+                            <span class="dot-separator flex-shrink-0"></span>
+                            <span class="service-ticker-item whitespace-nowrap flex-shrink-0">Transportation</span>
+                            <span class="dot-separator flex-shrink-0"></span>
+                            <span class="service-ticker-item whitespace-nowrap flex-shrink-0">Construction</span>
+                            <span class="dot-separator flex-shrink-0"></span>
+                            <span class="service-ticker-item whitespace-nowrap flex-shrink-0">Fleet Solutions</span>
+                            <span class="dot-separator flex-shrink-0"></span>
                         </div>
                     </div>
                 </div>
