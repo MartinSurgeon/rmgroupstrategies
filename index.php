@@ -78,30 +78,17 @@ $current_page = 'home';
             <!-- Hero Content -->
             <div class="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6">
                 <!-- Company Name -->
-                <h1 class="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight sm:tracking-[0.12em] uppercase mb-6 animate-fade-in-up animate-delay-100 break-words drop-shadow-lg">
+                <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight sm:tracking-[0.12em] uppercase mb-6 animate-fade-in-up animate-delay-100 break-words drop-shadow-lg">
                     <span class="gradient-text-gold"><?php echo SITE_NAME_SHORT; ?></span> <span class="text-brand-gold font-bold">LLC</span>
                 </h1>
 
                 <!-- Professional Dynamic Service Rotator -->
-                <div class="my-6 max-w-xl mx-auto px-4 animate-fade-in-up animate-delay-300">
+                <div class="my-4 max-w-xl mx-auto px-4 animate-fade-in-up animate-delay-300">
                     <!-- Rotator Line -->
                     <div class="h-8 sm:h-10 flex items-center justify-center overflow-hidden relative">
                         <div id="service-rotator" class="text-sm sm:text-base md:text-lg font-bold tracking-[0.14em] text-brand-gold uppercase text-center transition-all duration-500 transform translate-y-0 opacity-100 drop-shadow-md" aria-live="polite">
                             Government Contracting
                         </div>
-                    </div>
-
-                    <!-- Clean Scannable Service Badges -->
-                    <div class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 mt-2 text-[10px] sm:text-xs text-white/75 font-medium">
-                        <span class="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">Business Development</span>
-                        <span class="text-brand-gold/60 hidden sm:inline">•</span>
-                        <span class="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">Government Contracting</span>
-                        <span class="text-brand-gold/60 hidden sm:inline">•</span>
-                        <span class="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">Transportation</span>
-                        <span class="text-brand-gold/60 hidden sm:inline">•</span>
-                        <span class="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">Construction</span>
-                        <span class="text-brand-gold/60 hidden sm:inline">•</span>
-                        <span class="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">Fleet Solutions</span>
                     </div>
                 </div>
 
