@@ -22,11 +22,7 @@ if (!isset($current_page)) {
 
             <!-- Logo / Brand -->
             <a href="<?php echo BASE_URL; ?>/" class="flex items-center gap-3 group" aria-label="RM Group Strategies Home">
-                <div class="shield shield-sm">
-                    <div class="shield-border"></div>
-                    <div class="shield-bg"></div>
-                    <span class="shield-text shield-shimmer">RM</span>
-                </div>
+                <img src="<?php echo BASE_URL; ?>/assets/images/icon.jpeg" alt="RM Group Strategies Logo" class="h-10 sm:h-12 w-auto object-contain rounded-md transition-transform duration-300 group-hover:scale-105" />
                 <span class="hidden sm:block text-white text-sm font-semibold tracking-[0.15em] uppercase group-hover:text-brand-gold transition-colors duration-300">
                     RM Group Strategies
                 </span>

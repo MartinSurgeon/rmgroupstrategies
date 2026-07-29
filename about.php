@@ -11,6 +11,11 @@ $current_page = 'about';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpeg" href="<?php echo BASE_URL; ?>/assets/images/icon.jpeg">
+    <link rel="shortcut icon" href="<?php echo BASE_URL; ?>/favicon.ico">
+    <link rel="apple-touch-icon" href="<?php echo BASE_URL; ?>/assets/images/icon.jpeg">
+
     <!-- SEO -->
     <title>About Our Company | <?php echo SITE_NAME; ?></title>
     <meta name="description" content="Learn about <?php echo SITE_NAME; ?>, a Nevada-based parent company and diversified business holding group specializing in government contracting, transportation, fleet management, and construction.">
@@ -92,11 +97,7 @@ $current_page = 'about';
         <section class="bg-brand-dark-gray border-b border-white/5 py-12 sm:py-16">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <div class="flex justify-center mb-4">
-                    <div class="shield shield-sm">
-                        <div class="shield-border"></div>
-                        <div class="shield-bg"></div>
-                        <span class="shield-text shield-shimmer">RM</span>
-                    </div>
+                    <img src="<?php echo BASE_URL; ?>/assets/images/icon.jpeg" alt="<?php echo SITE_NAME; ?> Logo" class="h-12 w-auto object-contain rounded-md" />
                 </div>
                 <h1 class="text-3xl sm:text-4xl font-bold tracking-wide text-white mb-3">
                     About Our Company
@@ -130,12 +131,8 @@ $current_page = 'about';
                             <svg class="absolute inset-0 w-full h-full text-brand-gold/5" fill="currentColor" viewBox="0 0 100 100" preserveAspectRatio="none">
                                 <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="0.5" fill="none" stroke-dasharray="2,2"/>
                             </svg>
-                            <!-- Crest Shield Monogram -->
-                            <div class="shield shield-lg scale-110 sm:scale-125">
-                                <div class="shield-border"></div>
-                                <div class="shield-bg"></div>
-                                <span class="shield-text shield-shimmer">RM</span>
-                            </div>
+                            <!-- Crest Logo -->
+                            <img src="<?php echo BASE_URL; ?>/assets/images/icon.jpeg" alt="<?php echo SITE_NAME; ?> Crest Logo" class="relative z-10 w-40 sm:w-48 h-auto object-contain rounded-xl shadow-2xl border border-brand-gold/30 p-2 bg-black/50" />
                         </div>
                     </div>
 

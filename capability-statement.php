@@ -11,6 +11,11 @@ $current_page = 'government-contracting'; // Belongs to Government Contracting c
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpeg" href="<?php echo BASE_URL; ?>/assets/images/icon.jpeg">
+    <link rel="shortcut icon" href="<?php echo BASE_URL; ?>/favicon.ico">
+    <link rel="apple-touch-icon" href="<?php echo BASE_URL; ?>/assets/images/icon.jpeg">
+
     <!-- SEO -->
     <title>Capability Statement | <?php echo SITE_NAME; ?></title>
     <meta name="description" content="Review the official capability statement for <?php echo SITE_NAME; ?>. Core competencies, company data, NAICS codes, past performance, and differentiators.">
@@ -95,11 +100,7 @@ $current_page = 'government-contracting'; // Belongs to Government Contracting c
                     <!-- Left: Titles -->
                     <div class="text-center md:text-left">
                         <div class="flex justify-center md:justify-start mb-3">
-                            <div class="shield shield-sm">
-                                <div class="shield-border"></div>
-                                <div class="shield-bg"></div>
-                                <span class="shield-text shield-shimmer">RM</span>
-                            </div>
+                            <img src="<?php echo BASE_URL; ?>/assets/images/icon.jpeg" alt="<?php echo SITE_NAME; ?> Logo" class="h-10 w-auto object-contain rounded-md" />
                         </div>
                         <h1 class="text-3xl font-bold tracking-wide text-white mb-2">
                             Capability Statement
@@ -147,11 +148,7 @@ $current_page = 'government-contracting'; // Belongs to Government Contracting c
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 pb-8 border-b border-white/5 mb-10">
                         <div>
                             <div class="flex items-center gap-3 mb-2">
-                                <div class="shield shield-md">
-                                    <div class="shield-border"></div>
-                                    <div class="shield-bg"></div>
-                                    <span class="shield-text shield-shimmer">RM</span>
-                                </div>
+                                <img src="<?php echo BASE_URL; ?>/assets/images/icon.jpeg" alt="<?php echo SITE_NAME; ?> Logo" class="h-12 w-auto object-contain rounded-md" />
                                 <h2 class="text-xl sm:text-2xl font-bold uppercase tracking-wider text-white">
                                     <?php echo SITE_NAME_SHORT; ?> <span class="font-normal text-brand-gold">LLC</span>
                                 </h2>

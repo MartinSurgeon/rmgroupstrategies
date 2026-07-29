@@ -11,6 +11,11 @@ $current_page = 'government-contracting';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpeg" href="<?php echo BASE_URL; ?>/assets/images/icon.jpeg">
+    <link rel="shortcut icon" href="<?php echo BASE_URL; ?>/favicon.ico">
+    <link rel="apple-touch-icon" href="<?php echo BASE_URL; ?>/assets/images/icon.jpeg">
+
     <!-- SEO -->
     <title>Government Contracting Capabilities | <?php echo SITE_NAME; ?></title>
     <meta name="description" content="Explore the government contracting capabilities, active SAM registration, UEI status, NAICS codes, and contracting vehicles for <?php echo SITE_NAME; ?> in Las Vegas, Nevada.">
@@ -67,11 +72,7 @@ $current_page = 'government-contracting';
         <section class="bg-brand-dark-gray border-b border-white/5 py-12 sm:py-16">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <div class="flex justify-center mb-4">
-                    <div class="shield shield-sm">
-                        <div class="shield-border"></div>
-                        <div class="shield-bg"></div>
-                        <span class="shield-text shield-shimmer">RM</span>
-                    </div>
+                    <img src="<?php echo BASE_URL; ?>/assets/images/icon.jpeg" alt="<?php echo SITE_NAME; ?> Logo" class="h-12 w-auto object-contain rounded-md" />
                 </div>
                 <h1 class="text-3xl sm:text-4xl font-bold tracking-wide text-white mb-3">
                     Government Contracting

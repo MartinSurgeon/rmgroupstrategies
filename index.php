@@ -8,8 +8,10 @@ $current_page = 'home';
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpeg" href="<?php echo BASE_URL; ?>/assets/images/icon.jpeg">
+    <link rel="shortcut icon" href="<?php echo BASE_URL; ?>/favicon.ico">
+    <link rel="apple-touch-icon" href="<?php echo BASE_URL; ?>/assets/images/icon.jpeg">
 
     <!-- SEO -->
     <title><?php echo SITE_NAME; ?> | Government Contracting, Transportation, Construction, Fleet Solutions</title>
@@ -72,13 +74,9 @@ $current_page = 'home';
 
             <!-- Hero Content -->
             <div class="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6">
-                <!-- Shield Monogram -->
+                <!-- Company Logo -->
                 <div class="flex justify-center mb-8 animate-fade-in-up animate-delay-100">
-                    <div class="shield shield-lg">
-                        <div class="shield-border"></div>
-                        <div class="shield-bg"></div>
-                        <span class="shield-text shield-shimmer">RM</span>
-                    </div>
+                    <img src="<?php echo BASE_URL; ?>/assets/images/icon.jpeg" alt="<?php echo SITE_NAME; ?> Logo" class="h-28 sm:h-36 w-auto object-contain rounded-xl shadow-2xl border border-brand-gold/30 p-1.5 bg-black/40 backdrop-blur-sm" />
                 </div>
 
                 <!-- Company Name -->

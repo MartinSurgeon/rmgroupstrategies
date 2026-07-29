@@ -15,11 +15,7 @@
             <!-- Column 1: Brand -->
             <div>
                 <div class="flex items-center gap-3 mb-4">
-                    <div class="shield shield-sm">
-                        <div class="shield-border"></div>
-                        <div class="shield-bg"></div>
-                        <span class="shield-text shield-shimmer">RM</span>
-                    </div>
+                    <img src="<?php echo BASE_URL; ?>/assets/images/icon.jpeg" alt="<?php echo SITE_NAME_SHORT; ?> Logo" class="h-10 w-auto object-contain rounded-md" />
                     <span class="text-white text-sm font-semibold tracking-[0.15em] uppercase">
                         <?php echo SITE_NAME_SHORT; ?>
                     </span>
