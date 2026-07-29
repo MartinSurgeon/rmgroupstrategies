@@ -336,7 +336,7 @@ $current_page = 'government-contracting'; // Belongs to Government Contracting c
 
                     <!-- Print Notice / Note -->
                     <div class="border-t border-white/5 mt-10 pt-6 text-center text-[10px] text-white/30">
-                        RM Group Strategies LLC | Las Vegas, NV | contracts@rmgroupstrategies.com | (702) 504-8128
+                        RM Group Strategies LLC | Las Vegas, NV | <?php echo SITE_EMAIL; ?> | <?php echo SITE_PHONE_DISPLAY; ?>
                     </div>
 
                 </div>
