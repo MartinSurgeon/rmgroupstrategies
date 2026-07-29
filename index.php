@@ -8,6 +8,9 @@ $current_page = 'home';
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <!-- Favicon -->
     <link rel="icon" type="image/jpeg" href="<?php echo BASE_URL; ?>/assets/images/icon.jpeg">
     <link rel="shortcut icon" href="<?php echo BASE_URL; ?>/favicon.ico">
@@ -75,8 +78,8 @@ $current_page = 'home';
             <!-- Hero Content -->
             <div class="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6">
                 <!-- Company Logo -->
-                <div class="flex justify-center mb-8 animate-fade-in-up animate-delay-100">
-                    <img src="<?php echo BASE_URL; ?>/assets/images/icon.jpeg" alt="<?php echo SITE_NAME; ?> Logo" class="h-28 sm:h-36 w-auto object-contain rounded-xl shadow-2xl border border-brand-gold/30 p-1.5 bg-black/40 backdrop-blur-sm" />
+                <div class="flex justify-center mb-6 sm:mb-8 animate-fade-in-up animate-delay-100">
+                    <img src="<?php echo BASE_URL; ?>/assets/images/icon.jpeg" alt="<?php echo SITE_NAME; ?> Logo" class="h-20 sm:h-32 w-auto object-contain rounded-xl shadow-2xl border border-brand-gold/30 p-1.5 bg-black/40 backdrop-blur-sm" />
                 </div>
 
                 <!-- Company Name -->
