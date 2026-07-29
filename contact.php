@@ -136,27 +136,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             $lead_id = $db->lastInsertId();
             
-            // Centralized custom email routing logic
-            $to = EMAIL_SUPPORT; // Default fallback
-            
-            if ($inquiry_type === 'contract' || $inquiry_type === 'capability') {
-                $to = EMAIL_CONTRACTS;
-            } elseif ($inquiry_type === 'consultation') {
-                $to = EMAIL_ERM;
-            }
-            
-            // Check division / service interest for specialized routing
-            $routing_str = strtolower($service_interest . ' ' . $project_description);
-            if (strpos($routing_str, 'fleet') !== false) {
-                $to = EMAIL_FLEET;
-            } elseif (strpos($routing_str, 'remodel') !== false || strpos($routing_str, 'construction') !== false) {
-                $to = EMAIL_REMODELING;
-            } elseif (strpos($routing_str, 'equipment') !== false || strpos($routing_str, 'tool') !== false) {
-                $to = EMAIL_EQUIPMENT;
-            } elseif (strpos($routing_str, 'transport') !== false || strpos($routing_str, 'logistics') !== false) {
-                $to = EMAIL_TRANSPORT;
-            }
-            
+            // Direct all form leads to primary SITE_EMAIL (info@rmgroupstrategies.com)
+            $to = SITE_EMAIL;
             $subject = "New Website Lead: " . ucwords(str_replace('_', ' ', $inquiry_type));
             
             // Format email body
