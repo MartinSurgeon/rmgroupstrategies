@@ -180,17 +180,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             file_put_contents($mail_preview_path, "TO: $to\nSUBJECT: $subject\n\n$mail_body");
             
             // Build SMTP-compliant headers
-            $headers = "From: " . SITE_NAME . " <" . EMAIL_SUPPORT . ">\r\n";
+            $headers = "From: " . SITE_NAME . " <" . SITE_EMAIL . ">\r\n";
             $headers .= "Reply-To: " . $_POST['email'] . "\r\n";
             $headers .= "MIME-Version: 1.0\r\n";
             $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
             $headers .= "X-Mailer: PHP/" . phpversion();
 
-            // Send actual email (only if on live server; fallback to simulated on localhost)
+            // Send actual email
             if (in_array($_SERVER['HTTP_HOST'], ['localhost', '127.0.0.1'])) {
                 $status = 'simulated';
+            } elseif (defined('SMTP_PASS') && !empty(SMTP_PASS)) {
+                // Authenticated SMTP via Namecheap Private Email
+                require_once __DIR__ . '/includes/mailer.php';
+                $mailer = new SimpleSMTPMailer(SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, 'tls');
+                list($mail_sent, $smtp_msg) = $mailer->send($to, $subject, $mail_body, SITE_EMAIL, SITE_NAME, $_POST['email']);
+                $status = $mail_sent ? 'sent' : 'failed: ' . substr($smtp_msg, 0, 100);
             } else {
-                $mail_sent = mail($to, $subject, $mail_body, $headers);
+                // Standard cPanel mail() fallback with explicit envelope sender -f parameter
+                $additional_params = "-f " . SITE_EMAIL;
+                $mail_sent = mail($to, $subject, $mail_body, $headers, $additional_params);
                 $status = $mail_sent ? 'sent' : 'failed';
             }
             
