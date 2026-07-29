@@ -145,10 +145,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // 5. Database Save & Email Simulation
     if (empty($errors)) {
-        if (!isset($db)) {
-            $errors[] = "Database connection is not available. Please verify database settings.";
-            log_submission_event('ERROR', 'Database object $db is not initialized');
-        } else {
+        $lead_id = null;
+        
+        // Attempt database insert if DB is available
+        if (isset($db)) {
             try {
                 $stmt = $db->prepare("INSERT INTO lead_submissions 
                     (inquiry_type, name, company, agency, email, phone, service_interest, project_description, trades_licenses, source_page, ip_address, user_agent)
@@ -171,60 +171,68 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 $lead_id = $db->lastInsertId();
                 log_submission_event('INFO', 'Successfully inserted lead into MySQL DB', ['lead_id' => $lead_id]);
-                
-                // Direct all form leads to primary SITE_EMAIL (info@rmgroupstrategies.com)
-                $to = SITE_EMAIL;
-                $subject = "New Website Lead: " . ucwords(str_replace('_', ' ', $inquiry_type));
-                
-                // Format email body
-                $mail_body = "New inquiry submitted via RM Group Strategies Website:\n\n";
-                $mail_body .= "Inquiry Type: " . ucwords(str_replace('_', ' ', $inquiry_type)) . "\n";
-                $mail_body .= "Name: $name\n";
-                $mail_body .= "Email: " . $_POST['email'] . "\n";
-                if (!empty($phone)) $mail_body .= "Phone: $phone\n";
-                if (!empty($company)) $mail_body .= "Company: $company\n";
-                if (!empty($agency)) $mail_body .= "Agency: $agency\n";
-                if (!empty($service_interest)) $mail_body .= "Service Interest: $service_interest\n";
-                if (!empty($trades_licenses)) $mail_body .= "Trades/Licenses: $trades_licenses\n";
-                if (!empty($project_description)) $mail_body .= "Description:\n$project_description\n";
-                
-                // Write backup preview log
-                $log_dir = __DIR__ . '/scratch';
-                if (!file_exists($log_dir)) {
-                    @mkdir($log_dir, 0777, true);
-                }
-                $mail_preview_path = $log_dir . '/email_preview_' . $lead_id . '.txt';
-                @file_put_contents($mail_preview_path, "TO: $to\nSUBJECT: $subject\n\n$mail_body");
-                
-                // Build SMTP-compliant headers
-                $headers = "From: " . SITE_NAME . " <" . SITE_EMAIL . ">\r\n";
-                $headers .= "Reply-To: " . $_POST['email'] . "\r\n";
-                $headers .= "MIME-Version: 1.0\r\n";
-                $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
-                $headers .= "X-Mailer: PHP/" . phpversion();
+            } catch (PDOException $e) {
+                log_submission_event('WARNING', 'Database insert failed (email will still send)', ['error' => $e->getMessage()]);
+            }
+        } else {
+            log_submission_event('WARNING', 'Database object $db is not initialized (email will still send)');
+        }
 
-                // Send actual email
-                $mail_sent = false;
-                $delivery_method = 'mail';
+        // Direct all form leads to primary SITE_EMAIL (info@rmgroupstrategies.com)
+        $to = SITE_EMAIL;
+        $subject = "New Website Lead: " . ucwords(str_replace('_', ' ', $inquiry_type));
+        
+        // Format email body
+        $mail_body = "New inquiry submitted via RM Group Strategies Website:\n\n";
+        $mail_body .= "Inquiry Type: " . ucwords(str_replace('_', ' ', $inquiry_type)) . "\n";
+        $mail_body .= "Name: $name\n";
+        $mail_body .= "Email: " . $_POST['email'] . "\n";
+        if (!empty($phone)) $mail_body .= "Phone: $phone\n";
+        if (!empty($company)) $mail_body .= "Company: $company\n";
+        if (!empty($agency)) $mail_body .= "Agency: $agency\n";
+        if (!empty($service_interest)) $mail_body .= "Service Interest: $service_interest\n";
+        if (!empty($trades_licenses)) $mail_body .= "Trades/Licenses: $trades_licenses\n";
+        if (!empty($project_description)) $mail_body .= "Description:\n$project_description\n";
+        
+        // Write backup preview log
+        $log_dir = __DIR__ . '/scratch';
+        if (!file_exists($log_dir)) {
+            @mkdir($log_dir, 0777, true);
+        }
+        $mail_preview_file = $log_dir . '/email_preview_' . ($lead_id ?? time()) . '.txt';
+        @file_put_contents($mail_preview_file, "TO: $to\nSUBJECT: $subject\n\n$mail_body");
+        
+        // Build SMTP-compliant headers
+        $headers = "From: " . SITE_NAME . " <" . SITE_EMAIL . ">\r\n";
+        $headers .= "Reply-To: " . $_POST['email'] . "\r\n";
+        $headers .= "MIME-Version: 1.0\r\n";
+        $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+        $headers .= "X-Mailer: PHP/" . phpversion();
 
-                if (in_array($_SERVER['HTTP_HOST'], ['localhost', '127.0.0.1'])) {
-                    $status = 'simulated';
-                    $mail_sent = true;
-                    $delivery_method = 'simulated';
-                } elseif (defined('SMTP_PASS') && !empty(SMTP_PASS)) {
-                    $delivery_method = 'authenticated_smtp';
-                    require_once __DIR__ . '/includes/mailer.php';
-                    $mailer = new SimpleSMTPMailer(SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, 'tls');
-                    list($mail_sent, $smtp_msg) = $mailer->send($to, $subject, $mail_body, SITE_EMAIL, SITE_NAME, $_POST['email']);
-                    $status = $mail_sent ? 'sent' : 'failed: ' . substr($smtp_msg, 0, 100);
-                } else {
-                    $delivery_method = 'php_mail_envelope';
-                    $additional_params = "-f " . SITE_EMAIL;
-                    $mail_sent = @mail($to, $subject, $mail_body, $headers, $additional_params);
-                    $status = $mail_sent ? 'sent' : 'failed';
-                }
-                
-                // Log delivery attempt in database
+        // Send actual email
+        $mail_sent = false;
+        $delivery_method = 'mail';
+
+        if (in_array($_SERVER['HTTP_HOST'], ['localhost', '127.0.0.1'])) {
+            $status = 'simulated';
+            $mail_sent = true;
+            $delivery_method = 'simulated';
+        } elseif (defined('SMTP_PASS') && !empty(SMTP_PASS)) {
+            $delivery_method = 'authenticated_smtp';
+            require_once __DIR__ . '/includes/mailer.php';
+            $mailer = new SimpleSMTPMailer(SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, 'tls');
+            list($mail_sent, $smtp_msg) = $mailer->send($to, $subject, $mail_body, SITE_EMAIL, SITE_NAME, $_POST['email']);
+            $status = $mail_sent ? 'sent' : 'failed: ' . substr($smtp_msg, 0, 100);
+        } else {
+            $delivery_method = 'php_mail_envelope';
+            $additional_params = "-f " . SITE_EMAIL;
+            $mail_sent = @mail($to, $subject, $mail_body, $headers, $additional_params);
+            $status = $mail_sent ? 'sent' : 'failed';
+        }
+        
+        // Log delivery attempt in database if DB is available
+        if (isset($db) && $lead_id) {
+            try {
                 $log_stmt = $db->prepare("INSERT INTO email_logs (lead_submission_id, recipient_email, subject, status) VALUES (:lead_id, :recipient, :subject, :status)");
                 $log_stmt->execute([
                     ':lead_id' => $lead_id,
@@ -232,25 +240,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ':subject' => $subject,
                     ':status' => $status
                 ]);
-
-                log_submission_event($mail_sent ? 'INFO' : 'ERROR', 'Email dispatch completed', [
-                    'recipient' => $to,
-                    'method' => $delivery_method,
-                    'status' => $status
-                ]);
-                
-                if ($mail_sent) {
-                    $success_msg = "Thank you! Your submission has been received. Our business development team will contact you shortly.";
-                    // Clear fields on success
-                    $inquiry_type = $name = $email = $phone = $company = $agency = $service_interest = $project_description = $trades_licenses = "";
-                } else {
-                    $errors[] = "Your lead inquiry was saved to our system, but email notification delivery encountered an issue. Our team has been logged to follow up.";
-                }
-
-            } catch (PDOException $e) {
-                $errors[] = "System error saving your submission: " . $e->getMessage();
-                log_submission_event('ERROR', 'PDO Exception on submission', ['error' => $e->getMessage()]);
+            } catch (PDOException $ex) {
+                log_submission_event('WARNING', 'Failed to insert email_log record', ['error' => $ex->getMessage()]);
             }
+        }
+
+        log_submission_event($mail_sent ? 'INFO' : 'ERROR', 'Email dispatch completed', [
+            'recipient' => $to,
+            'method' => $delivery_method,
+            'status' => $status
+        ]);
+        
+        if ($mail_sent) {
+            $success_msg = "Thank you! Your submission has been received. Our business development team will contact you shortly.";
+            // Clear fields on success
+            $inquiry_type = $name = $email = $phone = $company = $agency = $service_interest = $project_description = $trades_licenses = "";
+        } else {
+            $errors[] = "Email delivery encountered a temporary server error. Please email us directly at info@rmgroupstrategies.com.";
         }
     }
 }
