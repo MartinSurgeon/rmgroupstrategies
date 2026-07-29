@@ -69,7 +69,7 @@ $current_page = 'home';
         <!-- ═══════════════════════════════════════════════════════
              SECTION 1: HERO
              ═══════════════════════════════════════════════════════ -->
-        <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden py-16">
             <!-- Background Image -->
             <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('<?php echo BASE_URL; ?>/assets/images/hero-bg.png');"></div>
             <!-- Dark Overlay -->
@@ -79,7 +79,7 @@ $current_page = 'home';
             <div class="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6">
                 <!-- Company Name -->
                 <h1 class="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight sm:tracking-[0.12em] uppercase mb-6 animate-fade-in-up animate-delay-100 break-words drop-shadow-lg">
-                    <span class="text-white"><?php echo SITE_NAME_SHORT; ?></span> <span class="text-brand-gold font-bold">LLC</span>
+                    <span class="gradient-text-gold"><?php echo SITE_NAME_SHORT; ?></span> <span class="text-brand-gold font-bold">LLC</span>
                 </h1>
 
                 <!-- Service Line Ticker -->
@@ -136,10 +136,12 @@ $current_page = 'home';
                         Contact Us
                     </a>
                 </div>
+
+
             </div>
 
             <!-- Scroll Down Indicator -->
-            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-fade-in-up animate-delay-700">
+            <div class="absolute bottom-6 left-1/2 -translate-x-1/2 animate-fade-in-up animate-delay-700 hidden sm:block">
                 <a href="#about" class="scroll-indicator flex flex-col items-center gap-2 text-white/30 hover:text-brand-gold transition-colors duration-300" aria-label="Scroll to content">
                     <span class="text-[10px] uppercase tracking-[0.2em]">Explore</span>
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
@@ -153,70 +155,70 @@ $current_page = 'home';
         <!-- ═══════════════════════════════════════════════════════
              SECTION 2: COMPANY OVERVIEW
              ═══════════════════════════════════════════════════════ -->
-        <section id="about" class="bg-brand-dark-gray py-20 lg:py-28">
+        <section id="about" class="bg-brand-dark-gray py-20 lg:py-28 relative">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="animate-on-scroll">
                     <div class="section-heading">
-                        <h2>Who We Are</h2>
+                        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">Who We Are</h2>
                         <div class="gold-divider-lg"></div>
                     </div>
 
-                    <p class="text-center text-white/70 text-base sm:text-lg leading-relaxed max-w-3xl mx-auto mb-12">
-                        <?php echo SITE_NAME; ?> is a diversified business holding and management company specializing in government contracting, transportation services, fleet management, construction and remodeling, equipment rental, business consulting, and procurement solutions. We provide innovative solutions for commercial, government, and private-sector clients throughout the United States.
+                    <p class="text-center text-white/75 text-base sm:text-lg leading-relaxed max-w-3xl mx-auto mb-14">
+                        <?php echo SITE_NAME; ?> is a Nevada-based parent holding and management group delivering high-performance solutions in government contracting, transportation, fleet services, construction, equipment rental, procurement, and strategic consulting nationwide.
                     </p>
 
-                    <!-- Differentiators -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+                    <!-- Differentiators Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
                         <!-- Differentiator 1 -->
-                        <div class="stagger-child text-center p-6 rounded-lg border border-white/5 bg-white/[0.02]">
-                            <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-brand-gold/10 flex items-center justify-center">
+                        <div class="glass-card stagger-child text-center p-6 rounded-xl">
+                            <div class="w-12 h-12 mx-auto mb-4 rounded-xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 border border-brand-gold/30 flex items-center justify-center shadow-lg">
                                 <svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"/>
                                 </svg>
                             </div>
-                            <h3 class="text-sm font-semibold text-white mb-2 tracking-wide">Diversified Portfolio</h3>
-                            <p class="text-xs text-white/50 leading-relaxed">Multi-industry expertise across government, commercial, and private sectors.</p>
+                            <h3 class="text-sm font-bold text-white mb-2 tracking-wide">Diversified Portfolio</h3>
+                            <p class="text-xs text-white/60 leading-relaxed">Multi-industry expertise across government, commercial, and private sectors.</p>
                         </div>
 
                         <!-- Differentiator 2 -->
-                        <div class="stagger-child text-center p-6 rounded-lg border border-white/5 bg-white/[0.02]">
-                            <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-brand-gold/10 flex items-center justify-center">
+                        <div class="glass-card stagger-child text-center p-6 rounded-xl">
+                            <div class="w-12 h-12 mx-auto mb-4 rounded-xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 border border-brand-gold/30 flex items-center justify-center shadow-lg">
                                 <svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/>
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/>
                                 </svg>
                             </div>
-                            <h3 class="text-sm font-semibold text-white mb-2 tracking-wide">Nevada-Based</h3>
-                            <p class="text-xs text-white/50 leading-relaxed">Headquartered in Las Vegas with operations throughout the United States.</p>
+                            <h3 class="text-sm font-bold text-white mb-2 tracking-wide">Nevada-Based</h3>
+                            <p class="text-xs text-white/60 leading-relaxed">Headquartered in Las Vegas with operations throughout the United States.</p>
                         </div>
 
                         <!-- Differentiator 3 -->
-                        <div class="stagger-child text-center p-6 rounded-lg border border-white/5 bg-white/[0.02]">
-                            <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-brand-gold/10 flex items-center justify-center">
+                        <div class="glass-card stagger-child text-center p-6 rounded-xl">
+                            <div class="w-12 h-12 mx-auto mb-4 rounded-xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 border border-brand-gold/30 flex items-center justify-center shadow-lg">
                                 <svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
                                 </svg>
                             </div>
-                            <h3 class="text-sm font-semibold text-white mb-2 tracking-wide">Government Ready</h3>
-                            <p class="text-xs text-white/50 leading-relaxed">Registered, certified, and equipped for federal, state, and local contracts.</p>
+                            <h3 class="text-sm font-bold text-white mb-2 tracking-wide">Government Ready</h3>
+                            <p class="text-xs text-white/60 leading-relaxed">Registered, certified, and equipped for federal, state, and local contracts.</p>
                         </div>
 
                         <!-- Differentiator 4 -->
-                        <div class="stagger-child text-center p-6 rounded-lg border border-white/5 bg-white/[0.02]">
-                            <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-brand-gold/10 flex items-center justify-center">
+                        <div class="glass-card stagger-child text-center p-6 rounded-xl">
+                            <div class="w-12 h-12 mx-auto mb-4 rounded-xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 border border-brand-gold/30 flex items-center justify-center shadow-lg">
                                 <svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/>
                                 </svg>
                             </div>
-                            <h3 class="text-sm font-semibold text-white mb-2 tracking-wide">Strategic Partnerships</h3>
-                            <p class="text-xs text-white/50 leading-relaxed">Collaborative approach with prime contractors, vendors, and subcontractors.</p>
+                            <h3 class="text-sm font-bold text-white mb-2 tracking-wide">Strategic Partnerships</h3>
+                            <p class="text-xs text-white/60 leading-relaxed">Collaborative approach with prime contractors, vendors, and subcontractors.</p>
                         </div>
                     </div>
 
                     <!-- Learn More Link -->
                     <div class="text-center">
-                        <a href="<?php echo BASE_URL; ?>/about.php" class="gold-link inline-flex items-center gap-2 text-sm">
-                            Learn More About Us
+                        <a href="<?php echo BASE_URL; ?>/about.php" class="gold-link inline-flex items-center gap-2 text-sm font-semibold">
+                            Learn More About Our Operations
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
                             </svg>
@@ -230,120 +232,134 @@ $current_page = 'home';
         <!-- ═══════════════════════════════════════════════════════
              SECTION 3: SERVICES GRID
              ═══════════════════════════════════════════════════════ -->
-        <section id="services" class="bg-brand-black py-20 lg:py-28">
+        <section id="services" class="bg-brand-black py-20 lg:py-28 relative">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="animate-on-scroll">
-                    <div class="section-heading">
-                        <h2>Our Services</h2>
+                    <div class="section-heading mb-14">
+                        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">Our Core Services</h2>
                         <div class="gold-divider-lg"></div>
-                        <p><?php echo SITE_TAGLINE_SUPPORT; ?></p>
+                        <p class="text-white/60 text-sm sm:text-base max-w-2xl mx-auto"><?php echo SITE_TAGLINE_SUPPORT; ?></p>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 animate-on-scroll">
 
                     <!-- Service 1: Government Contracting -->
-                    <div class="stagger-child card-hover bg-brand-dark-gray rounded-lg border border-white/5 border-t-2 border-t-brand-gold/60 p-6">
-                        <div class="w-12 h-12 mb-5 rounded-lg bg-brand-gold/10 flex items-center justify-center">
-                            <svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
-                            </svg>
+                    <div class="glass-card stagger-child rounded-xl border-t-2 border-t-brand-gold p-7 flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 mb-5 rounded-xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 border border-brand-gold/30 flex items-center justify-center shadow-md">
+                                <svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-white font-bold text-base mb-2.5 tracking-wide">Government Contracting</h3>
+                            <p class="text-white/60 text-xs leading-relaxed mb-6">Federal, state, and local contracting capabilities with full procurement readiness.</p>
                         </div>
-                        <h3 class="text-white font-semibold text-sm mb-2 tracking-wide">Government Contracting</h3>
-                        <p class="text-white/50 text-xs leading-relaxed mb-4">Federal, state, and local contracting capabilities with full procurement readiness.</p>
-                        <a href="<?php echo BASE_URL; ?>/government-contracting.php" class="gold-link inline-flex items-center gap-1 text-xs">
-                            Learn More
+                        <a href="<?php echo BASE_URL; ?>/government-contracting.php" class="gold-link inline-flex items-center gap-1.5 text-xs font-semibold">
+                            Explore Capabilities
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
                         </a>
                     </div>
 
                     <!-- Service 2: Transportation & Logistics -->
-                    <div class="stagger-child card-hover bg-brand-dark-gray rounded-lg border border-white/5 border-t-2 border-t-brand-gold/60 p-6">
-                        <div class="w-12 h-12 mb-5 rounded-lg bg-brand-gold/10 flex items-center justify-center">
-                            <svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"/>
-                            </svg>
+                    <div class="glass-card stagger-child rounded-xl border-t-2 border-t-brand-gold p-7 flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 mb-5 rounded-xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 border border-brand-gold/30 flex items-center justify-center shadow-md">
+                                <svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-white font-bold text-base mb-2.5 tracking-wide">Transportation &amp; Logistics</h3>
+                            <p class="text-white/60 text-xs leading-relaxed mb-6">Freight transportation, delivery services, and government logistics contracts.</p>
                         </div>
-                        <h3 class="text-white font-semibold text-sm mb-2 tracking-wide">Transportation & Logistics</h3>
-                        <p class="text-white/50 text-xs leading-relaxed mb-4">Freight transportation, delivery services, and government logistics contracts.</p>
-                        <a href="<?php echo BASE_URL; ?>/rm-transport.php" class="gold-link inline-flex items-center gap-1 text-xs">
-                            Learn More
+                        <a href="<?php echo BASE_URL; ?>/rm-transport.php" class="gold-link inline-flex items-center gap-1.5 text-xs font-semibold">
+                            Explore Capabilities
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
                         </a>
                     </div>
 
                     <!-- Service 3: Fleet Management -->
-                    <div class="stagger-child card-hover bg-brand-dark-gray rounded-lg border border-white/5 border-t-2 border-t-brand-gold/60 p-6">
-                        <div class="w-12 h-12 mb-5 rounded-lg bg-brand-gold/10 flex items-center justify-center">
-                            <svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17l-5.1-5.1a2.5 2.5 0 010-3.54l.7-.7a2.5 2.5 0 013.54 0l5.1 5.1m-4.24 4.24l4.24-4.24m-4.24 4.24L8.66 18.5a2.5 2.5 0 01-3.54 0l-.7-.7a2.5 2.5 0 010-3.54l4.24-4.24"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
+                    <div class="glass-card stagger-child rounded-xl border-t-2 border-t-brand-gold p-7 flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 mb-5 rounded-xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 border border-brand-gold/30 flex items-center justify-center shadow-md">
+                                <svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17l-5.1-5.1a2.5 2.5 0 010-3.54l.7-.7a2.5 2.5 0 013.54 0l5.1 5.1m-4.24 4.24l4.24-4.24m-4.24 4.24L8.66 18.5a2.5 2.5 0 01-3.54 0l-.7-.7a2.5 2.5 0 010-3.54l4.24-4.24"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-white font-bold text-base mb-2.5 tracking-wide">Fleet Management</h3>
+                            <p class="text-white/60 text-xs leading-relaxed mb-6">Vehicle acquisition, fleet leasing, maintenance coordination, and government fleet support.</p>
                         </div>
-                        <h3 class="text-white font-semibold text-sm mb-2 tracking-wide">Fleet Management</h3>
-                        <p class="text-white/50 text-xs leading-relaxed mb-4">Vehicle acquisition, fleet leasing, maintenance coordination, and government fleet support.</p>
-                        <a href="<?php echo BASE_URL; ?>/rm-fleet.php" class="gold-link inline-flex items-center gap-1 text-xs">
-                            Learn More
+                        <a href="<?php echo BASE_URL; ?>/rm-fleet.php" class="gold-link inline-flex items-center gap-1.5 text-xs font-semibold">
+                            Explore Capabilities
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
                         </a>
                     </div>
 
                     <!-- Service 4: Construction & Remodeling -->
-                    <div class="stagger-child card-hover bg-brand-dark-gray rounded-lg border border-white/5 border-t-2 border-t-brand-gold/60 p-6">
-                        <div class="w-12 h-12 mb-5 rounded-lg bg-brand-gold/10 flex items-center justify-center">
-                            <svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3H21m-3.75 3H21"/>
-                            </svg>
+                    <div class="glass-card stagger-child rounded-xl border-t-2 border-t-brand-gold p-7 flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 mb-5 rounded-xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 border border-brand-gold/30 flex items-center justify-center shadow-md">
+                                <svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3H21m-3.75 3H21"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-white font-bold text-base mb-2.5 tracking-wide">Construction &amp; Remodeling</h3>
+                            <p class="text-white/60 text-xs leading-relaxed mb-6">Residential renovations, commercial improvements, property rehabilitation, and general contracting.</p>
                         </div>
-                        <h3 class="text-white font-semibold text-sm mb-2 tracking-wide">Construction & Remodeling</h3>
-                        <p class="text-white/50 text-xs leading-relaxed mb-4">Residential renovations, commercial improvements, property rehabilitation, and general contracting.</p>
-                        <a href="<?php echo BASE_URL; ?>/rm-remodeling.php" class="gold-link inline-flex items-center gap-1 text-xs">
-                            Learn More
+                        <a href="<?php echo BASE_URL; ?>/rm-remodeling.php" class="gold-link inline-flex items-center gap-1.5 text-xs font-semibold">
+                            Explore Capabilities
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
                         </a>
                     </div>
 
                     <!-- Service 5: Equipment Rental -->
-                    <div class="stagger-child card-hover bg-brand-dark-gray rounded-lg border border-white/5 border-t-2 border-t-brand-gold/60 p-6">
-                        <div class="w-12 h-12 mb-5 rounded-lg bg-brand-gold/10 flex items-center justify-center">
-                            <svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17l-5.1-5.1M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243"/>
-                            </svg>
+                    <div class="glass-card stagger-child rounded-xl border-t-2 border-t-brand-gold p-7 flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 mb-5 rounded-xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 border border-brand-gold/30 flex items-center justify-center shadow-md">
+                                <svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17l-5.1-5.1M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-white font-bold text-base mb-2.5 tracking-wide">Equipment Rental</h3>
+                            <p class="text-white/60 text-xs leading-relaxed mb-6">Construction equipment, tools and machinery, jobsite equipment, and contractor supplies.</p>
                         </div>
-                        <h3 class="text-white font-semibold text-sm mb-2 tracking-wide">Equipment Rental</h3>
-                        <p class="text-white/50 text-xs leading-relaxed mb-4">Construction equipment, tools and machinery, jobsite equipment, and contractor supplies.</p>
-                        <a href="<?php echo BASE_URL; ?>/rm-tools-equipment.php" class="gold-link inline-flex items-center gap-1 text-xs">
-                            Learn More
+                        <a href="<?php echo BASE_URL; ?>/rm-tools-equipment.php" class="gold-link inline-flex items-center gap-1.5 text-xs font-semibold">
+                            Explore Capabilities
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
                         </a>
                     </div>
 
                     <!-- Service 6: Procurement Solutions -->
-                    <div class="stagger-child card-hover bg-brand-dark-gray rounded-lg border border-white/5 border-t-2 border-t-brand-gold/60 p-6">
-                        <div class="w-12 h-12 mb-5 rounded-lg bg-brand-gold/10 flex items-center justify-center">
-                            <svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15a2.25 2.25 0 012.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"/>
-                            </svg>
+                    <div class="glass-card stagger-child rounded-xl border-t-2 border-t-brand-gold p-7 flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 mb-5 rounded-xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 border border-brand-gold/30 flex items-center justify-center shadow-md">
+                                <svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15a2.25 2.25 0 012.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-white font-bold text-base mb-2.5 tracking-wide">Procurement Solutions</h3>
+                            <p class="text-white/60 text-xs leading-relaxed mb-6">Procurement assistance, vendor management, and supply chain coordination.</p>
                         </div>
-                        <h3 class="text-white font-semibold text-sm mb-2 tracking-wide">Procurement Solutions</h3>
-                        <p class="text-white/50 text-xs leading-relaxed mb-4">Procurement assistance, vendor management, and supply chain coordination.</p>
-                        <a href="<?php echo BASE_URL; ?>/contact.php" class="gold-link inline-flex items-center gap-1 text-xs">
-                            Learn More
+                        <a href="<?php echo BASE_URL; ?>/contact.php" class="gold-link inline-flex items-center gap-1.5 text-xs font-semibold">
+                            Explore Capabilities
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
                         </a>
                     </div>
 
                     <!-- Service 7: Business Consulting -->
-                    <div class="stagger-child card-hover bg-brand-dark-gray rounded-lg border border-white/5 border-t-2 border-t-brand-gold/60 p-6">
-                        <div class="w-12 h-12 mb-5 rounded-lg bg-brand-gold/10 flex items-center justify-center">
-                            <svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z"/>
-                            </svg>
+                    <div class="glass-card stagger-child rounded-xl border-t-2 border-t-brand-gold p-7 flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 mb-5 rounded-xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 border border-brand-gold/30 flex items-center justify-center shadow-md">
+                                <svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-white font-bold text-base mb-2.5 tracking-wide">Business Consulting</h3>
+                            <p class="text-white/60 text-xs leading-relaxed mb-6">Strategic business development, management consulting, and growth advisory services.</p>
                         </div>
-                        <h3 class="text-white font-semibold text-sm mb-2 tracking-wide">Business Consulting</h3>
-                        <p class="text-white/50 text-xs leading-relaxed mb-4">Strategic business development, management consulting, and growth advisory services.</p>
-                        <a href="<?php echo BASE_URL; ?>/contact.php" class="gold-link inline-flex items-center gap-1 text-xs">
-                            Learn More
+                        <a href="<?php echo BASE_URL; ?>/contact.php" class="gold-link inline-flex items-center gap-1.5 text-xs font-semibold">
+                            Explore Capabilities
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
                         </a>
                     </div>
@@ -354,68 +370,76 @@ $current_page = 'home';
 
 
         <!-- ═══════════════════════════════════════════════════════
-             SECTION 4: AFFILIATED COMPANIES
+             SECTION 4: AFFILIATED OPERATING DIVISIONS
              ═══════════════════════════════════════════════════════ -->
-        <section id="companies" class="bg-brand-dark-gray py-20 lg:py-28">
+        <section id="companies" class="bg-brand-dark-gray py-20 lg:py-28 relative">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="animate-on-scroll">
-                    <div class="section-heading">
-                        <h2>Our Companies</h2>
+                    <div class="section-heading mb-14">
+                        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">Our Operating Divisions</h2>
                         <div class="gold-divider-lg"></div>
-                        <p>Operating through RM Nevada Series LLC, our specialized divisions deliver focused expertise across key industries.</p>
+                        <p class="text-white/60 text-sm sm:text-base max-w-2xl mx-auto">Operating through RM Nevada Series LLC, our specialized divisions deliver focused operational excellence across key industries.</p>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 animate-on-scroll">
 
                     <!-- RM Fleet -->
-                    <div class="stagger-child card-hover bg-brand-black rounded-lg border border-white/5 p-6 text-center">
-                        <div class="w-10 h-10 mx-auto mb-4 rounded-full bg-brand-gold/10 flex items-center justify-center">
-                            <svg class="w-5 h-5 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25m0 0V4.5m0 0H8.25"/></svg>
+                    <div class="glass-card stagger-child rounded-xl p-6 text-center flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 mx-auto mb-4 rounded-xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 border border-brand-gold/30 flex items-center justify-center shadow-md">
+                                <svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25m0 0V4.5m0 0H8.25"/></svg>
+                            </div>
+                            <h3 class="text-white font-bold text-base mb-2">RM Fleet</h3>
+                            <p class="text-white/50 text-xs leading-relaxed mb-6">Fleet leasing, vehicle acquisition, and comprehensive fleet support.</p>
                         </div>
-                        <h3 class="text-white font-semibold text-sm mb-2">RM Fleet</h3>
-                        <p class="text-white/40 text-xs leading-relaxed mb-4">Fleet leasing, acquisition, and vehicle management solutions.</p>
-                        <a href="<?php echo BASE_URL; ?>/rm-fleet.php" class="gold-link text-xs inline-flex items-center gap-1">
-                            Learn More
+                        <a href="<?php echo BASE_URL; ?>/rm-fleet.php" class="gold-link text-xs font-semibold inline-flex items-center justify-center gap-1">
+                            Division Overview
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
                         </a>
                     </div>
 
                     <!-- RM Remodeling -->
-                    <div class="stagger-child card-hover bg-brand-black rounded-lg border border-white/5 p-6 text-center">
-                        <div class="w-10 h-10 mx-auto mb-4 rounded-full bg-brand-gold/10 flex items-center justify-center">
-                            <svg class="w-5 h-5 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21"/></svg>
+                    <div class="glass-card stagger-child rounded-xl p-6 text-center flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 mx-auto mb-4 rounded-xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 border border-brand-gold/30 flex items-center justify-center shadow-md">
+                                <svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21"/></svg>
+                            </div>
+                            <h3 class="text-white font-bold text-base mb-2">RM Remodeling</h3>
+                            <p class="text-white/50 text-xs leading-relaxed mb-6">Residential and commercial construction, renovations, and property upgrades.</p>
                         </div>
-                        <h3 class="text-white font-semibold text-sm mb-2">RM Remodeling</h3>
-                        <p class="text-white/40 text-xs leading-relaxed mb-4">Residential and commercial construction and renovation services.</p>
-                        <a href="<?php echo BASE_URL; ?>/rm-remodeling.php" class="gold-link text-xs inline-flex items-center gap-1">
-                            Learn More
+                        <a href="<?php echo BASE_URL; ?>/rm-remodeling.php" class="gold-link text-xs font-semibold inline-flex items-center justify-center gap-1">
+                            Division Overview
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
                         </a>
                     </div>
 
                     <!-- RM Tools & Equipment -->
-                    <div class="stagger-child card-hover bg-brand-black rounded-lg border border-white/5 p-6 text-center">
-                        <div class="w-10 h-10 mx-auto mb-4 rounded-full bg-brand-gold/10 flex items-center justify-center">
-                            <svg class="w-5 h-5 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17l-5.1-5.1a2.5 2.5 0 010-3.54l.7-.7a2.5 2.5 0 013.54 0l.7.7a2.5 2.5 0 010 3.54l-5.1 5.1m0 0l5.1 5.1"/></svg>
+                    <div class="glass-card stagger-child rounded-xl p-6 text-center flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 mx-auto mb-4 rounded-xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 border border-brand-gold/30 flex items-center justify-center shadow-md">
+                                <svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17l-5.1-5.1a2.5 2.5 0 010-3.54l.7-.7a2.5 2.5 0 013.54 0l.7.7a2.5 2.5 0 010 3.54l-5.1 5.1m0 0l5.1 5.1"/></svg>
+                            </div>
+                            <h3 class="text-white font-bold text-base mb-2">RM Tools &amp; Equipment</h3>
+                            <p class="text-white/50 text-xs leading-relaxed mb-6">Equipment leasing, tools, jobsite machinery, and contractor rentals.</p>
                         </div>
-                        <h3 class="text-white font-semibold text-sm mb-2">RM Tools & Equipment</h3>
-                        <p class="text-white/40 text-xs leading-relaxed mb-4">Equipment rental, tools, machinery, and contractor supply solutions.</p>
-                        <a href="<?php echo BASE_URL; ?>/rm-tools-equipment.php" class="gold-link text-xs inline-flex items-center gap-1">
-                            Learn More
+                        <a href="<?php echo BASE_URL; ?>/rm-tools-equipment.php" class="gold-link text-xs font-semibold inline-flex items-center justify-center gap-1">
+                            Division Overview
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
                         </a>
                     </div>
 
                     <!-- RM Transport -->
-                    <div class="stagger-child card-hover bg-brand-black rounded-lg border border-white/5 p-6 text-center">
-                        <div class="w-10 h-10 mx-auto mb-4 rounded-full bg-brand-gold/10 flex items-center justify-center">
-                            <svg class="w-5 h-5 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg>
+                    <div class="glass-card stagger-child rounded-xl p-6 text-center flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 mx-auto mb-4 rounded-xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 border border-brand-gold/30 flex items-center justify-center shadow-md">
+                                <svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg>
+                            </div>
+                            <h3 class="text-white font-bold text-base mb-2">RM Transport</h3>
+                            <p class="text-white/50 text-xs leading-relaxed mb-6">Freight transport, logistics support, and government delivery contracts.</p>
                         </div>
-                        <h3 class="text-white font-semibold text-sm mb-2">RM Transport</h3>
-                        <p class="text-white/40 text-xs leading-relaxed mb-4">Freight transportation, logistics support, and delivery services.</p>
-                        <a href="<?php echo BASE_URL; ?>/rm-transport.php" class="gold-link text-xs inline-flex items-center gap-1">
-                            Learn More
+                        <a href="<?php echo BASE_URL; ?>/rm-transport.php" class="gold-link text-xs font-semibold inline-flex items-center justify-center gap-1">
+                            Division Overview
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
                         </a>
                     </div>
@@ -428,25 +452,25 @@ $current_page = 'home';
         <!-- ═══════════════════════════════════════════════════════
              SECTION 5: GOVERNMENT CONTRACTING READINESS
              ═══════════════════════════════════════════════════════ -->
-        <section id="gov-ready" class="bg-brand-black py-20 lg:py-28">
+        <section id="gov-ready" class="bg-brand-black py-20 lg:py-28 relative">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="animate-on-scroll">
-                    <div class="section-heading">
-                        <h2>Government Contracting Ready</h2>
+                    <div class="section-heading mb-12">
+                        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">Government Contracting Readiness</h2>
                         <div class="gold-divider-lg"></div>
-                        <p>Registered, certified, and positioned for federal, state, and local procurement opportunities.</p>
+                        <p class="text-white/60 text-sm sm:text-base max-w-2xl mx-auto">Registered, certified, and positioned for federal, state, and local procurement opportunities.</p>
                     </div>
                 </div>
 
                 <div class="animate-on-scroll">
-                    <div class="flex flex-wrap justify-center gap-4 mb-10">
+                    <div class="flex flex-wrap justify-center gap-3.5 mb-10">
                         <div class="stagger-child badge-pill">
                             <svg class="w-4 h-4 text-brand-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
                             <span>UEI Registered</span>
                         </div>
                         <div class="stagger-child badge-pill">
                             <svg class="w-4 h-4 text-brand-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
-                            <span>SAM.gov Registered</span>
+                            <span>SAM.gov Active</span>
                         </div>
                         <div class="stagger-child badge-pill">
                             <svg class="w-4 h-4 text-brand-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
@@ -462,10 +486,10 @@ $current_page = 'home';
                         </div>
                     </div>
 
-                    <!-- CTA Link -->
+                    <!-- CTA Button -->
                     <div class="text-center">
-                        <a href="<?php echo BASE_URL; ?>/government-contracting.php" class="gold-link inline-flex items-center gap-2 text-sm">
-                            View Our Capabilities
+                        <a href="<?php echo BASE_URL; ?>/capability-statement.php" class="btn-gold text-xs py-3 px-6 rounded-lg inline-flex items-center gap-2 shadow-lg">
+                            <span>View Capability Statement</span>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
                         </a>
                     </div>
@@ -479,24 +503,23 @@ $current_page = 'home';
              ═══════════════════════════════════════════════════════ -->
         <section id="cta" class="bg-brand-dark-gray py-20 lg:py-28 relative overflow-hidden">
             <!-- Subtle gold accent line at top -->
-            <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-brand-gold/30 to-transparent"></div>
+            <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-brand-gold/40 to-transparent"></div>
 
             <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center animate-on-scroll">
-                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4 tracking-wide">
-                    Ready to Work With Us?
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4 tracking-wide">
+                    Ready to Build a Strategic Partnership?
                 </h2>
-                <p class="text-white/60 text-base sm:text-lg leading-relaxed mb-10 max-w-2xl mx-auto">
-                    Partner with a team that delivers strategic solutions for government, commercial, and private-sector clients across the United States.
+                <p class="text-white/70 text-base sm:text-lg leading-relaxed mb-10 max-w-2xl mx-auto">
+                    Connect with our executive management team to discuss government contracting, commercial projects, fleet solutions, or vendor opportunities.
                 </p>
-                <a href="<?php echo BASE_URL; ?>/contact.php" class="btn-gold text-base px-8 py-4">
-                    Request Consultation
-                </a>
-                <p class="mt-6 text-sm text-white/40">
-                    Or call us at
-                    <a href="<?php echo SITE_PHONE_LINK; ?>" class="text-brand-gold hover:text-brand-gold-accent transition-colors duration-300">
-                        <?php echo SITE_PHONE_DISPLAY; ?>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="<?php echo BASE_URL; ?>/contact.php" class="btn-gold text-sm px-8 py-3.5 rounded-lg shadow-xl w-64 sm:w-auto text-center justify-center">
+                        Request Consultation
                     </a>
-                </p>
+                    <a href="<?php echo SITE_PHONE_LINK; ?>" class="btn-outline-gold text-sm px-8 py-3.5 rounded-lg w-64 sm:w-auto text-center justify-center">
+                        Call <?php echo SITE_PHONE_DISPLAY; ?>
+                    </a>
+                </div>
             </div>
         </section>
 

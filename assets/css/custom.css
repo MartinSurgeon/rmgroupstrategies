@@ -467,3 +467,50 @@ body {
     color: #FFD700;
     transform: scale(1.05);
 }
+
+/* ── Premium Glassmorphism & Card Utilities ───────────────────── */
+.glass-card {
+    background: rgba(30, 30, 30, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+    background: rgba(30, 30, 30, 0.85);
+    border-color: rgba(212, 175, 55, 0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px 0 rgba(212, 175, 55, 0.15);
+}
+
+.gradient-text-gold {
+    background: linear-gradient(135deg, #FFFFFF 0%, #E2E8F0 40%, #D4AF37 80%, #FFD700 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.gold-glow-border {
+    position: relative;
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    transition: all 0.3s ease;
+}
+
+.gold-glow-border:hover {
+    border-color: rgba(212, 175, 55, 0.7);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.25);
+}
+
+.metric-pill {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    transition: all 0.3s ease;
+}
+
+.metric-pill:hover {
+    border-color: rgba(212, 175, 55, 0.6);
+    background: rgba(212, 175, 55, 0.08);
+}
