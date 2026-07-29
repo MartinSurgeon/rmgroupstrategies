@@ -82,35 +82,26 @@ $current_page = 'home';
                     <span class="gradient-text-gold"><?php echo SITE_NAME_SHORT; ?></span> <span class="text-brand-gold font-bold">LLC</span>
                 </h1>
 
-                <!-- Service Line Ticker -->
-                <div class="service-ticker-wrapper animate-fade-in-up animate-delay-300">
-                    <div class="service-ticker-track py-1 flex items-center whitespace-nowrap flex-nowrap">
-                        <!-- First Set -->
-                        <div class="flex items-center gap-4 px-4 whitespace-nowrap flex-nowrap flex-shrink-0">
-                            <span class="service-ticker-item whitespace-nowrap flex-shrink-0">Business Development</span>
-                            <span class="dot-separator flex-shrink-0"></span>
-                            <span class="service-ticker-item whitespace-nowrap flex-shrink-0">Government Contracting</span>
-                            <span class="dot-separator flex-shrink-0"></span>
-                            <span class="service-ticker-item whitespace-nowrap flex-shrink-0">Transportation</span>
-                            <span class="dot-separator flex-shrink-0"></span>
-                            <span class="service-ticker-item whitespace-nowrap flex-shrink-0">Construction</span>
-                            <span class="dot-separator flex-shrink-0"></span>
-                            <span class="service-ticker-item whitespace-nowrap flex-shrink-0">Fleet Solutions</span>
-                            <span class="dot-separator flex-shrink-0"></span>
+                <!-- Professional Dynamic Service Rotator -->
+                <div class="my-6 max-w-xl mx-auto px-4 animate-fade-in-up animate-delay-300">
+                    <!-- Rotator Line -->
+                    <div class="h-8 sm:h-10 flex items-center justify-center overflow-hidden relative">
+                        <div id="service-rotator" class="text-sm sm:text-base md:text-lg font-bold tracking-[0.14em] text-brand-gold uppercase text-center transition-all duration-500 transform translate-y-0 opacity-100 drop-shadow-md" aria-live="polite">
+                            Government Contracting
                         </div>
-                        <!-- Duplicated Set for Seamless Infinite Loop -->
-                        <div class="flex items-center gap-4 px-4 whitespace-nowrap flex-nowrap flex-shrink-0" aria-hidden="true">
-                            <span class="service-ticker-item whitespace-nowrap flex-shrink-0">Business Development</span>
-                            <span class="dot-separator flex-shrink-0"></span>
-                            <span class="service-ticker-item whitespace-nowrap flex-shrink-0">Government Contracting</span>
-                            <span class="dot-separator flex-shrink-0"></span>
-                            <span class="service-ticker-item whitespace-nowrap flex-shrink-0">Transportation</span>
-                            <span class="dot-separator flex-shrink-0"></span>
-                            <span class="service-ticker-item whitespace-nowrap flex-shrink-0">Construction</span>
-                            <span class="dot-separator flex-shrink-0"></span>
-                            <span class="service-ticker-item whitespace-nowrap flex-shrink-0">Fleet Solutions</span>
-                            <span class="dot-separator flex-shrink-0"></span>
-                        </div>
+                    </div>
+
+                    <!-- Clean Scannable Service Badges -->
+                    <div class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 mt-2 text-[10px] sm:text-xs text-white/75 font-medium">
+                        <span class="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">Business Development</span>
+                        <span class="text-brand-gold/60 hidden sm:inline">•</span>
+                        <span class="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">Government Contracting</span>
+                        <span class="text-brand-gold/60 hidden sm:inline">•</span>
+                        <span class="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">Transportation</span>
+                        <span class="text-brand-gold/60 hidden sm:inline">•</span>
+                        <span class="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">Construction</span>
+                        <span class="text-brand-gold/60 hidden sm:inline">•</span>
+                        <span class="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">Fleet Solutions</span>
                     </div>
                 </div>
 
@@ -532,6 +523,7 @@ $current_page = 'home';
          ═══════════════════════════════════════════════════════ -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Scroll Animation Observer
             const observer = new IntersectionObserver(function(entries) {
                 entries.forEach(function(entry) {
                     if (entry.isIntersecting) {
@@ -546,6 +538,37 @@ $current_page = 'home';
             document.querySelectorAll('.animate-on-scroll').forEach(function(el) {
                 observer.observe(el);
             });
+
+            // Dynamic Service Text Rotator
+            (function() {
+                const services = [
+                    "Government Contracting",
+                    "Business Development",
+                    "Transportation & Logistics",
+                    "Construction & Remodeling",
+                    "Fleet Solutions"
+                ];
+                let currentIndex = 0;
+                const rotatorEl = document.getElementById('service-rotator');
+                
+                if (rotatorEl) {
+                    setInterval(function() {
+                        rotatorEl.style.opacity = '0';
+                        rotatorEl.style.transform = 'translateY(-8px)';
+                        
+                        setTimeout(function() {
+                            currentIndex = (currentIndex + 1) % services.length;
+                            rotatorEl.textContent = services[currentIndex];
+                            rotatorEl.style.transform = 'translateY(8px)';
+                            
+                            requestAnimationFrame(function() {
+                                rotatorEl.style.opacity = '1';
+                                rotatorEl.style.transform = 'translateY(0)';
+                            });
+                        }, 400);
+                    }, 3000);
+                }
+            })();
         });
     </script>
 
