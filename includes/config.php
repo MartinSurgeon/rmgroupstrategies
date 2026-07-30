@@ -24,9 +24,11 @@ define('EMAIL_REMODELING',    'info@rmgroupstrategies.com');
 define('EMAIL_SUPPORT',       'info@rmgroupstrategies.com');
 define('EMAIL_TRANSPORT',     'info@rmgroupstrategies.com');
 
-// Load secure local environment secrets (excluded from Git)
+// Load secure local environment secrets (checks both includes/ and root folder)
 if (file_exists(__DIR__ . '/config.local.php')) {
     require_once __DIR__ . '/config.local.php';
+} elseif (file_exists(dirname(__DIR__) . '/config.local.php')) {
+    require_once dirname(__DIR__) . '/config.local.php';
 }
 
 if (!defined('SMTP_HOST')) define('SMTP_HOST', 'mail.privateemail.com');
