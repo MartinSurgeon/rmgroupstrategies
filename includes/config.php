@@ -23,10 +23,16 @@ define('EMAIL_FLEET',         'info@rmgroupstrategies.com');
 define('EMAIL_REMODELING',    'info@rmgroupstrategies.com');
 define('EMAIL_SUPPORT',       'info@rmgroupstrategies.com');
 define('EMAIL_TRANSPORT',     'info@rmgroupstrategies.com');
-define('SMTP_HOST',           'mail.privateemail.com');
-define('SMTP_PORT',           587);
-define('SMTP_USER',           'info@rmgroupstrategies.com');
-define('SMTP_PASS',           ''); // Optional: Enter Private Email Password for authenticated SMTP
+
+// Load secure local environment secrets (excluded from Git)
+if (file_exists(__DIR__ . '/config.local.php')) {
+    require_once __DIR__ . '/config.local.php';
+}
+
+if (!defined('SMTP_HOST')) define('SMTP_HOST', 'mail.privateemail.com');
+if (!defined('SMTP_PORT')) define('SMTP_PORT', 587);
+if (!defined('SMTP_USER')) define('SMTP_USER', 'info@rmgroupstrategies.com');
+if (!defined('SMTP_PASS')) define('SMTP_PASS', '');
 define('SITE_LOCATION',       'Las Vegas, Nevada');
 define('SITE_URL',            'https://rmgroupstrategies.com');
 define('BASE_URL',            (in_array($_SERVER['HTTP_HOST'], ['localhost', '127.0.0.1']) ? '/rmgroupstrategies' : ''));
