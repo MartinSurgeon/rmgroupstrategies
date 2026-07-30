@@ -4,6 +4,18 @@
  */
 session_start();
 require_once __DIR__ . '/includes/config.php';
+
+// Version verification endpoint for deployment tracking
+if (isset($_GET['version_check'])) {
+    header('Content-Type: application/json');
+    echo json_encode([
+        'version' => '2.0.0-SMTP-DIRECT',
+        'target_recipient' => defined('EMAIL_ERM') ? EMAIL_ERM : 'erm@rmgroupstrategies.com',
+        'smtp_pass_configured' => (defined('SMTP_PASS') && !empty(SMTP_PASS))
+    ], JSON_PRETTY_PRINT);
+    exit;
+}
+
 $current_page = 'contact';
 
 // Generate CSRF token if not exists
