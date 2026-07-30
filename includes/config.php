@@ -39,11 +39,10 @@ if (in_array($_SERVER['HTTP_HOST'], ['localhost', '127.0.0.1'])) {
     define('DB_NAME', 'rmgroupstrategies');
 } else {
     define('DB_HOST', 'localhost');
-    define('DB_USER', 'YOUR_LIVE_DB_USER');
-    define('DB_PASS', 'YOUR_LIVE_DB_PASSWORD');
-    define('DB_NAME', 'YOUR_LIVE_DB_NAME');
+    define('DB_USER', 'rmgrbkkc_rm');
+    define('DB_PASS', 'Monday20$2026');
+    define('DB_NAME', 'rmgrbkkc_rmgroupstrategies');
 }
-
 
 // ─── Brand Colors (for reference in PHP-generated content) ─────────
 define('COLOR_BLACK',      '#000000');

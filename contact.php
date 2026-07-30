@@ -252,14 +252,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
         
         if ($mail_sent) {
-            $success_msg = "Thank you! Your submission has been received. Our business development team will contact you shortly.";
-            // Clear fields on success
-            $inquiry_type = $name = $email = $phone = $company = $agency = $service_interest = $project_description = $trades_licenses = "";
+            $_SESSION['flash_success'] = "Thank you! Your submission has been received. Our business development team will contact you shortly.";
+            // Clear draft inputs on success
+            unset($_SESSION['draft_inputs']);
         } else {
-            $errors[] = "Email delivery encountered a temporary server error. Please email us directly at info@rmgroupstrategies.com.";
+            $_SESSION['flash_errors'] = ["Email delivery encountered a temporary server error. Please email us directly at info@rmgroupstrategies.com."];
         }
+    } else {
+        $_SESSION['flash_errors'] = $errors;
+        // Maintain inputs on error
+        $_SESSION['draft_inputs'] = [
+            'inquiry_type' => $inquiry_type,
+            'name' => $name,
+            'email' => $_POST['email'] ?? '',
+            'phone' => $phone,
+            'company' => $company,
+            'agency' => $agency,
+            'service_interest' => $service_interest,
+            'project_description' => $project_description,
+            'trades_licenses' => $trades_licenses
+        ];
     }
+
+    if (!empty($warnings)) {
+        $_SESSION['flash_warnings'] = $warnings;
+    }
+
+    // Clean HTTP 303 Redirect back to GET request (Eliminates ERR_CACHE_MISS & Confirm Form Resubmission dialogs!)
+    header("Location: " . BASE_URL . "/contact.php?status=submitted#contact-portal-form");
+    exit;
 }
+
+// GET Request: Retrieve and clear session flash messages
+$errors = $_SESSION['flash_errors'] ?? [];
+$warnings = $_SESSION['flash_warnings'] ?? [];
+$success_msg = $_SESSION['flash_success'] ?? "";
+
+// Restore draft inputs on error if available
+if (!empty($_SESSION['draft_inputs'])) {
+    $inquiry_type        = $_SESSION['draft_inputs']['inquiry_type'] ?? '';
+    $name                = $_SESSION['draft_inputs']['name'] ?? '';
+    $email               = $_SESSION['draft_inputs']['email'] ?? '';
+    $phone               = $_SESSION['draft_inputs']['phone'] ?? '';
+    $company             = $_SESSION['draft_inputs']['company'] ?? '';
+    $agency              = $_SESSION['draft_inputs']['agency'] ?? '';
+    $service_interest    = $_SESSION['draft_inputs']['service_interest'] ?? '';
+    $project_description = $_SESSION['draft_inputs']['project_description'] ?? '';
+    $trades_licenses     = $_SESSION['draft_inputs']['trades_licenses'] ?? '';
+}
+
+// Clear flash session data so it doesn't persist on fresh page reloads
+unset($_SESSION['flash_errors'], $_SESSION['flash_success'], $_SESSION['draft_inputs']);
 
 // Pre-select mode from URL type parameter
 $url_type = filter_input(INPUT_GET, 'type', FILTER_SANITIZE_SPECIAL_CHARS);
