@@ -190,8 +190,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             log_submission_event('WARNING', 'Database object $db is not initialized (email will still send)');
         }
 
-        // Direct all form leads to primary mailbox (erm@rmgroupstrategies.com)
-        $to = defined('EMAIL_ERM') && !empty(EMAIL_ERM) ? EMAIL_ERM : 'erm@rmgroupstrategies.com';
+        // Direct all form leads to primary SITE_EMAIL (info@rmgroupstrategies.com)
+        $to = defined('SITE_EMAIL') && !empty(SITE_EMAIL) ? SITE_EMAIL : 'info@rmgroupstrategies.com';
         $subject = "New Website Lead: " . ucwords(str_replace('_', ' ', $inquiry_type));
         
         // Format email body

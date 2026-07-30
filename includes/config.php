@@ -14,8 +14,8 @@ define('SITE_TAGLINE_SUPPORT','Strategic Solutions. Reliable Performance. Govern
 define('SITE_PHONE',          '702-504-8128');
 define('SITE_PHONE_DISPLAY',  '(702) 504-8128');
 define('SITE_PHONE_LINK',     'tel:+17025048128');
-define('SITE_EMAIL',          'erm@rmgroupstrategies.com');
-define('EMAIL_ERM',           'erm@rmgroupstrategies.com');
+define('SITE_EMAIL',          'info@rmgroupstrategies.com');
+define('EMAIL_ERM',           'info@rmgroupstrategies.com');
 define('EMAIL_ARM',           'info@rmgroupstrategies.com');
 define('EMAIL_CONTRACTS',     'info@rmgroupstrategies.com');
 define('EMAIL_EQUIPMENT',     'info@rmgroupstrategies.com');
