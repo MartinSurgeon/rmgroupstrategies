@@ -22,7 +22,14 @@ echo "2. LOADED CONSTANTS:\n";
 echo "   - SMTP Host: " . (defined('SMTP_HOST') ? SMTP_HOST : 'NOT DEFINED') . "\n";
 echo "   - SMTP Port: " . (defined('SMTP_PORT') ? SMTP_PORT : 'NOT DEFINED') . "\n";
 echo "   - SMTP User: " . (defined('SMTP_USER') ? SMTP_USER : 'NOT DEFINED') . "\n";
-echo "   - SMTP Pass: " . (defined('SMTP_PASS') && !empty(SMTP_PASS) ? "DEFINED (" . strlen(SMTP_PASS) . " chars)" : "EMPTY / NOT DEFINED") . "\n\n";
+$pass = defined('SMTP_PASS') ? SMTP_PASS : '';
+echo "   - SMTP Pass Length: " . strlen($pass) . " chars\n";
+if (strlen($pass) > 0) {
+    echo "   - First char code: " . ord($pass[0]) . "\n";
+    echo "   - Last char code:  " . ord($pass[strlen($pass)-1]) . "\n";
+    echo "   - Has whitespace:  " . (trim($pass) !== $pass ? "YES (PROBLEM!)" : "No") . "\n";
+}
+echo "\n";
 
 if (!defined('SMTP_PASS') || empty(SMTP_PASS)) {
     echo "ERROR: Password is empty in the loaded config file.\n";
