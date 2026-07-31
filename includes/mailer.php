@@ -13,8 +13,8 @@ class SimpleSMTPMailer {
     public function __construct($host = 'mail.privateemail.com', $port = 465, $username = '', $password = '', $encryption = 'ssl') {
         $this->host = $host;
         $this->port = (int)$port;
-        $this->username = $username;
-        $this->password = $password;
+        $this->username = trim($username);
+        $this->password = trim($password);
         if ($this->port === 465) {
             $this->encryption = 'ssl';
         } elseif ($this->port === 587) {
