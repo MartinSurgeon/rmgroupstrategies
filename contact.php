@@ -232,7 +232,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif (defined('SMTP_PASS') && !empty(SMTP_PASS)) {
             $delivery_method = 'authenticated_smtp';
             require_once __DIR__ . '/includes/mailer.php';
-            $mailer = new SimpleSMTPMailer(SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, 'tls');
+            $mailer = new SimpleSMTPMailer(SMTP_HOST, defined('SMTP_PORT') ? SMTP_PORT : 465, SMTP_USER, SMTP_PASS, defined('SMTP_ENC') ? SMTP_ENC : 'ssl');
             list($mail_sent, $smtp_msg) = $mailer->send($to, $subject, $mail_body, SITE_EMAIL, SITE_NAME, $_POST['email']);
             $status = $mail_sent ? 'sent' : 'failed: ' . substr($smtp_msg, 0, 100);
         } else {

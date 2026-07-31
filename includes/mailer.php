@@ -10,7 +10,7 @@ class SimpleSMTPMailer {
     private $password;
     private $encryption;
 
-    public function __construct($host = 'mail.privateemail.com', $port = 587, $username = '', $password = '', $encryption = 'tls') {
+    public function __construct($host = 'mail.privateemail.com', $port = 465, $username = '', $password = '', $encryption = 'ssl') {
         $this->host = $host;
         $this->port = $port;
         $this->username = $username;
@@ -19,7 +19,7 @@ class SimpleSMTPMailer {
     }
 
     public function send($to, $subject, $body, $fromEmail, $fromName = '', $replyTo = '') {
-        $timeout = 15;
+        $timeout = 4;
         $remote = ($this->encryption === 'ssl') ? 'ssl://' . $this->host : $this->host;
         $socket = @fsockopen($remote, $this->port, $errno, $errstr, $timeout);
 
