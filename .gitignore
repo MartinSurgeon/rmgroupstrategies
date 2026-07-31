@@ -6,3 +6,5 @@ schema.sql
 scratch/email_preview_4.txt
 scratch/email_preview_5.txt
 includes/config.local.php
+scratch/sample_email.html
+scratch/sample_email.txt

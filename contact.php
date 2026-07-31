@@ -333,9 +333,9 @@ if (!empty($inquiry_type)) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/jpeg" href="<?php echo BASE_URL; ?>/assets/images/icon.jpeg">
+    <link rel="icon" type="image/png" href="<?php echo BASE_URL; ?>/assets/images/ico.png">
     <link rel="shortcut icon" href="<?php echo BASE_URL; ?>/favicon.ico">
-    <link rel="apple-touch-icon" href="<?php echo BASE_URL; ?>/assets/images/icon.jpeg">
+    <link rel="apple-touch-icon" href="<?php echo BASE_URL; ?>/assets/images/ico.png">
 
     <!-- SEO -->
     <title>Contact Our Team | <?php echo SITE_NAME; ?></title>
@@ -382,22 +382,22 @@ if (!empty($inquiry_type)) {
     
     <style>
         .form-input {
-            background-color: #0d0d0d;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #ffffff;
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            color: #0f172a;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         .form-input:focus {
-            border-color: #D4AF37;
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.15);
+            border-color: #C5A059;
+            box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.15);
             outline: none;
         }
 
         .form-label {
-            color: rgba(255, 255, 255, 0.7);
+            color: #475569;
             font-size: 0.75rem;
-            font-weight: 500;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             margin-bottom: 0.375rem;
@@ -406,7 +406,7 @@ if (!empty($inquiry_type)) {
     </style>
 </head>
 
-<body class="font-inter bg-brand-black text-brand-white">
+<body class="font-inter bg-slate-50 text-slate-800">
 
     <?php include __DIR__ . '/includes/header.php'; ?>
 
@@ -415,15 +415,12 @@ if (!empty($inquiry_type)) {
         <!-- ═══════════════════════════════════════════════════════
              SECTION 1: BREADCRUMB / HEADER BANNER
              ═══════════════════════════════════════════════════════ -->
-        <section class="bg-brand-dark-gray border-b border-white/5 py-12 sm:py-16">
+        <section class="bg-slate-900 border-b border-slate-800 py-12 sm:py-16 text-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <div class="flex justify-center mb-4">
-                    <img src="<?php echo BASE_URL; ?>/assets/images/icon.jpeg" alt="<?php echo SITE_NAME; ?> Logo" class="h-12 w-auto object-contain rounded-md" />
-                </div>
                 <h1 class="text-3xl sm:text-4xl font-bold tracking-wide text-white mb-3">
                     Contact Our Team
                 </h1>
-                <nav class="flex justify-center text-xs tracking-wider uppercase text-white/40" aria-label="Breadcrumb">
+                <nav class="flex justify-center text-xs tracking-wider uppercase text-white/50" aria-label="Breadcrumb">
                     <ol class="inline-flex items-center space-x-2">
                         <li>
                             <a href="<?php echo BASE_URL; ?>/" class="hover:text-brand-gold transition-colors duration-300">Home</a>
@@ -441,7 +438,7 @@ if (!empty($inquiry_type)) {
         <!-- ═══════════════════════════════════════════════════════
              SECTION 2: DUAL CONTACT CHANNELS (INFO / FORM)
              ═══════════════════════════════════════════════════════ -->
-        <section id="contact-channels" class="bg-brand-black py-16 sm:py-20 lg:py-24">
+        <section id="contact-channels" class="bg-slate-50 py-16 sm:py-20 lg:py-24 border-b border-slate-200/80">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
@@ -449,11 +446,11 @@ if (!empty($inquiry_type)) {
                     <!-- Left: Contact Information Panel (col-span-4) -->
                     <div class="lg:col-span-4 space-y-10 animate-fade-in-up animate-delay-100">
                         <div>
-                            <h2 class="text-xl sm:text-2xl font-bold text-white tracking-wide mb-4">
+                            <h2 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-wide mb-4">
                                 Connect With Us
                             </h2>
                             <div class="h-0.5 w-12 bg-brand-gold mb-6"></div>
-                            <p class="text-white/60 text-xs leading-relaxed">
+                            <p class="text-slate-600 text-xs leading-relaxed">
                                 Our business development and compliance departments are organized to handle government contracting, subcontracting partnerships, commercial operations, and procurement. Reach out directly or select your query type in the portal.
                             </p>
                         </div>
@@ -462,52 +459,52 @@ if (!empty($inquiry_type)) {
                         <div class="space-y-6">
                             <!-- Support -->
                             <div class="flex items-start gap-4">
-                                <div class="w-9 h-9 rounded bg-brand-gold/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <div class="w-9 h-9 rounded bg-amber-50 border border-amber-200/60 flex items-center justify-center flex-shrink-0 mt-0.5">
                                     <svg class="w-4 h-4 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                                 </div>
                                 <div class="text-xs">
-                                    <span class="text-white/40 block uppercase tracking-wider text-[9px] mb-0.5">General &amp; Admin Support</span>
-                                    <a href="mailto:<?php echo EMAIL_SUPPORT; ?>" class="text-white hover:text-brand-gold-accent font-semibold transition-colors duration-300"><?php echo EMAIL_SUPPORT; ?></a>
+                                    <span class="text-slate-400 block uppercase tracking-wider text-[9px] mb-0.5">General &amp; Admin Support</span>
+                                    <a href="mailto:<?php echo EMAIL_SUPPORT; ?>" class="text-slate-900 hover:text-brand-gold font-semibold transition-colors duration-300"><?php echo EMAIL_SUPPORT; ?></a>
                                 </div>
                             </div>
 
                             <!-- Contracts -->
                             <div class="flex items-start gap-4">
-                                <div class="w-9 h-9 rounded bg-brand-gold/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <div class="w-9 h-9 rounded bg-amber-50 border border-amber-200/60 flex items-center justify-center flex-shrink-0 mt-0.5">
                                     <svg class="w-4 h-4 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296"/></svg>
                                 </div>
                                 <div class="text-xs">
-                                    <span class="text-white/40 block uppercase tracking-wider text-[9px] mb-0.5">Government Contracting</span>
-                                    <a href="mailto:<?php echo EMAIL_CONTRACTS; ?>" class="text-white hover:text-brand-gold-accent font-semibold transition-colors duration-300"><?php echo EMAIL_CONTRACTS; ?></a>
+                                    <span class="text-slate-400 block uppercase tracking-wider text-[9px] mb-0.5">Government Contracting</span>
+                                    <a href="mailto:<?php echo EMAIL_CONTRACTS; ?>" class="text-slate-900 hover:text-brand-gold font-semibold transition-colors duration-300"><?php echo EMAIL_CONTRACTS; ?></a>
                                 </div>
                             </div>
 
                             <!-- Corporate Office -->
                             <div class="flex items-start gap-4">
-                                <div class="w-9 h-9 rounded bg-brand-gold/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <div class="w-9 h-9 rounded bg-amber-50 border border-amber-200/60 flex items-center justify-center flex-shrink-0 mt-0.5">
                                     <svg class="w-4 h-4 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0zM19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
                                 </div>
                                 <div class="text-xs">
-                                    <span class="text-white/40 block uppercase tracking-wider text-[9px] mb-0.5">Nevada HQ Location</span>
-                                    <span class="text-white font-semibold"><?php echo SITE_LOCATION; ?></span>
+                                    <span class="text-slate-400 block uppercase tracking-wider text-[9px] mb-0.5">Nevada HQ Location</span>
+                                    <span class="text-slate-900 font-semibold"><?php echo SITE_LOCATION; ?></span>
                                 </div>
                             </div>
 
                             <!-- Phone -->
                             <div class="flex items-start gap-4">
-                                <div class="w-9 h-9 rounded bg-brand-gold/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <div class="w-9 h-9 rounded bg-amber-50 border border-amber-200/60 flex items-center justify-center flex-shrink-0 mt-0.5">
                                     <svg class="w-4 h-4 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg>
                                 </div>
                                 <div class="text-xs">
-                                    <span class="text-white/40 block uppercase tracking-wider text-[9px] mb-0.5">Call Business Development</span>
-                                    <a href="<?php echo SITE_PHONE_LINK; ?>" class="text-white hover:text-brand-gold-accent font-semibold transition-colors duration-300"><?php echo SITE_PHONE_DISPLAY; ?></a>
+                                    <span class="text-slate-400 block uppercase tracking-wider text-[9px] mb-0.5">Call Business Development</span>
+                                    <a href="<?php echo SITE_PHONE_LINK; ?>" class="text-slate-900 hover:text-brand-gold font-semibold transition-colors duration-300"><?php echo SITE_PHONE_DISPLAY; ?></a>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Right: Dynamic Lead Form (col-span-8) -->
-                    <div class="lg:col-span-8 bg-brand-dark-gray/30 border border-white/5 rounded-2xl p-6 sm:p-10 shadow-xl animate-fade-in-up animate-delay-200">
+                    <div class="lg:col-span-8 card-executive rounded-2xl p-6 sm:p-10 shadow-xl animate-fade-in-up animate-delay-200">
                         
                         <!-- Header Message / Feedback Banners -->
                         <?php if (!empty($errors)): ?>

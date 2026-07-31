@@ -8,14 +8,14 @@
 ?>
 
 <!-- Footer -->
-<footer class="bg-brand-black border-t border-white/5">
+<footer class="bg-slate-900 border-t border-slate-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
 
             <!-- Column 1: Brand -->
             <div>
                 <div class="flex items-center gap-3 mb-4">
-                    <img src="<?php echo BASE_URL; ?>/assets/images/icon.jpeg" alt="<?php echo SITE_NAME_SHORT; ?> Logo" class="h-10 w-auto object-contain rounded-md" />
+                    <img src="<?php echo BASE_URL; ?>/assets/images/ico.png" alt="<?php echo SITE_NAME_SHORT; ?> Logo" class="h-10 w-auto object-contain rounded-md" />
                     <span class="text-white text-sm font-semibold tracking-[0.15em] uppercase">
                         <?php echo SITE_NAME_SHORT; ?>
                     </span>

@@ -12,9 +12,9 @@ $current_page = 'government-contracting'; // Belongs to Government Contracting c
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/jpeg" href="<?php echo BASE_URL; ?>/assets/images/icon.jpeg">
+    <link rel="icon" type="image/png" href="<?php echo BASE_URL; ?>/assets/images/ico.png">
     <link rel="shortcut icon" href="<?php echo BASE_URL; ?>/favicon.ico">
-    <link rel="apple-touch-icon" href="<?php echo BASE_URL; ?>/assets/images/icon.jpeg">
+    <link rel="apple-touch-icon" href="<?php echo BASE_URL; ?>/assets/images/ico.png">
 
     <!-- SEO -->
     <title>Capability Statement | <?php echo SITE_NAME; ?></title>
@@ -84,7 +84,7 @@ $current_page = 'government-contracting'; // Belongs to Government Contracting c
     </style>
 </head>
 
-<body class="font-inter bg-brand-black text-brand-white">
+<body class="font-inter bg-slate-50 text-slate-800">
 
     <?php include __DIR__ . '/includes/header.php'; ?>
 
@@ -93,19 +93,16 @@ $current_page = 'government-contracting'; // Belongs to Government Contracting c
         <!-- ═══════════════════════════════════════════════════════
              SECTION 1: BREADCRUMB / HEADER BANNER
              ═══════════════════════════════════════════════════════ -->
-        <section class="bg-brand-dark-gray border-b border-white/5 py-12 sm:py-16">
+        <section class="bg-slate-900 border-b border-slate-800 py-12 sm:py-16 text-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col md:flex-row items-center justify-between gap-6">
                     
                     <!-- Left: Titles -->
                     <div class="text-center md:text-left">
-                        <div class="flex justify-center md:justify-start mb-3">
-                            <img src="<?php echo BASE_URL; ?>/assets/images/icon.jpeg" alt="<?php echo SITE_NAME; ?> Logo" class="h-10 w-auto object-contain rounded-md" />
-                        </div>
                         <h1 class="text-3xl font-bold tracking-wide text-white mb-2">
                             Capability Statement
                         </h1>
-                        <nav class="flex justify-center md:justify-start text-xs tracking-wider uppercase text-white/40" aria-label="Breadcrumb">
+                        <nav class="flex justify-center md:justify-start text-xs tracking-wider uppercase text-white/50" aria-label="Breadcrumb">
                             <ol class="inline-flex items-center space-x-2">
                                 <li>
                                     <a href="<?php echo BASE_URL; ?>/" class="hover:text-brand-gold transition-colors duration-300">Home</a>
@@ -138,30 +135,30 @@ $current_page = 'government-contracting'; // Belongs to Government Contracting c
         <!-- ═══════════════════════════════════════════════════════
              SECTION 2: CAPABILITY SHEET CARD CONTAINER
              ═══════════════════════════════════════════════════════ -->
-        <section id="capability-sheet" class="bg-brand-black py-16 sm:py-20">
+        <section id="capability-sheet" class="bg-slate-50 py-16 sm:py-20 border-b border-slate-200/80">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 
                 <!-- Inner Sheet Container (resembling a printed page) -->
-                <div class="capability-sheet border border-white/5 rounded-2xl p-8 sm:p-12 shadow-2xl animate-on-scroll">
+                <div class="bg-white border border-slate-200/90 rounded-2xl p-8 sm:p-12 shadow-xl animate-on-scroll">
                     
                     <!-- Sheet Header -->
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 pb-8 border-b border-white/5 mb-10">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 pb-8 border-b border-slate-200 mb-10">
                         <div>
                             <div class="flex items-center gap-3 mb-2">
-                                <img src="<?php echo BASE_URL; ?>/assets/images/icon.jpeg" alt="<?php echo SITE_NAME; ?> Logo" class="h-12 w-auto object-contain rounded-md" />
-                                <h2 class="text-xl sm:text-2xl font-bold uppercase tracking-wider text-white">
+                                <img src="<?php echo BASE_URL; ?>/assets/images/ico.png" alt="<?php echo SITE_NAME; ?> Logo" class="h-12 w-auto object-contain rounded-md" />
+                                <h2 class="text-xl sm:text-2xl font-bold uppercase tracking-wider text-slate-900">
                                     <?php echo SITE_NAME_SHORT; ?> <span class="font-normal text-brand-gold">LLC</span>
                                 </h2>
                             </div>
-                            <p class="text-xs text-white/50 italic tracking-wide">
+                            <p class="text-xs text-slate-500 italic tracking-wide">
                                 <?php echo SITE_TAGLINE; ?>
                             </p>
                         </div>
                         <div class="text-left sm:text-right text-xs space-y-1">
-                            <p class="text-white/40 uppercase tracking-widest text-[9px] font-semibold">Corporate Identification</p>
-                            <p class="text-white/80"><span class="text-white/40">SAM Status:</span> <span class="text-green-400 font-semibold">Active</span></p>
-                            <p class="text-white/80"><span class="text-white/40">UEI:</span> <span class="text-brand-gold font-semibold">Available Upon Request</span></p>
-                            <p class="text-white/80"><span class="text-white/40">CAGE:</span> <span class="text-brand-gold font-semibold">Available Upon Request</span></p>
+                            <p class="text-slate-400 uppercase tracking-widest text-[9px] font-semibold">Corporate Identification</p>
+                            <p class="text-slate-700"><span class="text-slate-500">SAM Status:</span> <span class="text-emerald-700 font-semibold">Active</span></p>
+                            <p class="text-slate-700"><span class="text-slate-500">UEI:</span> <span class="text-brand-gold font-semibold">Available Upon Request</span></p>
+                            <p class="text-slate-700"><span class="text-slate-500">CAGE:</span> <span class="text-brand-gold font-semibold">Available Upon Request</span></p>
                         </div>
                     </div>
 
@@ -178,11 +175,11 @@ $current_page = 'government-contracting'; // Belongs to Government Contracting c
                                         Core Competencies
                                     </h3>
                                 </div>
-                                <p class="text-white/70 text-xs leading-relaxed mb-6">
+                                <p class="text-slate-700 text-xs leading-relaxed mb-6 font-normal">
                                     RM Group Strategies LLC is a diversified government contracting and commercial services group. We provide direct procurement, logistics oversight, remodeling, and fleet support through our specialized operations:
                                 </p>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <ul class="space-y-2.5 text-xs text-white/60">
+                                    <ul class="space-y-2.5 text-xs text-slate-700 font-medium">
                                         <li class="flex items-center gap-2">
                                             <span class="w-1.5 h-1.5 rounded-full bg-brand-gold"></span>
                                             <span>Government Contracting Execution</span>
@@ -200,7 +197,7 @@ $current_page = 'government-contracting'; // Belongs to Government Contracting c
                                             <span>Fleet Leasing &amp; Coordination</span>
                                         </li>
                                     </ul>
-                                    <ul class="space-y-2.5 text-xs text-white/60">
+                                    <ul class="space-y-2.5 text-xs text-slate-700 font-medium">
                                         <li class="flex items-center gap-2">
                                             <span class="w-1.5 h-1.5 rounded-full bg-brand-gold"></span>
                                             <span>Commercial Renovations &amp; Improvements</span>
@@ -228,39 +225,39 @@ $current_page = 'government-contracting'; // Belongs to Government Contracting c
                                         Representative Past Performance
                                     </h3>
                                 </div>
-                                <p class="text-white/70 text-xs leading-relaxed mb-6">
+                                <p class="text-slate-700 text-xs leading-relaxed mb-6">
                                     Our operational divisions successfully deliver support contracts and project execution across key focus areas:
                                 </p>
                                 <div class="space-y-6">
                                     <!-- Project 1 -->
                                     <div class="past-perf-card">
-                                        <h4 class="text-xs uppercase tracking-wider text-white font-bold mb-1">
+                                        <h4 class="text-xs uppercase tracking-wider text-slate-900 font-bold mb-1">
                                             Freight &amp; Logistics Routing Support
                                         </h4>
-                                        <p class="text-white/40 text-[10px] mb-2">Division: RM Transport | Commercial Scale</p>
-                                        <p class="text-white/60 text-xs leading-relaxed">
+                                        <p class="text-slate-400 text-[10px] mb-2">Division: RM Transport | Commercial Scale</p>
+                                        <p class="text-slate-600 text-xs leading-relaxed">
                                             Coordinated long-haul freight shipping, scheduling, and local routing logistics. Consistently maintained on-schedule performance targets across multi-state shipping corridors.
                                         </p>
                                     </div>
 
                                     <!-- Project 2 -->
                                     <div class="past-perf-card">
-                                        <h4 class="text-xs uppercase tracking-wider text-white font-bold mb-1">
+                                        <h4 class="text-xs uppercase tracking-wider text-slate-900 font-bold mb-1">
                                             Commercial Remodeling &amp; Tenant Improvements
                                         </h4>
-                                        <p class="text-white/40 text-[10px] mb-2">Division: RM Remodeling | Commercial &amp; Private Scale</p>
-                                        <p class="text-white/60 text-xs leading-relaxed">
+                                        <p class="text-slate-400 text-[10px] mb-2">Division: RM Remodeling | Commercial &amp; Private Scale</p>
+                                        <p class="text-slate-600 text-xs leading-relaxed">
                                             Executed interior remodeling, layout reconfiguration, dry-wall, framing, and finish improvements for commercial office suites, completing projects within target budget guidelines.
                                         </p>
                                     </div>
 
                                     <!-- Project 3 -->
                                     <div class="past-perf-card">
-                                        <h4 class="text-xs uppercase tracking-wider text-white font-bold mb-1">
+                                        <h4 class="text-xs uppercase tracking-wider text-slate-900 font-bold mb-1">
                                             Municipal Fleet Leasing Coordination
                                         </h4>
-                                        <p class="text-white/40 text-[10px] mb-2">Division: RM Fleet | Municipal Scale Support</p>
-                                        <p class="text-white/60 text-xs leading-relaxed">
+                                        <p class="text-slate-400 text-[10px] mb-2">Division: RM Fleet | Municipal Scale Support</p>
+                                        <p class="text-slate-600 text-xs leading-relaxed">
                                             Supported local agency fleet coordination, organizing lease timelines, vehicle replacement parts acquisitions, and routine preventative service records.
                                         </p>
                                     </div>
@@ -270,7 +267,7 @@ $current_page = 'government-contracting'; // Belongs to Government Contracting c
                         </div>
 
                         <!-- RIGHT COLUMN: Codes & Differentiators (col-span-4) -->
-                        <div class="lg:col-span-4 space-y-10 lg:border-l lg:border-white/5 lg:pl-8">
+                        <div class="lg:col-span-4 space-y-10 lg:border-l lg:border-slate-200 lg:pl-8">
                             
                             <!-- Company Data -->
                             <div class="stagger-child">
@@ -281,27 +278,27 @@ $current_page = 'government-contracting'; // Belongs to Government Contracting c
                                 </div>
                                 <ul class="space-y-4 text-xs">
                                     <li>
-                                        <span class="text-white/40 block uppercase tracking-wider text-[9px] mb-1">Incorporation State</span>
-                                        <span class="text-white font-semibold">Nevada</span>
+                                        <span class="text-slate-400 block uppercase tracking-wider text-[9px] mb-1">Incorporation State</span>
+                                        <span class="text-slate-900 font-semibold">Nevada</span>
                                     </li>
                                     <li>
-                                        <span class="text-white/40 block uppercase tracking-wider text-[9px] mb-1">SAM.gov Registration</span>
-                                        <span class="text-white font-semibold">Active Status</span>
+                                        <span class="text-slate-400 block uppercase tracking-wider text-[9px] mb-1">SAM.gov Registration</span>
+                                        <span class="text-slate-900 font-semibold">Active Status</span>
                                     </li>
                                     <li>
-                                        <span class="text-white/40 block uppercase tracking-wider text-[9px] mb-1">Business Category</span>
-                                        <span class="text-white font-semibold">Self-Certified Small Business</span>
+                                        <span class="text-slate-400 block uppercase tracking-wider text-[9px] mb-1">Business Category</span>
+                                        <span class="text-slate-900 font-semibold">Self-Certified Small Business</span>
                                     </li>
                                     <li>
-                                        <span class="text-white/40 block uppercase tracking-wider text-[9px] mb-1">Target Codes (NAICS)</span>
+                                        <span class="text-slate-400 block uppercase tracking-wider text-[9px] mb-1">Target Codes (NAICS)</span>
                                         <div class="flex flex-wrap gap-2 mt-2">
-                                            <span class="bg-brand-dark-gray border border-white/5 text-brand-gold px-2 py-0.5 rounded font-mono text-[10px] font-bold">541611</span>
-                                            <span class="bg-brand-dark-gray border border-white/5 text-brand-gold px-2 py-0.5 rounded font-mono text-[10px] font-bold">484110</span>
-                                            <span class="bg-brand-dark-gray border border-white/5 text-brand-gold px-2 py-0.5 rounded font-mono text-[10px] font-bold">484121</span>
-                                            <span class="bg-brand-dark-gray border border-white/5 text-brand-gold px-2 py-0.5 rounded font-mono text-[10px] font-bold">488490</span>
-                                            <span class="bg-brand-dark-gray border border-white/5 text-brand-gold px-2 py-0.5 rounded font-mono text-[10px] font-bold">236118</span>
-                                            <span class="bg-brand-dark-gray border border-white/5 text-brand-gold px-2 py-0.5 rounded font-mono text-[10px] font-bold">236220</span>
-                                            <span class="bg-brand-dark-gray border border-white/5 text-brand-gold px-2 py-0.5 rounded font-mono text-[10px] font-bold">532412</span>
+                                            <span class="bg-slate-100 border border-slate-200 text-brand-gold px-2 py-0.5 rounded font-mono text-[10px] font-bold">541611</span>
+                                            <span class="bg-slate-100 border border-slate-200 text-brand-gold px-2 py-0.5 rounded font-mono text-[10px] font-bold">484110</span>
+                                            <span class="bg-slate-100 border border-slate-200 text-brand-gold px-2 py-0.5 rounded font-mono text-[10px] font-bold">484121</span>
+                                            <span class="bg-slate-100 border border-slate-200 text-brand-gold px-2 py-0.5 rounded font-mono text-[10px] font-bold">488490</span>
+                                            <span class="bg-slate-100 border border-slate-200 text-brand-gold px-2 py-0.5 rounded font-mono text-[10px] font-bold">236118</span>
+                                            <span class="bg-slate-100 border border-slate-200 text-brand-gold px-2 py-0.5 rounded font-mono text-[10px] font-bold">236220</span>
+                                            <span class="bg-slate-100 border border-slate-200 text-brand-gold px-2 py-0.5 rounded font-mono text-[10px] font-bold">532412</span>
                                         </div>
                                     </li>
                                 </ul>
@@ -314,7 +311,7 @@ $current_page = 'government-contracting'; // Belongs to Government Contracting c
                                         Differentiators
                                     </h3>
                                 </div>
-                                <ul class="space-y-3.5 text-xs text-white/70">
+                                <ul class="space-y-3.5 text-xs text-slate-700">
                                     <li class="flex items-start gap-2.5">
                                         <svg class="w-4 h-4 text-brand-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
                                         <span><strong>Diversified Entity:</strong> Consolidates construction, fleet, logistics, and consulting under one legal parent.</span>
@@ -335,7 +332,7 @@ $current_page = 'government-contracting'; // Belongs to Government Contracting c
                     </div>
 
                     <!-- Print Notice / Note -->
-                    <div class="border-t border-white/5 mt-10 pt-6 text-center text-[10px] text-white/30">
+                    <div class="border-t border-slate-200 mt-10 pt-6 text-center text-[10px] text-slate-400">
                         RM Group Strategies LLC | Las Vegas, NV | <?php echo SITE_EMAIL; ?> | <?php echo SITE_PHONE_DISPLAY; ?>
                     </div>
 
@@ -348,7 +345,7 @@ $current_page = 'government-contracting'; // Belongs to Government Contracting c
         <!-- ═══════════════════════════════════════════════════════
              SECTION 3: REQUEST CTA
              ═══════════════════════════════════════════════════════ -->
-        <section id="cta" class="bg-brand-dark-gray py-20 relative overflow-hidden">
+        <section id="cta" class="bg-slate-900 py-20 relative overflow-hidden text-white">
             <!-- Top border divider -->
             <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-brand-gold/30 to-transparent"></div>
 
@@ -356,7 +353,7 @@ $current_page = 'government-contracting'; // Belongs to Government Contracting c
                 <h2 class="text-2xl font-bold text-white mb-3 tracking-wide">
                     Need a Physical Capability Statement?
                 </h2>
-                <p class="text-white/60 text-sm leading-relaxed mb-8 max-w-lg mx-auto">
+                <p class="text-slate-300 text-sm leading-relaxed mb-8 max-w-lg mx-auto">
                     Submit a formal request to our business development group. A PDF copy of our capability statement will be emailed to your inbox within 24 hours.
                 </p>
                 <a href="<?php echo BASE_URL; ?>/contact.php?type=capability" class="btn-gold text-sm px-8 py-3.5">
