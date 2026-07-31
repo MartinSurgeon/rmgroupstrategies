@@ -1,48 +1,39 @@
 <?php
 /**
- * Standalone SMTP Diagnostic Script with Multi-Port Testing
+ * Standalone SMTP Diagnostic Script with Config Path Debugging
  */
 header('Content-Type: text/plain; charset=utf-8');
+
+echo "=======================================================\n";
+echo "       SMTP LIVE PASSWORD & PATH DIAGNOSTIC             \n";
+echo "=======================================================\n\n";
+
+$includes_path = __DIR__ . '/../includes/config.local.php';
+$root_path     = __DIR__ . '/../config.local.php';
+
+echo "1. FILE PATH CHECK:\n";
+echo "   - includes/config.local.php: " . (file_exists($includes_path) ? "EXISTS" : "NOT FOUND") . "\n";
+echo "   - root/config.local.php:     " . (file_exists($root_path) ? "EXISTS" : "NOT FOUND") . "\n\n";
 
 require_once dirname(__DIR__) . '/includes/config.php';
 require_once dirname(__DIR__) . '/includes/mailer.php';
 
-$to = isset($_GET['to']) ? trim($_GET['to']) : 'info@rmgroupstrategies.com';
+echo "2. LOADED CONSTANTS:\n";
+echo "   - SMTP Host: " . (defined('SMTP_HOST') ? SMTP_HOST : 'NOT DEFINED') . "\n";
+echo "   - SMTP Port: " . (defined('SMTP_PORT') ? SMTP_PORT : 'NOT DEFINED') . "\n";
+echo "   - SMTP User: " . (defined('SMTP_USER') ? SMTP_USER : 'NOT DEFINED') . "\n";
+echo "   - SMTP Pass: " . (defined('SMTP_PASS') && !empty(SMTP_PASS) ? "DEFINED (" . strlen(SMTP_PASS) . " chars)" : "EMPTY / NOT DEFINED") . "\n\n";
 
-echo "=======================================================\n";
-echo "       SMTP MULTI-PORT DIAGNOSTIC TESTER               \n";
-echo "=======================================================\n\n";
-
-$pass = defined('SMTP_PASS') ? SMTP_PASS : '';
-
-echo "1. CONFIGURATION:\n";
-echo "   - SMTP Host: " . SMTP_HOST . "\n";
-echo "   - SMTP User: " . SMTP_USER . "\n";
-echo "   - Password Length: " . strlen($pass) . " chars\n";
-echo "   - Target Recipient: " . $to . "\n\n";
-
-$tests = [
-    ['host' => 'mail.privateemail.com', 'port' => 587, 'enc' => 'tls'],
-    ['host' => 'mail.privateemail.com', 'port' => 465, 'enc' => 'ssl'],
-    ['host' => 'localhost',            'port' => 25,  'enc' => 'none'],
-];
-
-foreach ($tests as $t) {
-    echo "-------------------------------------------------------\n";
-    echo "TESTING: " . $t['host'] . ":" . $t['port'] . " (" . strtoupper($t['enc']) . ")...\n";
-    
-    $start = microtime(true);
-    $mailer = new SimpleSMTPMailer($t['host'], $t['port'], SMTP_USER, $pass, $t['enc']);
-    list($sent, $msg) = $mailer->send($to, "Test " . $t['port'], "Test body", SMTP_USER, SITE_NAME);
-    $duration = round(microtime(true) - $start, 2);
-    
-    echo "   - Duration: {$duration}s\n";
-    echo "   - Status: " . ($sent ? "SUCCESS [250 OK]" : "FAILED") . "\n";
-    echo "   - Response: " . $msg . "\n";
-    if ($sent) {
-        echo ">>> SUCCESSFUL CONNECTION METHOD: " . $t['host'] . ":" . $t['port'] . " <<<\n";
-        break;
-    }
+if (!defined('SMTP_PASS') || empty(SMTP_PASS)) {
+    echo "ERROR: Password is empty in the loaded config file.\n";
+    exit;
 }
+
+echo "3. AUTHENTICATION TEST WITH MAIL SERVER...\n";
+$mailer = new SimpleSMTPMailer(SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, 'ssl');
+list($sent, $msg) = $mailer->send('erm@rmgroupstrategies.com', 'Test Auth', 'Test body', 'erm@rmgroupstrategies.com', SITE_NAME);
+
+echo "   - Connection Status: " . ($sent ? "SUCCESS [250 OK]" : "FAILED") . "\n";
+echo "   - Response Message:  " . trim($msg) . "\n\n";
 
 echo "=======================================================\n";

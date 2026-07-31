@@ -12,10 +12,16 @@ class SimpleSMTPMailer {
 
     public function __construct($host = 'mail.privateemail.com', $port = 465, $username = '', $password = '', $encryption = 'ssl') {
         $this->host = $host;
-        $this->port = $port;
+        $this->port = (int)$port;
         $this->username = $username;
         $this->password = $password;
-        $this->encryption = strtolower($encryption);
+        if ($this->port === 465) {
+            $this->encryption = 'ssl';
+        } elseif ($this->port === 587) {
+            $this->encryption = 'tls';
+        } else {
+            $this->encryption = strtolower($encryption);
+        }
     }
 
     public function send($to, $subject, $body, $fromEmail, $fromName = '', $replyTo = '') {
