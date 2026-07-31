@@ -508,22 +508,134 @@ if (!empty($inquiry_type)) {
                         
                         <!-- Header Message / Feedback Banners -->
                         <?php if (!empty($errors)): ?>
-                            <div class="mb-6 bg-red-500/10 border border-red-500/20 text-red-200 px-4 py-3 rounded-lg text-xs space-y-1">
-                                <span class="font-bold block uppercase tracking-wide">Please resolve the following:</span>
+                            <div class="mb-6 bg-red-50 border border-red-200 text-red-700 px-5 py-4 rounded-xl text-xs space-y-1.5">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <svg class="w-4 h-4 text-red-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg>
+                                    <span class="font-bold uppercase tracking-wide text-[10px] text-red-600">Please resolve the following:</span>
+                                </div>
                                 <?php foreach ($errors as $error): ?>
-                                    <p>• <?php echo $error; ?></p>
+                                    <p class="pl-6">• <?php echo $error; ?></p>
                                 <?php endforeach; ?>
                             </div>
                         <?php endif; ?>
 
                         <?php if (!empty($success_msg)): ?>
-                            <div class="mb-6 bg-green-500/10 border border-green-500/20 text-green-200 px-4 py-4 rounded-lg text-xs">
-                                <span class="font-bold block uppercase tracking-wide mb-1">Submission Successful</span>
-                                <p><?php echo $success_msg; ?></p>
-                            </div>
-                        <?php endif; ?>
+                            <!-- ══════════════════════════════════════════
+                                 PREMIUM SUCCESS STATE — Replaces form
+                                 ══════════════════════════════════════════ -->
+                            <style>
+                                @keyframes success-pop {
+                                    0%   { opacity: 0; transform: scale(0.92) translateY(16px); }
+                                    60%  { transform: scale(1.02) translateY(-2px); }
+                                    100% { opacity: 1; transform: scale(1) translateY(0); }
+                                }
+                                @keyframes check-draw {
+                                    0%   { stroke-dashoffset: 60; }
+                                    100% { stroke-dashoffset: 0; }
+                                }
+                                @keyframes ring-pulse {
+                                    0%, 100% { opacity: 0.15; transform: scale(1); }
+                                    50%       { opacity: 0.35; transform: scale(1.08); }
+                                }
+                                .success-panel {
+                                    animation: success-pop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+                                }
+                                .check-svg path {
+                                    stroke-dasharray: 60;
+                                    stroke-dashoffset: 60;
+                                    animation: check-draw 0.5s 0.3s ease forwards;
+                                }
+                                .ring-pulse {
+                                    animation: ring-pulse 2.5s ease-in-out infinite;
+                                }
+                            </style>
 
-                        <!-- Form Start -->
+                            <div class="success-panel py-6">
+                                <!-- Animated Check Icon -->
+                                <div class="relative flex justify-center mb-8">
+                                    <!-- Outer pulsing ring -->
+                                    <div class="ring-pulse absolute w-28 h-28 rounded-full bg-amber-400/20 border border-amber-400/30"></div>
+                                    <!-- Icon circle -->
+                                    <div class="relative w-20 h-20 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 shadow-lg shadow-amber-400/30 flex items-center justify-center">
+                                        <svg class="check-svg w-9 h-9 text-white" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                            <path d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <!-- Heading -->
+                                <div class="text-center mb-8">
+                                    <p class="text-[10px] uppercase tracking-[0.18em] text-brand-gold font-semibold mb-2">Message Received</p>
+                                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight mb-3">You're on Our Radar</h2>
+                                    <p class="text-slate-500 text-sm max-w-md mx-auto leading-relaxed">
+                                        <?php echo htmlspecialchars($success_msg); ?>
+                                    </p>
+                                </div>
+
+                                <!-- Divider -->
+                                <div class="flex items-center gap-4 mb-8">
+                                    <div class="flex-1 h-px bg-slate-200"></div>
+                                    <span class="text-slate-400 text-[10px] uppercase tracking-widest font-semibold">What Happens Next</span>
+                                    <div class="flex-1 h-px bg-slate-200"></div>
+                                </div>
+
+                                <!-- Next Steps -->
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
+                                    <div class="bg-slate-50 border border-slate-200/80 rounded-xl p-4 text-center">
+                                        <div class="w-8 h-8 rounded-lg bg-amber-50 border border-amber-200/60 flex items-center justify-center mx-auto mb-3">
+                                            <svg class="w-4 h-4 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
+                                        </div>
+                                        <p class="text-slate-900 font-semibold text-xs mb-1">Review</p>
+                                        <p class="text-slate-500 text-[10px] leading-relaxed">Your inquiry is routed to our business development team for review.</p>
+                                    </div>
+                                    <div class="bg-slate-50 border border-slate-200/80 rounded-xl p-4 text-center">
+                                        <div class="w-8 h-8 rounded-lg bg-amber-50 border border-amber-200/60 flex items-center justify-center mx-auto mb-3">
+                                            <svg class="w-4 h-4 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                        </div>
+                                        <p class="text-slate-900 font-semibold text-xs mb-1">1–2 Business Days</p>
+                                        <p class="text-slate-500 text-[10px] leading-relaxed">A representative will follow up within 1–2 business days.</p>
+                                    </div>
+                                    <div class="bg-slate-50 border border-slate-200/80 rounded-xl p-4 text-center">
+                                        <div class="w-8 h-8 rounded-lg bg-amber-50 border border-amber-200/60 flex items-center justify-center mx-auto mb-3">
+                                            <svg class="w-4 h-4 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg>
+                                        </div>
+                                        <p class="text-slate-900 font-semibold text-xs mb-1">Direct Contact</p>
+                                        <p class="text-slate-500 text-[10px] leading-relaxed">Need faster support? Call or email us directly any time.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Urgent Contact Bar -->
+                                <div class="bg-amber-50/60 border border-amber-200/60 rounded-xl px-5 py-4 flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
+                                    <div>
+                                        <p class="text-slate-700 font-semibold text-xs mb-0.5">Need an urgent response?</p>
+                                        <p class="text-slate-500 text-[10px]">Reach our team directly and reference your inquiry.</p>
+                                    </div>
+                                    <div class="flex flex-col sm:flex-row gap-3 text-xs font-semibold">
+                                        <a href="mailto:<?php echo EMAIL_SUPPORT; ?>" class="inline-flex items-center gap-1.5 text-slate-800 hover:text-brand-gold transition-colors duration-200">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
+                                            <?php echo EMAIL_SUPPORT; ?>
+                                        </a>
+                                        <a href="<?php echo SITE_PHONE_LINK; ?>" class="inline-flex items-center gap-1.5 text-slate-800 hover:text-brand-gold transition-colors duration-200">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg>
+                                            <?php echo SITE_PHONE_DISPLAY; ?>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- CTA Buttons -->
+                                <div class="flex flex-col sm:flex-row gap-3">
+                                    <a href="<?php echo BASE_URL; ?>/" class="flex-1 btn-gold text-center text-xs py-3">
+                                        Return to Homepage
+                                    </a>
+                                    <a href="<?php echo BASE_URL; ?>/contact.php" class="flex-1 inline-flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs py-3 px-6 rounded-lg transition-colors duration-200">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+                                        Submit Another Inquiry
+                                    </a>
+                                </div>
+                            </div>
+
+                        <?php else: ?>
+                        <!-- Form Start (only shown when NO success state) -->
                         <form action="<?php echo BASE_URL; ?>/contact.php" method="POST" id="contact-portal-form" class="space-y-6">
                             
                             <!-- Hidden honeypot field for spam prevention -->
@@ -628,6 +740,7 @@ if (!empty($inquiry_type)) {
                             </div>
 
                         </form>
+                        <?php endif; ?>
                     </div>
 
                 </div>
