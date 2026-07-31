@@ -34,7 +34,7 @@ if (file_exists(__DIR__ . '/config.local.php')) {
 if (!defined('SMTP_HOST')) define('SMTP_HOST', 'mail.privateemail.com');
 if (!defined('SMTP_PORT')) define('SMTP_PORT', 465);
 if (!defined('SMTP_ENC'))  define('SMTP_ENC',  'ssl');
-if (!defined('SMTP_USER')) define('SMTP_USER', 'info@rmgroupstrategies.com');
+if (!defined('SMTP_USER')) define('SMTP_USER', 'erm@rmgroupstrategies.com');
 if (!defined('SMTP_PASS')) define('SMTP_PASS', '');
 define('SITE_LOCATION',       'Las Vegas, Nevada');
 define('SITE_URL',            'https://rmgroupstrategies.com');
