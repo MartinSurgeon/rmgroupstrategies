@@ -30,24 +30,40 @@ if (!isset($current_page)) {
             <!-- Desktop Nav Links -->
             <div class="hidden lg:flex items-center gap-1">
                 <?php foreach ($navigation as $item): ?>
+                    <?php 
+                        $is_active = ($current_page === $item['slug']);
+                        if (isset($item['children'])) {
+                            foreach ($item['children'] as $child) {
+                                if (isset($child['slug']) && $child['slug'] === $current_page) {
+                                    $is_active = true;
+                                    break;
+                                }
+                            }
+                        }
+                    ?>
                     <?php if (isset($item['children'])): ?>
                         <!-- Dropdown nav item -->
                         <div class="nav-item relative">
-                            <button class="nav-link flex items-center gap-1 px-3 py-2 text-sm text-white/80 hover:text-brand-gold tracking-wide <?php echo ($current_page === $item['slug']) ? 'active' : ''; ?>"
+                            <button class="nav-link flex items-center gap-1.5 px-3.5 py-2 text-sm text-white/90 hover:text-brand-gold tracking-wide font-medium <?php echo $is_active ? 'active text-brand-gold' : ''; ?>"
                                     aria-expanded="false"
                                     aria-haspopup="true">
                                 <?php echo htmlspecialchars($item['title']); ?>
-                                <svg class="w-3.5 h-3.5 opacity-50" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                                <svg class="w-3.5 h-3.5 opacity-60 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
                                 </svg>
                             </button>
-                            <div class="nav-dropdown absolute top-full left-0 mt-1 w-56 bg-brand-dark-gray/95 backdrop-blur-md border border-white/10 rounded-lg shadow-xl py-2" role="menu">
-                                <!-- Parent link in dropdown -->
-                                <a href="<?php echo $item['url']; ?>" class="block px-4 py-2.5 text-sm text-white/70 hover:text-brand-gold-accent border-b border-white/5 mb-1" role="menuitem">
-                                    <?php echo htmlspecialchars($item['title']); ?> Overview
+                            <div class="nav-dropdown absolute top-full left-0 mt-1 w-64 bg-[#0B1727]/98 backdrop-blur-xl border border-brand-gold/35 rounded-xl shadow-2xl py-2 z-50 overflow-hidden" role="menu">
+                                <!-- Parent link in dropdown if valid URL -->
+                                <?php if (isset($item['url']) && $item['url'] !== '#'): ?>
+                                <a href="<?php echo $item['url']; ?>" class="dropdown-item dropdown-item-overview block px-4 py-2.5 text-sm text-slate-100 font-medium transition-all duration-200 <?php echo ($current_page === $item['slug']) ? 'active' : ''; ?>" role="menuitem">
+                                    <span class="flex items-center justify-between">
+                                        <span><?php echo htmlspecialchars($item['title']); ?> Overview</span>
+                                        <svg class="w-4 h-4 text-brand-gold/70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                                    </span>
                                 </a>
+                                <?php endif; ?>
                                 <?php foreach ($item['children'] as $child): ?>
-                                    <a href="<?php echo $child['url']; ?>" class="block px-4 py-2.5 text-sm text-white/70 hover:text-brand-gold-accent" role="menuitem">
+                                    <a href="<?php echo $child['url']; ?>" class="dropdown-item block px-4 py-2.5 text-sm text-slate-100 font-medium transition-all duration-200 <?php echo ($current_page === ($child['slug'] ?? '')) ? 'active' : ''; ?>" role="menuitem">
                                         <?php echo htmlspecialchars($child['title']); ?>
                                     </a>
                                 <?php endforeach; ?>
@@ -56,7 +72,7 @@ if (!isset($current_page)) {
                     <?php else: ?>
                         <!-- Simple nav link -->
                         <a href="<?php echo $item['url']; ?>"
-                           class="nav-link px-3 py-2 text-sm text-white/80 hover:text-brand-gold tracking-wide <?php echo ($current_page === $item['slug']) ? 'active' : ''; ?>">
+                           class="nav-link px-3.5 py-2 text-sm text-white/90 hover:text-brand-gold tracking-wide font-medium <?php echo $is_active ? 'active text-brand-gold' : ''; ?>">
                             <?php echo htmlspecialchars($item['title']); ?>
                         </a>
                     <?php endif; ?>

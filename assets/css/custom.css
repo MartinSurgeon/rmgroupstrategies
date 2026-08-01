@@ -303,13 +303,17 @@ body {
     color: #C5A059;
 }
 
-/* Dropdown */
+/* Dropdown Menu Container */
 .nav-dropdown {
     opacity: 0;
     visibility: hidden;
     transform: translateY(-8px);
-    transition: all 0.25s ease;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
+    background: rgba(11, 23, 39, 0.98); /* Rich navy-black background */
+    border: 1px solid rgba(197, 160, 89, 0.35); /* Subtle gold border */
+    border-radius: 0.75rem;
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.75), 0 0 20px rgba(197, 160, 89, 0.15);
 }
 
 .nav-item:hover .nav-dropdown,
@@ -320,13 +324,24 @@ body {
     pointer-events: auto;
 }
 
-.nav-dropdown a {
-    transition: color 0.2s ease, padding-left 0.2s ease;
+/* Dropdown Menu Items */
+.dropdown-item {
+    position: relative;
+    color: #F8FAFC; /* Vibrant text */
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    border-left: 3px solid transparent;
 }
 
-.nav-dropdown a:hover {
-    color: #D4AF37;
-    padding-left: 1.25rem;
+.dropdown-item:hover,
+.dropdown-item.active {
+    color: #D4AF37 !important; /* Gold text */
+    background: linear-gradient(90deg, rgba(197, 160, 89, 0.18) 0%, rgba(197, 160, 89, 0.04) 100%); /* Gold background highlight */
+    border-left-color: #C5A059; /* Left gold accent bar */
+    padding-left: 1.35rem; /* Smooth left shift */
+}
+
+.dropdown-item-overview {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* Mobile nav */
