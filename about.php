@@ -94,18 +94,23 @@ $current_page = 'about';
         <!-- ═══════════════════════════════════════════════════════
              SECTION 1: BREADCRUMB / HEADER BANNER
              ═══════════════════════════════════════════════════════ -->
-        <section class="bg-slate-900 border-b border-slate-800 py-12 sm:py-16">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h1 class="text-3xl sm:text-4xl font-bold tracking-wide text-white mb-3">
+        <section class="relative bg-slate-900 border-b border-slate-800 py-16 sm:py-24 overflow-hidden">
+            <!-- Background Image -->
+            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('<?php echo BASE_URL; ?>/assets/images/abouthero.jpg');"></div>
+            <!-- Dark Overlay for Readability -->
+            <div class="absolute inset-0 bg-slate-900/80 bg-gradient-to-b from-slate-900/60 to-slate-900/95"></div>
+
+            <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center animate-fade-in-up">
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-4 drop-shadow-md">
                     About Our Company
                 </h1>
-                <nav class="flex justify-center text-xs tracking-wider uppercase text-white/50" aria-label="Breadcrumb">
-                    <ol class="inline-flex items-center space-x-2">
+                <nav class="flex justify-center text-xs sm:text-sm tracking-wider uppercase text-white/60 font-semibold" aria-label="Breadcrumb">
+                    <ol class="inline-flex items-center space-x-2.5">
                         <li>
                             <a href="<?php echo BASE_URL; ?>/" class="hover:text-brand-gold transition-colors duration-300">Home</a>
                         </li>
-                        <li class="flex items-center gap-2">
-                            <span>/</span>
+                        <li class="flex items-center gap-2.5">
+                            <span class="text-white/30">/</span>
                             <span class="text-brand-gold">About</span>
                         </li>
                     </ol>
@@ -119,42 +124,64 @@ $current_page = 'about';
              ═══════════════════════════════════════════════════════ -->
         <section id="positioning" class="bg-white py-20 lg:py-28 border-b border-slate-200/80">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
                     
-                    <!-- Left: Graphic Crest -->
-                    <div class="lg:col-span-5 flex justify-center animate-fade-in-up animate-delay-100">
-                        <div class="relative w-72 h-80 sm:w-80 sm:h-96 flex items-center justify-center p-8 bg-amber-50/40 border border-amber-200/60 rounded-2xl shadow-sm">
-                            <!-- Outer glow background decorative SVG -->
-                            <svg class="absolute inset-0 w-full h-full text-brand-gold/10" fill="currentColor" viewBox="0 0 100 100" preserveAspectRatio="none">
-                                <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="0.5" fill="none" stroke-dasharray="2,2"/>
-                            </svg>
-                            <!-- Crest Logo -->
-                            <img src="<?php echo BASE_URL; ?>/assets/images/ico.png" alt="<?php echo SITE_NAME; ?> Crest Logo" class="relative z-10 w-40 sm:w-48 h-auto object-contain rounded-xl shadow-xl border border-brand-gold/30 p-2 bg-white" />
+                    <!-- Left: Premium Text Block -->
+                    <div class="space-y-8 animate-fade-in-up animate-delay-100">
+                        <div>
+                            <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight mb-4">
+                                A Diversified Business Holding &amp; Management Group
+                            </h2>
+                            <div class="h-1.5 w-24 bg-brand-gold rounded-full"></div>
+                        </div>
+                        
+                        <div class="space-y-6 text-slate-600 leading-relaxed text-base sm:text-lg">
+                            <p>
+                                <strong class="text-slate-900 font-bold">RM Group Strategies LLC</strong> is a diversified business holding and management company specializing in government contracting, transportation services, fleet management, construction and remodeling, equipment rental, business consulting, and procurement solutions.
+                            </p>
+                            <p>
+                                Operating from our headquarters in Las Vegas, Nevada, we structure and coordinate high-performing division lines designed to deliver dependable solutions for commercial entities, government procurement agencies, and private-sector clients across the United States.
+                            </p>
+                        </div>
+
+                        <div class="pt-2">
+                            <a href="<?php echo BASE_URL; ?>/government-contracting.php" class="btn-gold px-8 py-3.5 text-sm inline-flex items-center gap-2">
+                                Review Core Capabilities
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+                            </a>
                         </div>
                     </div>
 
-                    <!-- Right: Text Block -->
-                    <div class="lg:col-span-7 space-y-6 animate-fade-in-up animate-delay-200">
-                        <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-wide">
-                            A Diversified Business Holding &amp; Management Group
-                        </h2>
+                    <!-- Right: Interactive / Executive Visual Component -->
+                    <div class="relative animate-fade-in-up animate-delay-200 lg:pl-8">
+                        <!-- Decorative background element -->
+                        <div class="absolute inset-0 bg-slate-100 rounded-3xl transform translate-x-4 translate-y-4 border border-slate-200"></div>
                         
-                        <div class="h-0.5 w-16 bg-brand-gold"></div>
+                        <!-- Main Card -->
+                        <div class="relative bg-slate-900 rounded-3xl p-8 sm:p-12 shadow-2xl border border-slate-800 flex flex-col justify-between overflow-hidden">
+                            <!-- Subtle Gold gradient glow in the corner -->
+                            <div class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-brand-gold/10 blur-3xl rounded-full pointer-events-none"></div>
 
-                        <p class="text-slate-700 text-base leading-relaxed">
-                            <strong>RM Group Strategies LLC</strong> is a diversified business holding and management company specializing in government contracting, transportation services, fleet management, construction and remodeling, equipment rental, business consulting, and procurement solutions.
-                        </p>
+                            <!-- Logo Header -->
+                            <div class="relative z-10 flex items-center justify-between mb-12 border-b border-white/10 pb-8">
+                                <img src="<?php echo BASE_URL; ?>/assets/images/ico.png" alt="<?php echo SITE_NAME; ?> Crest Logo" class="h-20 w-auto object-contain drop-shadow-lg" />
+                                <span class="px-3 py-1.5 rounded-lg bg-amber-400/10 border border-amber-400/20 text-brand-gold text-[10px] font-bold uppercase tracking-widest hidden sm:inline-block">
+                                    HQ: Las Vegas, NV
+                                </span>
+                            </div>
 
-                        <p class="text-slate-600 text-sm leading-relaxed">
-                            Operating from our headquarters in Las Vegas, Nevada, we structure and coordinate high-performing division lines designed to deliver dependable solutions for commercial entities, government procurement agencies, and private-sector clients across the United States.
-                        </p>
-
-                        <!-- Mission Callout -->
-                        <div class="border-l-4 border-brand-gold bg-amber-50/60 p-5 rounded-r-lg mt-6 shadow-sm">
-                            <p class="text-xs uppercase tracking-widest text-brand-gold font-semibold mb-2">Our Mission</p>
-                            <blockquote class="italic text-sm text-slate-800 leading-relaxed font-medium">
-                                "To build strategic, long-term partnerships by delivering reliable, high-performance operational solutions across our diversified division lines, ensuring excellence in every contract and commercial project."
-                            </blockquote>
+                            <!-- Mission Statement -->
+                            <div class="relative z-10">
+                                <div class="flex items-center gap-3 mb-5">
+                                    <div class="w-8 h-8 rounded bg-brand-gold/20 flex items-center justify-center">
+                                        <svg class="w-4 h-4 text-brand-gold" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>
+                                    </div>
+                                    <h3 class="text-white font-bold tracking-widest uppercase text-xs">Our Mission</h3>
+                                </div>
+                                <blockquote class="text-slate-300/90 italic leading-relaxed sm:text-lg">
+                                    "To build strategic, long-term partnerships by delivering reliable, high-performance operational solutions across our diversified division lines, ensuring excellence in every contract and commercial project."
+                                </blockquote>
+                            </div>
                         </div>
                     </div>
 

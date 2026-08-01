@@ -79,7 +79,7 @@ $current_page = 'home';
             <div class="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6">
                 <!-- Company Name -->
                 <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight sm:tracking-[0.12em] uppercase mb-6 animate-fade-in-up animate-delay-100 break-words drop-shadow-lg">
-                    <span class="gradient-text-gold"><?php echo SITE_NAME_SHORT; ?></span> <span class="text-brand-gold font-bold">LLC</span>
+                    <span class="text-white"><?php echo SITE_NAME_SHORT; ?></span> <span class="text-brand-gold font-bold">LLC</span>
                 </h1>
 
                 <!-- Professional Dynamic Service Rotator -->
