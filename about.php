@@ -289,16 +289,6 @@ $current_page = 'about';
                         <!-- Connector -->
                         <div class="connector-line-v"></div>
 
-                        <!-- Series LLC Node -->
-                        <div class="flow-node bg-white border border-brand-gold/40 rounded-lg px-6 py-4 text-center max-w-sm w-full shadow-sm">
-                            <span class="text-xs uppercase tracking-widest text-brand-gold font-semibold mb-1 block">Holding Structure</span>
-                            <h3 class="text-slate-900 font-bold text-base">RM Nevada Series LLC</h3>
-                            <p class="text-[10px] text-slate-500 mt-1">Nevada Series LLC Asset &amp; Operational Protection</p>
-                        </div>
-
-                        <!-- Connector -->
-                        <div class="connector-line-v"></div>
-
                         <!-- Horizontal Divider line for grid nodes -->
                         <div class="w-full grid grid-cols-4 px-[12.5%]">
                             <div class="connector-line-h col-span-3"></div>

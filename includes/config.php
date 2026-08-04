@@ -90,11 +90,6 @@ $navigation = [
         'slug'     => 'companies',
         'children' => [
             [
-                'title' => 'RM Nevada Series LLC',
-                'url'   => BASE_URL . '/rm-nevada-series.php',
-                'slug'  => 'rm-nevada-series',
-            ],
-            [
                 'title' => 'RM Fleet',
                 'url'   => BASE_URL . '/rm-fleet.php',
                 'slug'  => 'rm-fleet',

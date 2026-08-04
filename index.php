@@ -536,7 +536,7 @@ $current_page = 'home';
                     <div class="section-heading mb-14">
                         <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900">Our Operating Divisions</h2>
                         <div class="gold-divider-lg"></div>
-                        <p class="text-slate-600 text-sm sm:text-base max-w-2xl mx-auto">Operating through RM Nevada Series LLC, our specialized divisions deliver focused operational excellence across key industries.</p>
+                        <p class="text-slate-600 text-sm sm:text-base max-w-2xl mx-auto">Our specialized divisions deliver focused operational excellence across key industries nationwide.</p>
                     </div>
                 </div>
 
