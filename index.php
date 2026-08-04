@@ -43,10 +43,11 @@ $current_page = 'home';
                 extend: {
                     colors: {
                         'brand-black':      '#000000',
-                        'brand-gold':       '#D4AF37',
-                        'brand-gold-accent':'#FFD700',
+                        'brand-navy':       '#0B1727',
+                        'brand-gold':       '#C5A059',
+                        'brand-gold-accent':'#D4AF37',
                         'brand-white':      '#FFFFFF',
-                        'brand-dark-gray':  '#1E1E1E',
+                        'brand-dark-gray':  '#1E293B',
                     },
                     fontFamily: {
                         'inter': ['Inter', 'system-ui', 'sans-serif'],
@@ -70,13 +71,17 @@ $current_page = 'home';
              SECTION 1: HERO
              ═══════════════════════════════════════════════════════ -->
         <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden py-16">
-            <!-- Background Image -->
-            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('<?php echo BASE_URL; ?>/assets/images/hero-bg.png');"></div>
+            <!-- Hero Background Slideshow (crossfade) -->
+            <div id="heroBg" class="absolute inset-0 overflow-hidden">
+                <div class="hero-bg-slide active"   style="background-image: url('<?php echo BASE_URL; ?>/assets/images/hero-bg.png');"></div>
+                <div class="hero-bg-slide"           style="background-image: url('<?php echo BASE_URL; ?>/assets/images/hero-bg1.png');"></div>
+                <div class="hero-bg-slide"           style="background-image: url('<?php echo BASE_URL; ?>/assets/images/hero-bg2.png');"></div>
+            </div>
             <!-- Dark Overlay -->
-            <div class="absolute inset-0 hero-overlay"></div>
+            <div class="absolute inset-0 hero-overlay" style="z-index:1;"></div>
 
             <!-- Hero Content -->
-            <div class="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6">
+            <div class="relative z-20 text-center max-w-4xl mx-auto px-4 sm:px-6">
                 <!-- Company Name -->
                 <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight sm:tracking-[0.12em] uppercase mb-6 animate-fade-in-up animate-delay-100 break-words drop-shadow-lg">
                     <span class="text-white"><?php echo SITE_NAME_SHORT; ?></span> <span class="text-brand-gold font-bold">LLC</span>
@@ -128,6 +133,20 @@ $current_page = 'home';
                 </a>
             </div>
         </section>
+
+        <!-- Hero Background Crossfade Script -->
+        <script>
+        (function () {
+            const slides  = document.querySelectorAll('#heroBg .hero-bg-slide');
+            let   current = 0;
+            if (slides.length < 2) return;
+            setInterval(function () {
+                slides[current].classList.remove('active');
+                current = (current + 1) % slides.length;
+                slides[current].classList.add('active');
+            }, 6000);
+        })();
+        </script>
 
 
         <!-- ═══════════════════════════════════════════════════════
@@ -348,6 +367,167 @@ $current_page = 'home';
 
 
         <!-- ═══════════════════════════════════════════════════════
+             SECTION 3.5: DIVISION SHOWCASE CAROUSEL
+             ═══════════════════════════════════════════════════════ -->
+        <section id="division-carousel" class="bg-brand-navy py-20 lg:py-24 relative overflow-hidden border-y border-brand-gold/25">
+            <!-- Subtle background grid texture -->
+            <div class="absolute inset-0 opacity-5" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(197,160,89,0.5) 39px, rgba(197,160,89,0.5) 40px), repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(197,160,89,0.5) 39px, rgba(197,160,89,0.5) 40px);"></div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <!-- Heading -->
+                <div class="text-center mb-12 animate-on-scroll">
+                    <span class="text-brand-gold text-xs uppercase tracking-[0.25em] font-bold block mb-3">Our Operating Divisions</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-4">Built for Government &amp; Commercial Excellence</h2>
+                    <div class="gold-divider-lg mx-auto mb-4"></div>
+                    <p class="text-slate-400 text-sm max-w-2xl mx-auto">Specialized divisions delivering focused operational performance across construction, fleet, equipment, and logistics.</p>
+                </div>
+
+                <!-- Carousel Wrapper -->
+                <div class="relative" id="divCarousel" aria-label="Division image carousel" role="region">
+
+                    <!-- Slides -->
+                    <div class="carousel-track overflow-hidden rounded-2xl border border-brand-gold/30 shadow-2xl" style="height: 480px;">
+                        <div class="carousel-slides flex transition-transform duration-700 ease-in-out h-full" id="carouselSlides">
+
+                            <!-- Slide 1: RM Remodeling -->
+                            <div class="carousel-slide flex-shrink-0 w-full h-full relative">
+                                <img src="<?php echo BASE_URL; ?>/assets/images/rm-remodeling.png" alt="RM Remodeling — Construction & Renovation" class="w-full h-full object-cover" loading="eager">
+                                <div class="absolute inset-0 bg-gradient-to-t from-[#0B1727] via-[#0B1727]/50 to-transparent"></div>
+                                <div class="absolute bottom-0 left-0 right-0 p-8 lg:p-12">
+                                    <span class="inline-block bg-emerald-800/90 text-emerald-300 border border-emerald-500/40 text-[10px] uppercase font-bold px-3 py-1 rounded-full mb-3">Active Division</span>
+                                    <h3 class="text-2xl lg:text-3xl font-extrabold text-white mb-2">RM Remodeling</h3>
+                                    <p class="text-slate-300 text-sm mb-5 max-w-xl">Premier commercial tenant improvements, residential renovations, and government facility upgrades delivered on time and within budget.</p>
+                                    <a href="<?php echo BASE_URL; ?>/rm-remodeling.php" class="btn-gold text-xs uppercase tracking-widest font-bold py-2.5 px-6 inline-flex items-center gap-2">
+                                        View Capabilities
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Slide 2: RM Tools & Equipment -->
+                            <div class="carousel-slide flex-shrink-0 w-full h-full relative">
+                                <img src="<?php echo BASE_URL; ?>/assets/images/rm-tools-equipment.png" alt="RM Tools & Equipment — Heavy Machinery Rental" class="w-full h-full object-cover" loading="lazy">
+                                <div class="absolute inset-0 bg-gradient-to-t from-[#0B1727] via-[#0B1727]/50 to-transparent"></div>
+                                <div class="absolute bottom-0 left-0 right-0 p-8 lg:p-12">
+                                    <span class="inline-block bg-emerald-800/90 text-emerald-300 border border-emerald-500/40 text-[10px] uppercase font-bold px-3 py-1 rounded-full mb-3">Active Division</span>
+                                    <h3 class="text-2xl lg:text-3xl font-extrabold text-white mb-2">RM Tools &amp; Equipment</h3>
+                                    <p class="text-slate-300 text-sm mb-5 max-w-xl">Heavy machinery, construction equipment rental, industrial tools, and jobsite power solutions for contractors and government projects.</p>
+                                    <a href="<?php echo BASE_URL; ?>/rm-tools-equipment.php" class="btn-gold text-xs uppercase tracking-widest font-bold py-2.5 px-6 inline-flex items-center gap-2">
+                                        View Capabilities
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Slide 3: RM Fleet -->
+                            <div class="carousel-slide flex-shrink-0 w-full h-full relative">
+                                <img src="<?php echo BASE_URL; ?>/assets/images/rm-fleet.png" alt="RM Fleet — Commercial Fleet Management" class="w-full h-full object-cover" loading="lazy">
+                                <div class="absolute inset-0 bg-gradient-to-t from-[#0B1727] via-[#0B1727]/50 to-transparent"></div>
+                                <div class="absolute bottom-0 left-0 right-0 p-8 lg:p-12">
+                                    <span class="inline-block bg-slate-800/90 text-brand-gold border border-brand-gold/40 text-[10px] uppercase font-bold px-3 py-1 rounded-full mb-3">Coming Soon</span>
+                                    <h3 class="text-2xl lg:text-3xl font-extrabold text-white mb-2">RM Fleet</h3>
+                                    <p class="text-slate-300 text-sm mb-5 max-w-xl">Commercial fleet leasing, vehicle acquisition, maintenance management, and government fleet support services across Nevada.</p>
+                                    <a href="<?php echo BASE_URL; ?>/rm-fleet.php" class="btn-gold text-xs uppercase tracking-widest font-bold py-2.5 px-6 inline-flex items-center gap-2">
+                                        Learn More
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Slide 4: RM Transport -->
+                            <div class="carousel-slide flex-shrink-0 w-full h-full relative">
+                                <img src="<?php echo BASE_URL; ?>/assets/images/rm-transport.png" alt="RM Transport — Logistics & Freight" class="w-full h-full object-cover" loading="lazy">
+                                <div class="absolute inset-0 bg-gradient-to-t from-[#0B1727] via-[#0B1727]/50 to-transparent"></div>
+                                <div class="absolute bottom-0 left-0 right-0 p-8 lg:p-12">
+                                    <span class="inline-block bg-slate-800/90 text-brand-gold border border-brand-gold/40 text-[10px] uppercase font-bold px-3 py-1 rounded-full mb-3">Coming Soon</span>
+                                    <h3 class="text-2xl lg:text-3xl font-extrabold text-white mb-2">RM Transport</h3>
+                                    <p class="text-slate-300 text-sm mb-5 max-w-xl">Freight logistics, cargo transport routing, and government delivery contracts with reliable on-time performance nationwide.</p>
+                                    <a href="<?php echo BASE_URL; ?>/rm-transport.php" class="btn-gold text-xs uppercase tracking-widest font-bold py-2.5 px-6 inline-flex items-center gap-2">
+                                        Learn More
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div><!-- /.carousel-slides -->
+                    </div><!-- /.carousel-track -->
+
+                    <!-- Prev / Next Arrows -->
+                    <button id="carouselPrev" class="absolute top-1/2 -translate-y-1/2 left-3 lg:-left-5 z-20 w-11 h-11 rounded-full bg-brand-navy/90 border border-brand-gold/40 text-brand-gold flex items-center justify-center hover:bg-brand-gold hover:text-brand-navy transition-all duration-200 shadow-lg" aria-label="Previous slide">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+                    </button>
+                    <button id="carouselNext" class="absolute top-1/2 -translate-y-1/2 right-3 lg:-right-5 z-20 w-11 h-11 rounded-full bg-brand-navy/90 border border-brand-gold/40 text-brand-gold flex items-center justify-center hover:bg-brand-gold hover:text-brand-navy transition-all duration-200 shadow-lg" aria-label="Next slide">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+
+                    <!-- Dot Indicators -->
+                    <div class="flex items-center justify-center gap-2.5 mt-7" role="tablist" aria-label="Carousel slides">
+                        <button class="carousel-dot w-2.5 h-2.5 rounded-full bg-brand-gold transition-all duration-300" data-slide="0" role="tab" aria-selected="true" aria-label="Slide 1: RM Remodeling"></button>
+                        <button class="carousel-dot w-2.5 h-2.5 rounded-full bg-white/25 transition-all duration-300 hover:bg-brand-gold/60" data-slide="1" role="tab" aria-selected="false" aria-label="Slide 2: RM Tools & Equipment"></button>
+                        <button class="carousel-dot w-2.5 h-2.5 rounded-full bg-white/25 transition-all duration-300 hover:bg-brand-gold/60" data-slide="2" role="tab" aria-selected="false" aria-label="Slide 3: RM Fleet"></button>
+                        <button class="carousel-dot w-2.5 h-2.5 rounded-full bg-white/25 transition-all duration-300 hover:bg-brand-gold/60" data-slide="3" role="tab" aria-selected="false" aria-label="Slide 4: RM Transport"></button>
+                    </div>
+
+                </div><!-- /#divCarousel -->
+            </div>
+        </section>
+
+        <!-- Carousel Script -->
+        <script>
+        (function() {
+            const slidesEl   = document.getElementById('carouselSlides');
+            const dots       = document.querySelectorAll('.carousel-dot');
+            const prevBtn    = document.getElementById('carouselPrev');
+            const nextBtn    = document.getElementById('carouselNext');
+            const total      = 4;
+            let   current    = 0;
+            let   timer      = null;
+            const INTERVAL   = 5000;
+
+            function goTo(idx) {
+                current = (idx + total) % total;
+                slidesEl.style.transform = `translateX(-${current * 100}%)`;
+                dots.forEach((d, i) => {
+                    d.classList.toggle('bg-brand-gold', i === current);
+                    d.classList.toggle('w-6', i === current);          // active dot wider
+                    d.classList.toggle('bg-white/25', i !== current);
+                    d.classList.toggle('w-2.5', i !== current);
+                    d.setAttribute('aria-selected', i === current ? 'true' : 'false');
+                });
+            }
+
+            function startAuto() {
+                timer = setInterval(() => goTo(current + 1), INTERVAL);
+            }
+            function stopAuto() {
+                clearInterval(timer);
+            }
+
+            prevBtn.addEventListener('click', () => { stopAuto(); goTo(current - 1); startAuto(); });
+            nextBtn.addEventListener('click', () => { stopAuto(); goTo(current + 1); startAuto(); });
+            dots.forEach(d => d.addEventListener('click', () => { stopAuto(); goTo(+d.dataset.slide); startAuto(); }));
+
+            // Touch / swipe support
+            let touchStartX = 0;
+            slidesEl.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+            slidesEl.addEventListener('touchend',   e => {
+                const diff = touchStartX - e.changedTouches[0].clientX;
+                if (Math.abs(diff) > 50) { stopAuto(); goTo(current + (diff > 0 ? 1 : -1)); startAuto(); }
+            });
+
+            // Pause on hover
+            const track = document.querySelector('.carousel-track');
+            track.addEventListener('mouseenter', stopAuto);
+            track.addEventListener('mouseleave', startAuto);
+
+            // Init
+            goTo(0);
+            startAuto();
+        })();
+        </script>
+
+
+        <!-- ═══════════════════════════════════════════════════════
              SECTION 4: AFFILIATED OPERATING DIVISIONS
              ═══════════════════════════════════════════════════════ -->
         <section id="companies" class="bg-white py-20 lg:py-28 relative border-b border-slate-200/80">
@@ -363,63 +543,83 @@ $current_page = 'home';
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 animate-on-scroll">
 
                     <!-- RM Fleet -->
-                    <div class="card-executive stagger-child rounded-xl p-6 text-center flex flex-col justify-between">
+                    <div class="card-executive stagger-child rounded-xl overflow-hidden text-center flex flex-col justify-between group">
                         <div>
-                            <div class="w-12 h-12 mx-auto mb-4 rounded-xl bg-amber-50 border border-amber-200/60 flex items-center justify-center shadow-sm">
-                                <svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25m0 0V4.5m0 0H8.25"/></svg>
+                            <div class="h-36 w-full overflow-hidden relative border-b border-brand-gold/30">
+                                <img src="<?php echo BASE_URL; ?>/assets/images/rm-fleet.png" alt="RM Fleet" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90">
+                                <span class="absolute top-2 right-2 bg-slate-900/90 text-brand-gold border border-brand-gold/40 text-[10px] uppercase font-bold px-2.5 py-0.5 rounded-full">Coming Soon</span>
                             </div>
-                            <h3 class="text-slate-900 font-bold text-base mb-2">RM Fleet</h3>
-                            <p class="text-slate-600 text-xs leading-relaxed mb-6">Fleet leasing, vehicle acquisition, and comprehensive fleet support.</p>
+                            <div class="p-6">
+                                <h3 class="text-white font-bold text-base mb-2">RM Fleet</h3>
+                                <p class="text-slate-300 text-xs leading-relaxed mb-4">Fleet leasing, vehicle acquisition, and comprehensive fleet support.</p>
+                            </div>
                         </div>
-                        <a href="<?php echo BASE_URL; ?>/rm-fleet.php" class="gold-link text-xs font-semibold inline-flex items-center justify-center gap-1">
-                            Division Overview
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
-                        </a>
+                        <div class="p-6 pt-0">
+                            <a href="<?php echo BASE_URL; ?>/rm-fleet.php" class="gold-link text-xs font-semibold inline-flex items-center justify-center gap-1">
+                                Division Overview
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+                            </a>
+                        </div>
                     </div>
 
-                    <!-- RM Remodeling -->
-                    <div class="card-executive stagger-child rounded-xl p-6 text-center flex flex-col justify-between">
+                    <!-- RM Remodeling (Active Page) -->
+                    <div class="card-executive stagger-child rounded-xl overflow-hidden text-center flex flex-col justify-between group">
                         <div>
-                            <div class="w-12 h-12 mx-auto mb-4 rounded-xl bg-amber-50 border border-amber-200/60 flex items-center justify-center shadow-sm">
-                                <svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21"/></svg>
+                            <div class="h-36 w-full overflow-hidden relative border-b border-brand-gold/30">
+                                <img src="<?php echo BASE_URL; ?>/assets/images/rm-remodeling.png" alt="RM Remodeling" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90">
+                                <span class="absolute top-2 right-2 bg-emerald-900/90 text-emerald-300 border border-emerald-500/40 text-[10px] uppercase font-bold px-2.5 py-0.5 rounded-full">Active Division</span>
                             </div>
-                            <h3 class="text-slate-900 font-bold text-base mb-2">RM Remodeling</h3>
-                            <p class="text-slate-600 text-xs leading-relaxed mb-6">Residential and commercial construction, renovations, and property upgrades.</p>
+                            <div class="p-6">
+                                <h3 class="text-white font-bold text-base mb-2">RM Remodeling</h3>
+                                <p class="text-slate-300 text-xs leading-relaxed mb-4">Residential and commercial construction, renovations, and property upgrades.</p>
+                            </div>
                         </div>
-                        <a href="<?php echo BASE_URL; ?>/rm-remodeling.php" class="gold-link text-xs font-semibold inline-flex items-center justify-center gap-1">
-                            Division Overview
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
-                        </a>
+                        <div class="p-6 pt-0">
+                            <a href="<?php echo BASE_URL; ?>/rm-remodeling.php" class="gold-link text-xs font-semibold inline-flex items-center justify-center gap-1">
+                                View Capabilities
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+                            </a>
+                        </div>
                     </div>
 
-                    <!-- RM Tools & Equipment -->
-                    <div class="card-executive stagger-child rounded-xl p-6 text-center flex flex-col justify-between">
+                    <!-- RM Tools & Equipment (Active Page) -->
+                    <div class="card-executive stagger-child rounded-xl overflow-hidden text-center flex flex-col justify-between group">
                         <div>
-                            <div class="w-12 h-12 mx-auto mb-4 rounded-xl bg-amber-50 border border-amber-200/60 flex items-center justify-center shadow-sm">
-                                <svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17l-5.1-5.1a2.5 2.5 0 010-3.54l.7-.7a2.5 2.5 0 013.54 0l.7.7a2.5 2.5 0 010 3.54l-5.1 5.1m0 0l5.1 5.1"/></svg>
+                            <div class="h-36 w-full overflow-hidden relative border-b border-brand-gold/30">
+                                <img src="<?php echo BASE_URL; ?>/assets/images/rm-tools-equipment.png" alt="RM Tools & Equipment" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90">
+                                <span class="absolute top-2 right-2 bg-emerald-900/90 text-emerald-300 border border-emerald-500/40 text-[10px] uppercase font-bold px-2.5 py-0.5 rounded-full">Active Division</span>
                             </div>
-                            <h3 class="text-slate-900 font-bold text-base mb-2">RM Tools &amp; Equipment</h3>
-                            <p class="text-slate-600 text-xs leading-relaxed mb-6">Equipment leasing, tools, jobsite machinery, and contractor rentals.</p>
+                            <div class="p-6">
+                                <h3 class="text-white font-bold text-base mb-2">RM Tools &amp; Equipment</h3>
+                                <p class="text-slate-300 text-xs leading-relaxed mb-4">Equipment leasing, tools, jobsite machinery, and contractor rentals.</p>
+                            </div>
                         </div>
-                        <a href="<?php echo BASE_URL; ?>/rm-tools-equipment.php" class="gold-link text-xs font-semibold inline-flex items-center justify-center gap-1">
-                            Division Overview
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
-                        </a>
+                        <div class="p-6 pt-0">
+                            <a href="<?php echo BASE_URL; ?>/rm-tools-equipment.php" class="gold-link text-xs font-semibold inline-flex items-center justify-center gap-1">
+                                View Capabilities
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+                            </a>
+                        </div>
                     </div>
 
                     <!-- RM Transport -->
-                    <div class="card-executive stagger-child rounded-xl p-6 text-center flex flex-col justify-between">
+                    <div class="card-executive stagger-child rounded-xl overflow-hidden text-center flex flex-col justify-between group">
                         <div>
-                            <div class="w-12 h-12 mx-auto mb-4 rounded-xl bg-amber-50 border border-amber-200/60 flex items-center justify-center shadow-sm">
-                                <svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg>
+                            <div class="h-36 w-full overflow-hidden relative border-b border-brand-gold/30">
+                                <img src="<?php echo BASE_URL; ?>/assets/images/rm-transport.png" alt="RM Transport" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90">
+                                <span class="absolute top-2 right-2 bg-slate-900/90 text-brand-gold border border-brand-gold/40 text-[10px] uppercase font-bold px-2.5 py-0.5 rounded-full">Coming Soon</span>
                             </div>
-                            <h3 class="text-slate-900 font-bold text-base mb-2">RM Transport</h3>
-                            <p class="text-slate-600 text-xs leading-relaxed mb-6">Freight transport, logistics support, and government delivery contracts.</p>
+                            <div class="p-6">
+                                <h3 class="text-white font-bold text-base mb-2">RM Transport</h3>
+                                <p class="text-slate-300 text-xs leading-relaxed mb-4">Freight transport, logistics support, and government delivery contracts.</p>
+                            </div>
                         </div>
-                        <a href="<?php echo BASE_URL; ?>/rm-transport.php" class="gold-link text-xs font-semibold inline-flex items-center justify-center gap-1">
-                            Division Overview
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
-                        </a>
+                        <div class="p-6 pt-0">
+                            <a href="<?php echo BASE_URL; ?>/rm-transport.php" class="gold-link text-xs font-semibold inline-flex items-center justify-center gap-1">
+                                Division Overview
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+                            </a>
+                        </div>
                     </div>
 
                 </div>

@@ -168,19 +168,29 @@ body {
 .animate-on-scroll.is-visible .stagger-child:nth-child(6) { transition-delay: 0.30s; opacity: 1; transform: translateY(0); }
 .animate-on-scroll.is-visible .stagger-child:nth-child(7) { transition-delay: 0.35s; opacity: 1; transform: translateY(0); }
 
-/* ── Executive Card Styles ─────────────────────────────────────── */
+/* ── Executive Card Styles (HCI Dark Tone Contrast) ────────────── */
 .card-executive {
-    background: #FFFFFF;
-    border: 1px solid #E2E8F0;
-    box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04);
-    border-radius: 0.75rem;
+    background: #0B1727;
+    color: #FFFFFF;
+    border: 1px solid rgba(197, 160, 89, 0.35);
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.4), 0 0 15px rgba(197, 160, 89, 0.08);
+    border-radius: 0.85rem;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.card-executive h3, 
+.card-executive h4 {
+    color: #FFFFFF !important;
+}
+
+.card-executive p {
+    color: rgba(248, 250, 252, 0.82) !important;
+}
+
 .card-executive:hover {
-    border-color: rgba(197, 160, 89, 0.45);
-    box-shadow: 0 12px 32px -4px rgba(197, 160, 89, 0.12), 0 4px 12px -2px rgba(15, 23, 42, 0.06);
-    transform: translateY(-3px);
+    border-color: #C5A059;
+    box-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.5), 0 0 25px rgba(197, 160, 89, 0.25);
+    transform: translateY(-4px);
 }
 
 .card-hover {
@@ -419,6 +429,21 @@ body {
         rgba(0, 0, 0, 0.7) 70%,
         rgba(0, 0, 0, 0.95) 100%
     );
+}
+
+/* ── Hero Background Crossfade Slideshow ───────────────────────── */
+.hero-bg-slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 1.6s ease-in-out;
+    will-change: opacity;
+}
+.hero-bg-slide.active {
+    opacity: 1;
 }
 
 /* ── Scroll Down Chevron ───────────────────────────────────────── */
