@@ -69,17 +69,17 @@ $navigation = [
     ],
     [
         'title' => 'About',
-        'url'   => BASE_URL . '/about.php',
+        'url'   => BASE_URL . '/about',
         'slug'  => 'about',
     ],
     [
         'title'    => 'Government Contracting',
-        'url'      => BASE_URL . '/government-contracting.php',
+        'url'      => BASE_URL . '/government-contracting',
         'slug'     => 'government-contracting',
         'children' => [
             [
                 'title' => 'Capability Statement',
-                'url'   => BASE_URL . '/capability-statement.php',
+                'url'   => BASE_URL . '/capability-statement',
                 'slug'  => 'capability-statement',
             ],
         ],
@@ -91,29 +91,30 @@ $navigation = [
         'children' => [
             [
                 'title' => 'RM Fleet',
-                'url'   => BASE_URL . '/rm-fleet.php',
+                'url'   => BASE_URL . '/rm-fleet',
                 'slug'  => 'rm-fleet',
             ],
             [
                 'title' => 'RM Remodeling',
-                'url'   => BASE_URL . '/rm-remodeling.php',
+                'url'   => BASE_URL . '/rm-remodeling',
                 'slug'  => 'rm-remodeling',
             ],
             [
                 'title' => 'RM Tools & Equipment',
-                'url'   => BASE_URL . '/rm-tools-equipment.php',
+                'url'   => BASE_URL . '/rm-tools-equipment',
                 'slug'  => 'rm-tools-equipment',
             ],
             [
                 'title' => 'RM Transport',
-                'url'   => BASE_URL . '/rm-transport.php',
+                'url'   => BASE_URL . '/rm-transport',
                 'slug'  => 'rm-transport',
             ],
         ],
     ],
     [
         'title' => 'Contact',
-        'url'   => BASE_URL . '/contact.php',
+        'url'   => BASE_URL . '/contact',
         'slug'  => 'contact',
     ],
 ];
+

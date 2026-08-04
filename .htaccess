@@ -1,0 +1,30 @@
+Options -Indexes
+Options +FollowSymLinks
+
+RewriteEngine On
+
+# ── Canonical domain redirect (live server only) ─────────────────
+# Uncomment when pointing to production domain:
+# RewriteCond %{HTTP_HOST} ^www\.rmgroupstrategies\.com$ [NC]
+# RewriteRule ^(.*)$ https://rmgroupstrategies.com/$1 [R=301,L]
+
+# ── Remove .php extension ────────────────────────────────────────
+# If someone visits /about.php, redirect them to /about (301)
+RewriteCond %{THE_REQUEST} \s/+(.+?)\.php[\s?] [NC]
+RewriteRule ^ /%1 [R=301,L,NE]
+
+# ── Internally serve the .php file when clean URL is requested ───
+# e.g. /about  →  serves about.php (no redirect, transparent)
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.+?)/?$ $1.php [L]
+
+# ── Block direct access to sensitive files ───────────────────────
+<FilesMatch "\.(sql|log|env|gitignore|md|json|lock)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# ── Disable server signature ─────────────────────────────────────
+ServerSignature Off
