@@ -38,10 +38,26 @@ if (!defined('SMTP_USER')) define('SMTP_USER', 'info@rmgroupstrategies.com');
 if (!defined('SMTP_PASS')) define('SMTP_PASS', '');
 define('SITE_LOCATION',       'Las Vegas, Nevada');
 define('SITE_URL',            'https://rmgroupstrategies.com');
-define('BASE_URL',            (in_array($_SERVER['HTTP_HOST'], ['localhost', '127.0.0.1']) ? '/rmgroupstrategies' : ''));
+$http_host = $_SERVER['HTTP_HOST'] ?? '';
+$host_only = strtolower(explode(':', $http_host)[0]);
+
+$is_local_env = (
+    empty($host_only) ||
+    $host_only === 'localhost' ||
+    $host_only === '127.0.0.1' ||
+    $host_only === '::1' ||
+    strpos($host_only, '192.168.') === 0 ||
+    strpos($host_only, '10.') === 0 ||
+    strpos($host_only, '172.16.') === 0 ||
+    strpos($host_only, '.local') !== false ||
+    strpos($host_only, '.test') !== false ||
+    php_sapi_name() === 'cli'
+);
+
+define('BASE_URL',            $is_local_env ? '/rmgroupstrategies' : '');
 define('SITE_YEAR',           date('Y'));
 
-if (in_array($_SERVER['HTTP_HOST'], ['localhost', '127.0.0.1'])) {
+if ($is_local_env) {
     define('DB_HOST', 'localhost');
     define('DB_USER', 'root');
     define('DB_PASS', '');
