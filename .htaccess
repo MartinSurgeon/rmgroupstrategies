@@ -8,8 +8,8 @@ RewriteEngine On
 # RewriteCond %{HTTP_HOST} ^www\.rmgroupstrategies\.com$ [NC]
 # RewriteRule ^(.*)$ https://rmgroupstrategies.com/$1 [R=301,L]
 
-# ── Remove .php extension ────────────────────────────────────────
-# If someone visits /about.php, redirect them to /about (301)
+# ── Remove .php extension (GET/HEAD only, never redirect POST) ──
+RewriteCond %{REQUEST_METHOD} !POST
 RewriteCond %{THE_REQUEST} \s/+(.+?)\.php[\s?] [NC]
 RewriteRule ^ /%1 [R=301,L,NE]
 

@@ -676,7 +676,7 @@ if (!empty($inquiry_type)) {
 
                         <?php else: ?>
                         <!-- Form Start (only shown when NO success state) -->
-                        <form action="<?php echo BASE_URL; ?>/contact.php" method="POST" id="contact-portal-form" class="space-y-6">
+                        <form action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>" method="POST" id="contact-portal-form" class="space-y-6">
                             
                             <!-- Hidden honeypot field for spam prevention -->
                             <div class="hidden" aria-hidden="true">

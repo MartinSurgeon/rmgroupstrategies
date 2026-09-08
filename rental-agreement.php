@@ -22,70 +22,92 @@ if (!isset($_SESSION['captcha_num1']) || !isset($_SESSION['captcha_num2'])) {
 }
 $captcha_question = "What is " . $_SESSION['captcha_num1'] . " + " . $_SESSION['captcha_num2'] . "?";
 
-// Ensure rental_agreements table exists
-try {
-    $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4";
-    $db = new PDO($dsn, DB_USER, DB_PASS);
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+// Robust database connection helper
+function get_rental_db() {
+    static $db_instance = null;
+    if ($db_instance instanceof PDO) {
+        return $db_instance;
+    }
+    try {
+        $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4";
+        $db_instance = new PDO($dsn, DB_USER, DB_PASS, [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_TIMEOUT => 5
+        ]);
+        return $db_instance;
+    } catch (Throwable $e) {
+        $log_dir = __DIR__ . '/scratch';
+        if (!file_exists($log_dir)) @mkdir($log_dir, 0777, true);
+        @file_put_contents($log_dir . '/submission_debug.log', "[" . date('Y-m-d H:i:s') . "] [DB CONNECT ERROR] " . $e->getMessage() . "\n", FILE_APPEND);
+        return null;
+    }
+}
 
-    $db->exec("CREATE TABLE IF NOT EXISTS rental_agreements (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        agreement_id VARCHAR(64) UNIQUE NOT NULL,
-        rental_type VARCHAR(50) NOT NULL DEFAULT 'individual',
-        legal_name VARCHAR(255) NOT NULL,
-        business_name VARCHAR(255) DEFAULT NULL,
-        billing_address TEXT NOT NULL,
-        city_state_zip VARCHAR(255) NOT NULL,
-        mobile_phone VARCHAR(50) NOT NULL,
-        alternate_phone VARCHAR(50) DEFAULT NULL,
-        email VARCHAR(255) NOT NULL,
-        driver_license_no VARCHAR(100) NOT NULL,
-        driver_license_state VARCHAR(50) NOT NULL,
-        driver_license_exp VARCHAR(50) NOT NULL,
-        date_of_birth VARCHAR(50) DEFAULT NULL,
-        authorized_rep VARCHAR(255) DEFAULT NULL,
-        emergency_contact_name VARCHAR(255) DEFAULT NULL,
-        emergency_contact_phone VARCHAR(50) DEFAULT NULL,
-        fulfillment_type VARCHAR(50) NOT NULL DEFAULT 'delivery',
-        jobsite_address TEXT NOT NULL,
-        jobsite_city_state_zip VARCHAR(255) NOT NULL,
-        project_type TEXT DEFAULT NULL,
-        authorized_operators TEXT DEFAULT NULL,
-        equipment_schedule LONGTEXT NOT NULL,
-        rental_start_date DATE NOT NULL,
-        rental_start_time VARCHAR(20) DEFAULT NULL,
-        rental_return_date DATE NOT NULL,
-        rental_return_time VARCHAR(20) DEFAULT NULL,
-        rental_duration_days INT NOT NULL DEFAULT 2,
-        estimated_rental_charge DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-        security_deposit DECIMAL(10,2) NOT NULL DEFAULT 50.00,
-        delivery_pickup_fee DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-        damage_waiver_status VARCHAR(20) DEFAULT 'declined',
-        damage_waiver_fee DECIMAL(10,2) DEFAULT 0.00,
-        taxes_amount DECIMAL(10,2) DEFAULT 0.00,
-        estimated_total DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-        payment_method VARCHAR(50) DEFAULT 'credit_card',
-        cardholder_name VARCHAR(255) DEFAULT NULL,
-        card_last_four VARCHAR(4) DEFAULT NULL,
-        card_exp VARCHAR(10) DEFAULT NULL,
-        insurance_carrier VARCHAR(255) DEFAULT NULL,
-        insurance_policy_no VARCHAR(100) DEFAULT NULL,
-        insurance_exp VARCHAR(50) DEFAULT NULL,
-        coi_status VARCHAR(50) DEFAULT 'not_required',
-        acknowledgments_accepted TINYINT(1) DEFAULT 1,
-        terms_accepted TINYINT(1) DEFAULT 1,
-        signature_type VARCHAR(50) DEFAULT 'drawn',
-        signature_data LONGTEXT DEFAULT NULL,
-        signer_printed_name VARCHAR(255) NOT NULL,
-        signer_ip VARCHAR(45) NOT NULL,
-        status VARCHAR(50) DEFAULT 'pending',
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
-} catch (Exception $e) {
-    $log_dir = __DIR__ . '/scratch';
-    if (!file_exists($log_dir)) @mkdir($log_dir, 0777, true);
-    @file_put_contents($log_dir . '/submission_debug.log', "[" . date('Y-m-d H:i:s') . "] [DB INIT ERROR] " . $e->getMessage() . "\n", FILE_APPEND);
+$db = get_rental_db();
+
+// Ensure rental_agreements table exists if DB is connected
+if ($db instanceof PDO) {
+    try {
+        $db->exec("CREATE TABLE IF NOT EXISTS rental_agreements (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            agreement_id VARCHAR(64) UNIQUE NOT NULL,
+            rental_type VARCHAR(50) NOT NULL DEFAULT 'individual',
+            legal_name VARCHAR(255) NOT NULL,
+            business_name VARCHAR(255) DEFAULT NULL,
+            billing_address TEXT NOT NULL,
+            city_state_zip VARCHAR(255) NOT NULL,
+            mobile_phone VARCHAR(50) NOT NULL,
+            alternate_phone VARCHAR(50) DEFAULT NULL,
+            email VARCHAR(255) NOT NULL,
+            driver_license_no VARCHAR(100) NOT NULL,
+            driver_license_state VARCHAR(50) NOT NULL,
+            driver_license_exp VARCHAR(50) NOT NULL,
+            date_of_birth VARCHAR(50) DEFAULT NULL,
+            authorized_rep VARCHAR(255) DEFAULT NULL,
+            emergency_contact_name VARCHAR(255) DEFAULT NULL,
+            emergency_contact_phone VARCHAR(50) DEFAULT NULL,
+            fulfillment_type VARCHAR(50) NOT NULL DEFAULT 'delivery',
+            jobsite_address TEXT NOT NULL,
+            jobsite_city_state_zip VARCHAR(255) NOT NULL,
+            project_type TEXT DEFAULT NULL,
+            authorized_operators TEXT DEFAULT NULL,
+            equipment_schedule LONGTEXT NOT NULL,
+            rental_start_date DATE NOT NULL,
+            rental_start_time VARCHAR(20) DEFAULT NULL,
+            rental_return_date DATE NOT NULL,
+            rental_return_time VARCHAR(20) DEFAULT NULL,
+            rental_duration_days INT NOT NULL DEFAULT 2,
+            estimated_rental_charge DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+            security_deposit DECIMAL(10,2) NOT NULL DEFAULT 50.00,
+            delivery_pickup_fee DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+            damage_waiver_status VARCHAR(20) DEFAULT 'declined',
+            damage_waiver_fee DECIMAL(10,2) DEFAULT 0.00,
+            taxes_amount DECIMAL(10,2) DEFAULT 0.00,
+            estimated_total DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+            payment_method VARCHAR(50) DEFAULT 'credit_card',
+            cardholder_name VARCHAR(255) DEFAULT NULL,
+            card_last_four VARCHAR(4) DEFAULT NULL,
+            card_exp VARCHAR(10) DEFAULT NULL,
+            insurance_carrier VARCHAR(255) DEFAULT NULL,
+            insurance_policy_no VARCHAR(100) DEFAULT NULL,
+            insurance_exp VARCHAR(50) DEFAULT NULL,
+            coi_status VARCHAR(50) DEFAULT 'not_required',
+            acknowledgments_accepted TINYINT(1) DEFAULT 1,
+            terms_accepted TINYINT(1) DEFAULT 1,
+            signature_type VARCHAR(50) DEFAULT 'drawn',
+            signature_data LONGTEXT DEFAULT NULL,
+            signer_printed_name VARCHAR(255) NOT NULL,
+            signer_ip VARCHAR(45) NOT NULL,
+            status VARCHAR(50) DEFAULT 'pending',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+    } catch (Throwable $e) {
+        $log_dir = __DIR__ . '/scratch';
+        if (!file_exists($log_dir)) @mkdir($log_dir, 0777, true);
+        @file_put_contents($log_dir . '/submission_debug.log', "[" . date('Y-m-d H:i:s') . "] [DB INIT ERROR] " . $e->getMessage() . "\n", FILE_APPEND);
+    }
 }
 
 // Form state variables
@@ -198,8 +220,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     // Section E: Payment & Insurance
     $payment_method         = filter_input(INPUT_POST, 'payment_method', FILTER_SANITIZE_SPECIAL_CHARS) ?: 'credit_card';
     $cardholder_name        = filter_input(INPUT_POST, 'cardholder_name', FILTER_SANITIZE_SPECIAL_CHARS);
-    $card_last_four         = filter_input(INPUT_POST, 'card_last_four', FILTER_SANITIZE_SPECIAL_CHARS);
+    $raw_card_four          = filter_input(INPUT_POST, 'card_last_four', FILTER_SANITIZE_SPECIAL_CHARS);
+    $card_last_four         = !empty($raw_card_four) ? substr(preg_replace('/\D/', '', $raw_card_four), -4) : null;
     $card_exp               = filter_input(INPUT_POST, 'card_exp', FILTER_SANITIZE_SPECIAL_CHARS);
+    if (!empty($card_exp))  $card_exp = substr($card_exp, 0, 10);
     $insurance_carrier      = filter_input(INPUT_POST, 'insurance_carrier', FILTER_SANITIZE_SPECIAL_CHARS);
     $insurance_policy_no    = filter_input(INPUT_POST, 'insurance_policy_no', FILTER_SANITIZE_SPECIAL_CHARS);
     $insurance_exp          = filter_input(INPUT_POST, 'insurance_exp', FILTER_SANITIZE_SPECIAL_CHARS);
@@ -315,82 +339,91 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         $signed_timestamp = date('Y-m-d H:i:s');
 
         // Save to Database
+        $db_saved = false;
+        $db_conn = get_rental_db();
         try {
-            $stmt = $db->prepare("INSERT INTO rental_agreements (
-                agreement_id, rental_type, legal_name, business_name, billing_address, city_state_zip,
-                mobile_phone, alternate_phone, email, driver_license_no, driver_license_state, driver_license_exp,
-                date_of_birth, authorized_rep, emergency_contact_name, emergency_contact_phone,
-                fulfillment_type, jobsite_address, jobsite_city_state_zip, project_type, authorized_operators,
-                equipment_schedule, rental_start_date, rental_start_time, rental_return_date, rental_return_time,
-                rental_duration_days, estimated_rental_charge, security_deposit, delivery_pickup_fee,
-                damage_waiver_status, damage_waiver_fee, taxes_amount, estimated_total,
-                payment_method, cardholder_name, card_last_four, card_exp,
-                insurance_carrier, insurance_policy_no, insurance_exp, coi_status,
-                acknowledgments_accepted, terms_accepted, signature_type, signature_data,
-                signer_printed_name, signer_ip, status
-            ) VALUES (
-                :agreement_id, :rental_type, :legal_name, :business_name, :billing_address, :city_state_zip,
-                :mobile_phone, :alternate_phone, :email, :driver_license_no, :driver_license_state, :driver_license_exp,
-                :date_of_birth, :authorized_rep, :emergency_contact_name, :emergency_contact_phone,
-                :fulfillment_type, :jobsite_address, :jobsite_city_state_zip, :project_type, :authorized_operators,
-                :equipment_schedule, :rental_start_date, :rental_start_time, :rental_return_date, :rental_return_time,
-                :rental_duration_days, :estimated_rental_charge, :security_deposit, :delivery_pickup_fee,
-                :damage_waiver_status, :damage_waiver_fee, :taxes_amount, :estimated_total,
-                :payment_method, :cardholder_name, :card_last_four, :card_exp,
-                :insurance_carrier, :insurance_policy_no, :insurance_exp, :coi_status,
-                1, 1, :signature_type, :signature_data,
-                :signer_printed_name, :signer_ip, 'pending'
-            )");
+            if ($db_conn instanceof PDO) {
+                $stmt = $db_conn->prepare("INSERT INTO rental_agreements (
+                    agreement_id, rental_type, legal_name, business_name, billing_address, city_state_zip,
+                    mobile_phone, alternate_phone, email, driver_license_no, driver_license_state, driver_license_exp,
+                    date_of_birth, authorized_rep, emergency_contact_name, emergency_contact_phone,
+                    fulfillment_type, jobsite_address, jobsite_city_state_zip, project_type, authorized_operators,
+                    equipment_schedule, rental_start_date, rental_start_time, rental_return_date, rental_return_time,
+                    rental_duration_days, estimated_rental_charge, security_deposit, delivery_pickup_fee,
+                    damage_waiver_status, damage_waiver_fee, taxes_amount, estimated_total,
+                    payment_method, cardholder_name, card_last_four, card_exp,
+                    insurance_carrier, insurance_policy_no, insurance_exp, coi_status,
+                    acknowledgments_accepted, terms_accepted, signature_type, signature_data,
+                    signer_printed_name, signer_ip, status
+                ) VALUES (
+                    :agreement_id, :rental_type, :legal_name, :business_name, :billing_address, :city_state_zip,
+                    :mobile_phone, :alternate_phone, :email, :driver_license_no, :driver_license_state, :driver_license_exp,
+                    :date_of_birth, :authorized_rep, :emergency_contact_name, :emergency_contact_phone,
+                    :fulfillment_type, :jobsite_address, :jobsite_city_state_zip, :project_type, :authorized_operators,
+                    :equipment_schedule, :rental_start_date, :rental_start_time, :rental_return_date, :rental_return_time,
+                    :rental_duration_days, :estimated_rental_charge, :security_deposit, :delivery_pickup_fee,
+                    :damage_waiver_status, :damage_waiver_fee, :taxes_amount, :estimated_total,
+                    :payment_method, :cardholder_name, :card_last_four, :card_exp,
+                    :insurance_carrier, :insurance_policy_no, :insurance_exp, :coi_status,
+                    1, 1, :signature_type, :signature_data,
+                    :signer_printed_name, :signer_ip, 'pending'
+                )");
 
-            $stmt->execute([
-                ':agreement_id'             => $agreement_id,
-                ':rental_type'               => $rental_type,
-                ':legal_name'                => $legal_name,
-                ':business_name'             => $business_name,
-                ':billing_address'           => $billing_address,
-                ':city_state_zip'            => $city_state_zip,
-                ':mobile_phone'              => $mobile_phone,
-                ':alternate_phone'           => $alternate_phone,
-                ':email'                     => $email,
-                ':driver_license_no'         => $driver_license_no,
-                ':driver_license_state'      => $driver_license_state,
-                ':driver_license_exp'        => $driver_license_exp,
-                ':date_of_birth'             => $date_of_birth,
-                ':authorized_rep'            => $authorized_rep,
-                ':emergency_contact_name'    => $emergency_contact_name,
-                ':emergency_contact_phone'   => $emergency_contact_phone,
-                ':fulfillment_type'          => $fulfillment_type,
-                ':jobsite_address'           => $jobsite_address,
-                ':jobsite_city_state_zip'    => $jobsite_city_state_zip,
-                ':project_type'              => $project_type,
-                ':authorized_operators'      => $authorized_operators,
-                ':equipment_schedule'        => json_encode($equipment_list),
-                ':rental_start_date'         => $start_date,
-                ':rental_start_time'         => $start_time,
-                ':rental_return_date'        => $return_date,
-                ':rental_return_time'        => $return_time,
-                ':rental_duration_days'      => $days,
-                ':estimated_rental_charge'   => $total_rental_charge,
-                ':security_deposit'          => $total_security_deposit,
-                ':delivery_pickup_fee'       => $delivery_pickup_fee,
-                ':damage_waiver_status'      => $damage_waiver_status,
-                ':damage_waiver_fee'         => $damage_waiver_fee,
-                ':taxes_amount'              => $taxes_amount,
-                ':estimated_total'           => $estimated_total,
-                ':payment_method'            => $payment_method,
-                ':cardholder_name'           => $cardholder_name,
-                ':card_last_four'            => $card_last_four,
-                ':card_exp'                  => $card_exp,
-                ':insurance_carrier'         => $insurance_carrier,
-                ':insurance_policy_no'       => $insurance_policy_no,
-                ':insurance_exp'             => $insurance_exp,
-                ':coi_status'                => $coi_status,
-                ':signature_type'            => $signature_type,
-                ':signature_data'            => $signature_data,
-                ':signer_printed_name'       => $signer_printed_name,
-                ':signer_ip'                 => $signer_ip
-            ]);
-        } catch (Exception $e) {
+                $stmt->execute([
+                    ':agreement_id'             => $agreement_id,
+                    ':rental_type'               => $rental_type,
+                    ':legal_name'                => $legal_name,
+                    ':business_name'             => $business_name,
+                    ':billing_address'           => $billing_address,
+                    ':city_state_zip'            => $city_state_zip,
+                    ':mobile_phone'              => $mobile_phone,
+                    ':alternate_phone'           => $alternate_phone,
+                    ':email'                     => $email,
+                    ':driver_license_no'         => $driver_license_no,
+                    ':driver_license_state'      => $driver_license_state,
+                    ':driver_license_exp'        => $driver_license_exp,
+                    ':date_of_birth'             => $date_of_birth,
+                    ':authorized_rep'            => $authorized_rep,
+                    ':emergency_contact_name'    => $emergency_contact_name,
+                    ':emergency_contact_phone'   => $emergency_contact_phone,
+                    ':fulfillment_type'          => $fulfillment_type,
+                    ':jobsite_address'           => $jobsite_address,
+                    ':jobsite_city_state_zip'    => $jobsite_city_state_zip,
+                    ':project_type'              => $project_type,
+                    ':authorized_operators'      => $authorized_operators,
+                    ':equipment_schedule'        => json_encode($equipment_list),
+                    ':rental_start_date'         => $start_date,
+                    ':rental_start_time'         => $start_time,
+                    ':rental_return_date'        => $return_date,
+                    ':rental_return_time'        => $return_time,
+                    ':rental_duration_days'      => $days,
+                    ':estimated_rental_charge'   => $total_rental_charge,
+                    ':security_deposit'          => $total_security_deposit,
+                    ':delivery_pickup_fee'       => $delivery_pickup_fee,
+                    ':damage_waiver_status'      => $damage_waiver_status,
+                    ':damage_waiver_fee'         => $damage_waiver_fee,
+                    ':taxes_amount'              => $taxes_amount,
+                    ':estimated_total'           => $estimated_total,
+                    ':payment_method'            => $payment_method,
+                    ':cardholder_name'           => $cardholder_name,
+                    ':card_last_four'            => $card_last_four,
+                    ':card_exp'                  => $card_exp,
+                    ':insurance_carrier'         => $insurance_carrier,
+                    ':insurance_policy_no'       => $insurance_policy_no,
+                    ':insurance_exp'             => $insurance_exp,
+                    ':coi_status'                => $coi_status,
+                    ':signature_type'            => $signature_type,
+                    ':signature_data'            => $signature_data,
+                    ':signer_printed_name'       => $signer_printed_name,
+                    ':signer_ip'                 => $signer_ip
+                ]);
+                $db_saved = true;
+            } else {
+                $log_dir = __DIR__ . '/scratch';
+                if (!file_exists($log_dir)) @mkdir($log_dir, 0777, true);
+                @file_put_contents($log_dir . '/submission_debug.log', "[" . date('Y-m-d H:i:s') . "] [DB INSERT ERROR] Database connection is null\n", FILE_APPEND);
+            }
+        } catch (Throwable $e) {
             $log_dir = __DIR__ . '/scratch';
             if (!file_exists($log_dir)) @mkdir($log_dir, 0777, true);
             @file_put_contents($log_dir . '/submission_debug.log', "[" . date('Y-m-d H:i:s') . "] [DB INSERT ERROR] " . $e->getMessage() . "\n", FILE_APPEND);
@@ -561,7 +594,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             SITE_EMAIL,
             SITE_NAME,
             null,
-            isset($db) ? $db : null
+            ($db_conn instanceof PDO ? $db_conn : (isset($db) ? $db : null))
         );
 
         // Small buffer to avoid mail server rate limit / connection bursts
@@ -577,7 +610,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             SITE_EMAIL,
             SITE_NAME,
             null,
-            isset($db) ? $db : null
+            ($db_conn instanceof PDO ? $db_conn : (isset($db) ? $db : null))
         );
 
         $completed_agreement = [
@@ -896,13 +929,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 </div>
                 <?php endif; ?>
 
-                <form action="<?php echo BASE_URL; ?>/rental-agreement.php" method="POST" id="eSignAgreementForm" class="p-6 sm:p-10 space-y-10">
+                <form action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>" method="POST" id="eSignAgreementForm" class="p-6 sm:p-10 space-y-10">
                     <input type="hidden" name="action" value="submit_esign_agreement">
                     <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
 
-                    <!-- Honeypot -->
-                    <div style="display:none;">
-                        <input type="text" name="website" autocomplete="off">
+                    <!-- Honeypot anti-spam -->
+                    <div style="position: absolute; left: -9999px; opacity: 0; pointer-events: none;" aria-hidden="true">
+                        <input type="text" name="website" tabindex="-1" autocomplete="new-password" value="">
                     </div>
 
                     <!-- ══════════════════════════════════════════════════
@@ -919,11 +952,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                             <div class="sm:col-span-2 flex flex-wrap gap-6 items-center bg-slate-50 p-3.5 rounded-lg border border-slate-200 text-xs font-semibold">
                                 <span class="text-slate-700">Rental Type: <span class="text-rose-500">*</span></span>
                                 <label class="inline-flex items-center gap-2 cursor-pointer">
-                                    <input type="radio" name="rental_type" value="individual" checked class="text-brand-gold focus:ring-brand-gold">
+                                    <input type="radio" name="rental_type" value="individual" <?php echo (!isset($_POST['rental_type']) || $_POST['rental_type'] === 'individual') ? 'checked' : ''; ?> class="text-brand-gold focus:ring-brand-gold">
                                     <span>Individual / Consumer</span>
                                 </label>
                                 <label class="inline-flex items-center gap-2 cursor-pointer">
-                                    <input type="radio" name="rental_type" value="commercial" class="text-brand-gold focus:ring-brand-gold">
+                                    <input type="radio" name="rental_type" value="commercial" <?php echo (isset($_POST['rental_type']) && $_POST['rental_type'] === 'commercial') ? 'checked' : ''; ?> class="text-brand-gold focus:ring-brand-gold">
                                     <span>Business / Commercial</span>
                                 </label>
                             </div>
@@ -933,7 +966,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                                 <label for="legal_name" class="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                                     Legal Name <span class="text-rose-500">*</span>
                                 </label>
-                                <input type="text" id="legal_name" name="legal_name" required placeholder="Full Legal Name" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm focus:border-brand-gold focus:ring-1 focus:ring-brand-gold outline-none" oninput="syncPrintedName(this.value)">
+                                <input type="text" id="legal_name" name="legal_name" required value="<?php echo htmlspecialchars($_POST['legal_name'] ?? ''); ?>" placeholder="Full Legal Name" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm focus:border-brand-gold focus:ring-1 focus:ring-brand-gold outline-none" oninput="syncPrintedName(this.value)">
                             </div>
 
                             <!-- Business Name -->
@@ -941,7 +974,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                                 <label for="business_name" class="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                                     Business Name (if any)
                                 </label>
-                                <input type="text" id="business_name" name="business_name" placeholder="Company or DBA" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm focus:border-brand-gold focus:ring-1 focus:ring-brand-gold outline-none">
+                                <input type="text" id="business_name" name="business_name" value="<?php echo htmlspecialchars($_POST['business_name'] ?? ''); ?>" placeholder="Company or DBA" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm focus:border-brand-gold focus:ring-1 focus:ring-brand-gold outline-none">
                             </div>
 
                             <!-- Billing Address -->
@@ -949,7 +982,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                                 <label for="billing_address" class="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                                     Billing Address <span class="text-rose-500">*</span>
                                 </label>
-                                <input type="text" id="billing_address" name="billing_address" required placeholder="Street Address" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm focus:border-brand-gold focus:ring-1 focus:ring-brand-gold outline-none">
+                                <input type="text" id="billing_address" name="billing_address" required value="<?php echo htmlspecialchars($_POST['billing_address'] ?? ''); ?>" placeholder="Street Address" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm focus:border-brand-gold focus:ring-1 focus:ring-brand-gold outline-none">
                             </div>
 
                             <!-- City / State / ZIP -->
@@ -957,7 +990,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                                 <label for="city_state_zip" class="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                                     City / State / ZIP <span class="text-rose-500">*</span>
                                 </label>
-                                <input type="text" id="city_state_zip" name="city_state_zip" required placeholder="Las Vegas, NV 89101" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm focus:border-brand-gold focus:ring-1 focus:ring-brand-gold outline-none">
+                                <input type="text" id="city_state_zip" name="city_state_zip" required value="<?php echo htmlspecialchars($_POST['city_state_zip'] ?? ''); ?>" placeholder="Las Vegas, NV 89101" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm focus:border-brand-gold focus:ring-1 focus:ring-brand-gold outline-none">
                             </div>
 
                             <!-- Mobile Phone -->
@@ -965,7 +998,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                                 <label for="mobile_phone" class="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                                     Mobile Phone <span class="text-rose-500">*</span>
                                 </label>
-                                <input type="tel" id="mobile_phone" name="mobile_phone" required placeholder="(702) 555-0199" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm focus:border-brand-gold focus:ring-1 focus:ring-brand-gold outline-none">
+                                <input type="tel" id="mobile_phone" name="mobile_phone" required value="<?php echo htmlspecialchars($_POST['mobile_phone'] ?? ''); ?>" placeholder="(702) 555-0199" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm focus:border-brand-gold focus:ring-1 focus:ring-brand-gold outline-none">
                             </div>
 
                             <!-- Alternate Phone -->
@@ -973,7 +1006,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                                 <label for="alternate_phone" class="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                                     Alternate Phone
                                 </label>
-                                <input type="tel" id="alternate_phone" name="alternate_phone" placeholder="Optional" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm focus:border-brand-gold focus:ring-1 focus:ring-brand-gold outline-none">
+                                <input type="tel" id="alternate_phone" name="alternate_phone" value="<?php echo htmlspecialchars($_POST['alternate_phone'] ?? ''); ?>" placeholder="Optional" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm focus:border-brand-gold focus:ring-1 focus:ring-brand-gold outline-none">
                             </div>
 
                             <!-- Email -->
@@ -981,7 +1014,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                                 <label for="email" class="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                                     Email Address (for signed copy delivery) <span class="text-rose-500">*</span>
                                 </label>
-                                <input type="email" id="email" name="email" required placeholder="lessee@company.com" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm focus:border-brand-gold focus:ring-1 focus:ring-brand-gold outline-none">
+                                <input type="email" id="email" name="email" required value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>" placeholder="lessee@company.com" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm focus:border-brand-gold focus:ring-1 focus:ring-brand-gold outline-none">
                             </div>
 
                             <!-- Driver License No / State / Exp -->
@@ -990,19 +1023,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                                     <label for="driver_license_no" class="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                                         Driver License / ID No. <span class="text-rose-500">*</span>
                                     </label>
-                                    <input type="text" id="driver_license_no" name="driver_license_no" required placeholder="ID Number" class="w-full px-3 py-2 rounded border border-slate-300 text-xs sm:text-sm">
+                                    <input type="text" id="driver_license_no" name="driver_license_no" required value="<?php echo htmlspecialchars($_POST['driver_license_no'] ?? ''); ?>" placeholder="ID Number" class="w-full px-3 py-2 rounded border border-slate-300 text-xs sm:text-sm">
                                 </div>
                                 <div>
                                     <label for="driver_license_state" class="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                                         State <span class="text-rose-500">*</span>
                                     </label>
-                                    <input type="text" id="driver_license_state" name="driver_license_state" required placeholder="NV" maxlength="2" class="w-full px-3 py-2 rounded border border-slate-300 text-xs sm:text-sm uppercase">
+                                    <input type="text" id="driver_license_state" name="driver_license_state" required value="<?php echo htmlspecialchars($_POST['driver_license_state'] ?? ''); ?>" placeholder="NV" maxlength="2" class="w-full px-3 py-2 rounded border border-slate-300 text-xs sm:text-sm uppercase">
                                 </div>
                                 <div>
                                     <label for="driver_license_exp" class="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                                         Expiration Date <span class="text-rose-500">*</span>
                                     </label>
-                                    <input type="text" id="driver_license_exp" name="driver_license_exp" required placeholder="MM/YY or MM/DD/YYYY" class="w-full px-3 py-2 rounded border border-slate-300 text-xs sm:text-sm">
+                                    <input type="text" id="driver_license_exp" name="driver_license_exp" required value="<?php echo htmlspecialchars($_POST['driver_license_exp'] ?? ''); ?>" placeholder="MM/YY or MM/DD/YYYY" class="w-full px-3 py-2 rounded border border-slate-300 text-xs sm:text-sm">
                                 </div>
                             </div>
 
@@ -1011,14 +1044,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                                 <label for="date_of_birth" class="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                                     Date of Birth (if required for verification)
                                 </label>
-                                <input type="date" id="date_of_birth" name="date_of_birth" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm">
+                                <input type="date" id="date_of_birth" name="date_of_birth" value="<?php echo htmlspecialchars($_POST['date_of_birth'] ?? ''); ?>" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm">
                             </div>
 
                             <div>
                                 <label for="authorized_rep" class="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                                     Authorized Business Representative
                                 </label>
-                                <input type="text" id="authorized_rep" name="authorized_rep" placeholder="If renting on behalf of company" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm">
+                                <input type="text" id="authorized_rep" name="authorized_rep" value="<?php echo htmlspecialchars($_POST['authorized_rep'] ?? ''); ?>" placeholder="If renting on behalf of company" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm">
                             </div>
 
                             <!-- Emergency Contact -->
@@ -1027,13 +1060,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                                     <label for="emergency_contact_name" class="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                                         Emergency Contact Name
                                     </label>
-                                    <input type="text" id="emergency_contact_name" name="emergency_contact_name" placeholder="Full Name" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm">
+                                    <input type="text" id="emergency_contact_name" name="emergency_contact_name" value="<?php echo htmlspecialchars($_POST['emergency_contact_name'] ?? ''); ?>" placeholder="Full Name" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm">
                                 </div>
                                 <div>
                                     <label for="emergency_contact_phone" class="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                                         Emergency Contact Phone
                                     </label>
-                                    <input type="tel" id="emergency_contact_phone" name="emergency_contact_phone" placeholder="Phone Number" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm">
+                                    <input type="tel" id="emergency_contact_phone" name="emergency_contact_phone" value="<?php echo htmlspecialchars($_POST['emergency_contact_phone'] ?? ''); ?>" placeholder="Phone Number" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm">
                                 </div>
                             </div>
                         </div>
@@ -1053,11 +1086,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                             <div class="sm:col-span-2 flex flex-wrap gap-6 items-center bg-slate-50 p-3.5 rounded-lg border border-slate-200 text-xs font-semibold">
                                 <span class="text-slate-700">Fulfillment Method: <span class="text-rose-500">*</span></span>
                                 <label class="inline-flex items-center gap-2 cursor-pointer">
-                                    <input type="radio" name="fulfillment_type" value="delivery" checked class="text-brand-gold focus:ring-brand-gold">
+                                    <input type="radio" name="fulfillment_type" value="delivery" <?php echo (!isset($_POST['fulfillment_type']) || $_POST['fulfillment_type'] === 'delivery') ? 'checked' : ''; ?> class="text-brand-gold focus:ring-brand-gold">
                                     <span>Delivery Requested (Las Vegas / North Las Vegas / Henderson)</span>
                                 </label>
                                 <label class="inline-flex items-center gap-2 cursor-pointer">
-                                    <input type="radio" name="fulfillment_type" value="pickup" class="text-brand-gold focus:ring-brand-gold">
+                                    <input type="radio" name="fulfillment_type" value="pickup" <?php echo (isset($_POST['fulfillment_type']) && $_POST['fulfillment_type'] === 'pickup') ? 'checked' : ''; ?> class="text-brand-gold focus:ring-brand-gold">
                                     <span>Customer Pickup</span>
                                 </label>
                             </div>
@@ -1067,7 +1100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                                 <label for="jobsite_address" class="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                                     Jobsite / Use Address <span class="text-rose-500">*</span>
                                 </label>
-                                <input type="text" id="jobsite_address" name="jobsite_address" required placeholder="Street address where equipment will be operated" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm">
+                                <input type="text" id="jobsite_address" name="jobsite_address" required value="<?php echo htmlspecialchars($_POST['jobsite_address'] ?? ''); ?>" placeholder="Street address where equipment will be operated" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm">
                             </div>
 
                             <!-- City / State / ZIP -->
@@ -1075,7 +1108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                                 <label for="jobsite_city_state_zip" class="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                                     Jobsite City / State / ZIP <span class="text-rose-500">*</span>
                                 </label>
-                                <input type="text" id="jobsite_city_state_zip" name="jobsite_city_state_zip" required placeholder="Las Vegas, NV 89101" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm">
+                                <input type="text" id="jobsite_city_state_zip" name="jobsite_city_state_zip" required value="<?php echo htmlspecialchars($_POST['jobsite_city_state_zip'] ?? ''); ?>" placeholder="Las Vegas, NV 89101" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm">
                             </div>
 
                             <!-- Type of Project -->
@@ -1083,7 +1116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                                 <label for="project_type" class="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                                     Type of Project / Intended Use
                                 </label>
-                                <input type="text" id="project_type" name="project_type" placeholder="e.g. Concrete removal, tenant remodel, drying" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm">
+                                <input type="text" id="project_type" name="project_type" value="<?php echo htmlspecialchars($_POST['project_type'] ?? ''); ?>" placeholder="e.g. Concrete removal, tenant remodel, drying" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm">
                             </div>
 
                             <!-- Authorized Operators -->
@@ -1091,7 +1124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                                 <label for="authorized_operators" class="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                                     Authorized Operators
                                 </label>
-                                <input type="text" id="authorized_operators" name="authorized_operators" placeholder="Names of trained personnel operating tool" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm">
+                                <input type="text" id="authorized_operators" name="authorized_operators" value="<?php echo htmlspecialchars($_POST['authorized_operators'] ?? ''); ?>" placeholder="Names of trained personnel operating tool" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm">
                             </div>
                         </div>
                     </div>
@@ -1121,7 +1154,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                                     <!-- Tool 1 -->
                                     <tr class="hover:bg-amber-50/50 transition-colors">
                                         <td class="p-3 text-center">
-                                            <input type="checkbox" name="tools[]" value="jackhammer" id="chk_jackhammer" checked class="tool-checkbox text-brand-gold focus:ring-brand-gold h-4 w-4 rounded" onchange="calculateFormCharges()">
+                                            <input type="checkbox" name="tools[]" value="jackhammer" id="chk_jackhammer" <?php echo (!isset($_POST['action']) || (isset($_POST['tools']) && in_array('jackhammer', $_POST['tools']))) ? 'checked' : ''; ?> class="tool-checkbox text-brand-gold focus:ring-brand-gold h-4 w-4 rounded" onchange="calculateFormCharges()">
                                         </td>
                                         <td class="p-3">
                                             <label for="chk_jackhammer" class="font-bold text-slate-900 cursor-pointer">
@@ -1138,7 +1171,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                                     <!-- Tool 2 -->
                                     <tr class="hover:bg-amber-50/50 transition-colors">
                                         <td class="p-3 text-center">
-                                            <input type="checkbox" name="tools[]" value="blower" id="chk_blower" class="tool-checkbox text-brand-gold focus:ring-brand-gold h-4 w-4 rounded" onchange="calculateFormCharges()">
+                                            <input type="checkbox" name="tools[]" value="blower" id="chk_blower" <?php echo ((isset($_POST['tools']) && in_array('blower', $_POST['tools'])) || (!isset($_POST['action']) && $param_tool === 'blower')) ? 'checked' : ''; ?> class="tool-checkbox text-brand-gold focus:ring-brand-gold h-4 w-4 rounded" onchange="calculateFormCharges()">
                                         </td>
                                         <td class="p-3">
                                             <label for="chk_blower" class="font-bold text-slate-900 cursor-pointer">
@@ -1174,13 +1207,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                                 <label for="start_date" class="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                                     Rental Start Date <span class="text-rose-500">*</span>
                                 </label>
-                                <input type="date" id="start_date" name="start_date" required min="<?php echo date('Y-m-d'); ?>" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm" onchange="calculateFormCharges()">
+                                <input type="date" id="start_date" name="start_date" required min="<?php echo date('Y-m-d'); ?>" value="<?php echo htmlspecialchars($_POST['start_date'] ?? ''); ?>" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm" onchange="calculateFormCharges()">
                             </div>
                             <div>
                                 <label for="start_time" class="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                                     Start Time
                                 </label>
-                                <input type="time" id="start_time" name="start_time" value="08:00" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm">
+                                <input type="time" id="start_time" name="start_time" value="<?php echo htmlspecialchars($_POST['start_time'] ?? '08:00'); ?>" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm">
                             </div>
 
                             <!-- Scheduled Return -->
@@ -1188,13 +1221,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                                 <label for="return_date" class="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                                     Scheduled Return Date <span class="text-rose-500">*</span> <span class="text-[11px] text-brand-gold font-normal">(Min. 2 Days)</span>
                                 </label>
-                                <input type="date" id="return_date" name="return_date" required min="<?php echo date('Y-m-d', strtotime('+1 day')); ?>" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm" onchange="calculateFormCharges()">
+                                <input type="date" id="return_date" name="return_date" required min="<?php echo date('Y-m-d', strtotime('+1 day')); ?>" value="<?php echo htmlspecialchars($_POST['return_date'] ?? ''); ?>" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm" onchange="calculateFormCharges()">
                             </div>
                             <div>
                                 <label for="return_time" class="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                                     Return Time
                                 </label>
-                                <input type="time" id="return_time" name="return_time" value="17:00" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm">
+                                <input type="time" id="return_time" name="return_time" value="<?php echo htmlspecialchars($_POST['return_time'] ?? '17:00'); ?>" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm">
                             </div>
                         </div>
 
@@ -1220,11 +1253,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                                 <span class="text-slate-600">Damage Waiver (Optional Protection):</span>
                                 <div class="flex items-center gap-4">
                                     <label class="inline-flex items-center gap-1.5 cursor-pointer">
-                                        <input type="radio" name="damage_waiver" value="declined" checked class="text-brand-gold focus:ring-brand-gold" onchange="calculateFormCharges()">
+                                        <input type="radio" name="damage_waiver" value="declined" <?php echo (!isset($_POST['damage_waiver']) || $_POST['damage_waiver'] === 'declined') ? 'checked' : ''; ?> class="text-brand-gold focus:ring-brand-gold" onchange="calculateFormCharges()">
                                         <span>Declined</span>
                                     </label>
                                     <label class="inline-flex items-center gap-1.5 cursor-pointer">
-                                        <input type="radio" name="damage_waiver" value="accepted" class="text-brand-gold focus:ring-brand-gold" onchange="calculateFormCharges()">
+                                        <input type="radio" name="damage_waiver" value="accepted" <?php echo (isset($_POST['damage_waiver']) && $_POST['damage_waiver'] === 'accepted') ? 'checked' : ''; ?> class="text-brand-gold focus:ring-brand-gold" onchange="calculateFormCharges()">
                                         <span>Accepted (+$15/day)</span>
                                     </label>
                                 </div>
@@ -1260,10 +1293,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                                     Payment Method <span class="text-rose-500">*</span>
                                 </label>
                                 <select name="payment_method" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm">
-                                    <option value="credit_card">Credit / Debit Card</option>
-                                    <option value="ach">ACH Transfer</option>
-                                    <option value="invoice">Invoice (Approved Business Account)</option>
-                                    <option value="payment_on_delivery">Payment on Delivery</option>
+                                    <option value="credit_card" <?php echo (!isset($_POST['payment_method']) || $_POST['payment_method'] === 'credit_card') ? 'selected' : ''; ?>>Credit / Debit Card</option>
+                                    <option value="ach" <?php echo (isset($_POST['payment_method']) && $_POST['payment_method'] === 'ach') ? 'selected' : ''; ?>>ACH Transfer</option>
+                                    <option value="invoice" <?php echo (isset($_POST['payment_method']) && $_POST['payment_method'] === 'invoice') ? 'selected' : ''; ?>>Invoice (Approved Business Account)</option>
+                                    <option value="payment_on_delivery" <?php echo (isset($_POST['payment_method']) && $_POST['payment_method'] === 'payment_on_delivery') ? 'selected' : ''; ?>>Payment on Delivery</option>
                                 </select>
                             </div>
 
@@ -1272,7 +1305,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                                 <label for="cardholder_name" class="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                                     Cardholder / Account Name
                                 </label>
-                                <input type="text" id="cardholder_name" name="cardholder_name" placeholder="Name on Card" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm">
+                                <input type="text" id="cardholder_name" name="cardholder_name" value="<?php echo htmlspecialchars($_POST['cardholder_name'] ?? ''); ?>" placeholder="Name on Card" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm">
                             </div>
 
                             <!-- Last 4 Digits & Exp -->
@@ -1281,13 +1314,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                                     <label for="card_last_four" class="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                                         Last 4 Digits
                                     </label>
-                                    <input type="text" id="card_last_four" name="card_last_four" maxlength="4" placeholder="4321" class="w-full px-3 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm text-center font-mono">
+                                    <input type="text" id="card_last_four" name="card_last_four" maxlength="4" value="<?php echo htmlspecialchars($_POST['card_last_four'] ?? ''); ?>" placeholder="4321" class="w-full px-3 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm text-center font-mono">
                                 </div>
                                 <div>
                                     <label for="card_exp" class="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                                         Exp.
                                     </label>
-                                    <input type="text" id="card_exp" name="card_exp" placeholder="MM/YY" maxlength="5" class="w-full px-3 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm text-center font-mono">
+                                    <input type="text" id="card_exp" name="card_exp" placeholder="MM/YY" maxlength="5" value="<?php echo htmlspecialchars($_POST['card_exp'] ?? ''); ?>" class="w-full px-3 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm text-center font-mono">
                                 </div>
                             </div>
 
@@ -1296,14 +1329,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                                 <label for="insurance_carrier" class="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                                     Insurance Carrier (if required)
                                 </label>
-                                <input type="text" id="insurance_carrier" name="insurance_carrier" placeholder="Carrier Name" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm">
+                                <input type="text" id="insurance_carrier" name="insurance_carrier" value="<?php echo htmlspecialchars($_POST['insurance_carrier'] ?? ''); ?>" placeholder="Carrier Name" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm">
                             </div>
 
                             <div>
                                 <label for="insurance_policy_no" class="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                                     Policy No.
                                 </label>
-                                <input type="text" id="insurance_policy_no" name="insurance_policy_no" placeholder="Policy #" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm">
+                                <input type="text" id="insurance_policy_no" name="insurance_policy_no" value="<?php echo htmlspecialchars($_POST['insurance_policy_no'] ?? ''); ?>" placeholder="Policy #" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm">
                             </div>
 
                             <div>
@@ -1312,11 +1345,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                                 </label>
                                 <div class="flex gap-4 pt-2 text-xs">
                                     <label class="inline-flex items-center gap-1.5">
-                                        <input type="radio" name="coi_status" value="not_required" checked class="text-brand-gold focus:ring-brand-gold">
+                                        <input type="radio" name="coi_status" value="not_required" <?php echo (!isset($_POST['coi_status']) || $_POST['coi_status'] === 'not_required') ? 'checked' : ''; ?> class="text-brand-gold focus:ring-brand-gold">
                                         <span>Not Required</span>
                                     </label>
                                     <label class="inline-flex items-center gap-1.5">
-                                        <input type="radio" name="coi_status" value="attached" class="text-brand-gold focus:ring-brand-gold">
+                                        <input type="radio" name="coi_status" value="attached" <?php echo (isset($_POST['coi_status']) && $_POST['coi_status'] === 'attached') ? 'checked' : ''; ?> class="text-brand-gold focus:ring-brand-gold">
                                         <span>Provided to Dispatch</span>
                                     </label>
                                 </div>
@@ -1465,7 +1498,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                                     <label for="signer_printed_name" class="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                                         Signer Printed Legal Name <span class="text-rose-500">*</span>
                                     </label>
-                                    <input type="text" id="signer_printed_name" name="signer_printed_name" required placeholder="Full Legal Name" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm font-semibold">
+                                    <input type="text" id="signer_printed_name" name="signer_printed_name" required value="<?php echo htmlspecialchars($_POST['signer_printed_name'] ?? ''); ?>" placeholder="Full Legal Name" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm font-semibold">
                                 </div>
                                 <div class="text-xs text-slate-500 flex flex-col justify-end">
                                     <span><strong>Signing Date:</strong> <?php echo date('F j, Y'); ?></span>
@@ -1595,15 +1628,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     }
 
     // HTML5 Canvas Drawing
-    let canvas, ctx, isDrawing = false;
+    let canvas, ctx, isDrawing = false, hasDrawn = false;
 
     function initSignatureCanvas() {
         canvas = document.getElementById('signatureCanvas');
         if (!canvas) return;
 
-        // Resize properly
-        canvas.width = canvas.parentElement.clientWidth;
-        canvas.height = canvas.parentElement.clientHeight;
+        // Resize properly with fallbacks
+        const parentW = canvas.parentElement.clientWidth || canvas.offsetWidth || 500;
+        const parentH = canvas.parentElement.clientHeight || canvas.offsetHeight || 176;
+        canvas.width = Math.max(parentW, 300);
+        canvas.height = Math.max(parentH, 150);
 
         ctx = canvas.getContext('2d');
         ctx.strokeStyle = '#0B1727';
@@ -1627,6 +1662,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
         function startDraw(e) {
             isDrawing = true;
+            hasDrawn = true;
             const pos = getPos(e);
             ctx.beginPath();
             ctx.moveTo(pos.x, pos.y);
@@ -1664,6 +1700,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         if (!canvas || !ctx) return;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         document.getElementById('signature_data').value = '';
+        hasDrawn = false;
     }
 
     // Print & PDF Export Trigger
@@ -1699,8 +1736,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             form.addEventListener('submit', (e) => {
                 const sigType = document.getElementById('signature_type').value;
                 const sigData = document.getElementById('signature_data');
-                if (sigType === 'drawn' && (!sigData.value || sigData.value.length < 50)) {
-                    if (canvas) {
+                if (sigType === 'drawn') {
+                    if (!hasDrawn && (!sigData.value || sigData.value.length < 100)) {
+                        alert('Please draw your signature in the signature box before submitting.');
+                        e.preventDefault();
+                        return false;
+                    }
+                    if (canvas && (!sigData.value || sigData.value.length < 50)) {
                         sigData.value = canvas.toDataURL('image/png');
                     }
                 } else if (sigType === 'typed') {
@@ -1713,6 +1755,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 if (!sigData.value) {
                     alert('Please apply an electronic signature before submitting.');
                     e.preventDefault();
+                    return false;
                 }
             });
         }
@@ -1721,13 +1764,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     window.addEventListener('resize', () => {
         if (canvas && ctx && document.getElementById('signature_type').value === 'drawn') {
             const currentData = document.getElementById('signature_data').value;
-            canvas.width = canvas.parentElement.clientWidth;
-            canvas.height = canvas.parentElement.clientHeight;
+            const parentW = canvas.parentElement.clientWidth || canvas.offsetWidth || 500;
+            const parentH = canvas.parentElement.clientHeight || canvas.offsetHeight || 176;
+            canvas.width = Math.max(parentW, 300);
+            canvas.height = Math.max(parentH, 150);
             ctx.strokeStyle = '#0B1727';
             ctx.lineWidth = 2.5;
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
-            if (currentData) {
+            if (currentData && currentData.startsWith('data:image')) {
                 const img = new Image();
                 img.onload = () => ctx.drawImage(img, 0, 0);
                 img.src = currentData;

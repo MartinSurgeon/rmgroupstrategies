@@ -757,7 +757,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
             <!-- Form Card -->
             <div class="bg-[#0f1e33] border border-brand-gold/40 rounded-2xl p-6 sm:p-10 shadow-2xl">
-                <form action="<?php echo BASE_URL; ?>/rm-tools-equipment.php#reservation-form" method="POST" class="space-y-6" id="equipmentRentalForm">
+                <form action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>#reservation-form" method="POST" class="space-y-6" id="equipmentRentalForm">
                     <input type="hidden" name="action" value="rental_reservation">
                     <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
 
