@@ -396,14 +396,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             @file_put_contents($log_dir . '/submission_debug.log', "[" . date('Y-m-d H:i:s') . "] [DB INSERT ERROR] " . $e->getMessage() . "\n", FILE_APPEND);
         }
 
-        // Email Dispatch
-        $to = defined('EMAIL_EQUIPMENT') ? EMAIL_EQUIPMENT : 'info@rmgroupstrategies.com';
+        // ── Email Generation & Multi-Tier Dispatch ─────────────────────────────
+        require_once __DIR__ . '/includes/mailer.php';
+
+        $base_domain = defined('SITE_URL') ? rtrim(SITE_URL, '/') : 'https://rmgroupstrategies.com';
+        $view_agreement_url = $base_domain . (defined('BASE_URL') ? BASE_URL : '') . '/rental-agreement.php?view=' . urlencode($agreement_id);
+
+        $to = defined('EMAIL_EQUIPMENT') ? EMAIL_EQUIPMENT : (defined('SITE_EMAIL') ? SITE_EMAIL : 'info@rmgroupstrategies.com');
         $subject = "SIGNED RENTAL AGREEMENT [" . $agreement_id . "] — " . $legal_name;
 
+        // Staff Plain-Text Notification
         $mail_body = "RM TOOLS & EQUIPMENT — SIGNED ONLINE RENTAL APPLICATION + E-SIGN AGREEMENT\n";
         $mail_body .= "Agreement ID: " . $agreement_id . "\n";
         $mail_body .= "Timestamp: " . $signed_timestamp . " UTC\n";
-        $mail_body .= "Signer IP: " . $signer_ip . "\n\n";
+        $mail_body .= "Signer IP: " . $signer_ip . "\n";
+        $mail_body .= "View Agreement Online: " . $view_agreement_url . "\n\n";
         $mail_body .= "========================================================\n";
         $mail_body .= "SECTION A: CUSTOMER / BUSINESS APPLICATION\n";
         $mail_body .= "Rental Type: " . ucfirst($rental_type) . "\n";
@@ -433,26 +440,145 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         $mail_body .= "Signature Type: " . ucfirst($signature_type) . "\n";
         $mail_body .= "Electronic Consent: Agreed & Legally Bound under Nevada UCC Article 2A.\n";
 
-        // Dispatch email
-        $mail_sent_staff = false;
-        $mail_sent_client = false;
+        // Staff Branded HTML Notification
+        $staff_content_html = '
+        <div style="background-color: #f1f5f9; border-left: 4px solid #D4AF37; padding: 16px 20px; border-radius: 4px; margin-bottom: 24px;">
+            <p style="margin: 0 0 6px 0; font-size: 16px; font-weight: bold; color: #0f172a;">New Signed Rental Agreement Submitted</p>
+            <p style="margin: 0; font-size: 14px; color: #475569;">Agreement ID: <strong style="color: #D4AF37;">' . htmlspecialchars($agreement_id) . '</strong> • Signed by: <strong>' . htmlspecialchars($legal_name) . '</strong></p>
+        </div>
 
-        if (defined('SMTP_PASS') && !empty(SMTP_PASS)) {
-            require_once __DIR__ . '/includes/mailer.php';
-            $mailer = new SimpleSMTPMailer(SMTP_HOST, defined('SMTP_PORT') ? SMTP_PORT : 465, SMTP_USER, SMTP_PASS, defined('SMTP_ENC') ? SMTP_ENC : 'ssl');
-            list($mail_sent_staff, $msg1) = $mailer->send($to, $subject, $mail_body, SITE_EMAIL, SITE_NAME, $email);
-            // Also send copy directly to client
-            list($mail_sent_client, $msg2) = $mailer->send($email, "Your Signed Rental Agreement — RM Tools & Equipment [" . $agreement_id . "]", $mail_body, SITE_EMAIL, SITE_NAME);
-            
-            $log_dir = __DIR__ . '/scratch';
-            if (!file_exists($log_dir)) @mkdir($log_dir, 0777, true);
-            @file_put_contents($log_dir . '/submission_debug.log', "[" . date('Y-m-d H:i:s') . "] [EMAIL SMTP] Staff sent: " . ($mail_sent_staff ? 'YES' : 'NO') . ", Client sent: " . ($mail_sent_client ? 'YES' : 'NO') . "\n", FILE_APPEND);
-        } else {
-            $log_dir = __DIR__ . '/scratch';
-            if (!file_exists($log_dir)) @mkdir($log_dir, 0777, true);
-            @file_put_contents($log_dir . '/signed_agreement_' . $agreement_id . '.txt', "TO: $to\nCLIENT COPY TO: $email\nSUBJECT: $subject\n\n$mail_body");
-            @file_put_contents($log_dir . '/submission_debug.log', "[" . date('Y-m-d H:i:s') . "] [EMAIL SIMULATED] Saved to scratch/signed_agreement_" . $agreement_id . ".txt\n", FILE_APPEND);
+        <h3 style="font-size: 15px; color: #0f172a; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px; margin: 20px 0 12px 0;">Customer &amp; Contact</h3>
+        <table width="100%" cellpadding="6" cellspacing="0" style="font-size: 14px; margin-bottom: 20px;">
+            <tr><td width="35%" style="color: #64748b;">Legal Name:</td><td><strong>' . htmlspecialchars($legal_name) . '</strong></td></tr>
+            ' . (!empty($business_name) ? '<tr><td style="color: #64748b;">Business:</td><td>' . htmlspecialchars($business_name) . '</td></tr>' : '') . '
+            <tr><td style="color: #64748b;">Email:</td><td><a href="mailto:' . htmlspecialchars($email) . '" style="color: #D4AF37;">' . htmlspecialchars($email) . '</a></td></tr>
+            <tr><td style="color: #64748b;">Phone:</td><td><a href="tel:' . htmlspecialchars($mobile_phone) . '" style="color: #0f172a; text-decoration: none; font-weight: 600;">' . htmlspecialchars($mobile_phone) . '</a></td></tr>
+            <tr><td style="color: #64748b;">Driver License:</td><td>' . htmlspecialchars($driver_license_no) . ' (' . htmlspecialchars($driver_license_state) . ') Exp: ' . htmlspecialchars($driver_license_exp) . '</td></tr>
+            <tr><td style="color: #64748b;">Jobsite Delivery:</td><td>' . htmlspecialchars($jobsite_address) . ', ' . htmlspecialchars($jobsite_city_state_zip) . '</td></tr>
+        </table>
+
+        <h3 style="font-size: 15px; color: #0f172a; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px; margin: 20px 0 12px 0;">Rental &amp; Equipment Schedule</h3>
+        <table width="100%" cellpadding="6" cellspacing="0" style="font-size: 14px; margin-bottom: 20px;">
+            <tr><td width="35%" style="color: #64748b;">Period:</td><td><strong>' . $days . ' Days</strong> (' . htmlspecialchars($start_date . ' ' . $start_time) . ' to ' . htmlspecialchars($return_date . ' ' . $return_time) . ')</td></tr>
+            <tr><td style="color: #64748b;">Rental Fee:</td><td>$' . number_format($total_rental_charge, 2) . '</td></tr>
+            <tr><td style="color: #64748b;">Refundable Deposit:</td><td>$' . number_format($total_security_deposit, 2) . '</td></tr>
+            <tr><td style="color: #64748b;">Estimated Total:</td><td><strong style="color: #0f172a; font-size: 16px;">$' . number_format($estimated_total, 2) . '</strong></td></tr>
+            <tr><td style="color: #64748b;">Payment Method:</td><td>' . htmlspecialchars(ucwords(str_replace('_', ' ', $payment_method))) . (!empty($card_last_four) ? ' (Card ending in **** ' . htmlspecialchars($card_last_four) . ')' : '') . '</td></tr>
+        </table>
+
+        <h3 style="font-size: 15px; color: #0f172a; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px; margin: 20px 0 12px 0;">Audit &amp; Signature Verification</h3>
+        <p style="font-size: 13px; color: #475569; margin: 0 0 6px 0;">Signer Printed Name: <strong>' . htmlspecialchars($signer_printed_name) . '</strong></p>
+        <p style="font-size: 13px; color: #475569; margin: 0 0 6px 0;">Signer IP Address: <code>' . htmlspecialchars($signer_ip) . '</code></p>
+        <p style="font-size: 13px; color: #475569; margin: 0 0 6px 0;">Timestamp: ' . htmlspecialchars($signed_timestamp) . ' UTC</p>
+        <p style="font-size: 13px; color: #047857; margin: 0;">Electronic Consent: Agreed &amp; Legally Binding (Nevada UCC Article 2A)</p>';
+
+        $staff_html = build_branded_email_html(
+            "New Signed Rental Agreement",
+            "Operations Dispatch",
+            $staff_content_html,
+            $view_agreement_url,
+            "View Full Agreement in Portal"
+        );
+
+        // ── Client / Customer Confirmation Email ──
+        $client_subject = "Your Signed Rental Agreement Copy — RM Tools & Equipment [" . $agreement_id . "]";
+
+        $client_plain = "Dear " . $legal_name . ",\n\n";
+        $client_plain .= "Thank you for completing your Online Rental Application and E-Sign Agreement with RM Tools & Equipment (RM Group Strategies LLC).\n\n";
+        $client_plain .= "Your agreement has been successfully recorded and is pending dispatch delivery coordination.\n\n";
+        $client_plain .= "========================================================\n";
+        $client_plain .= "RENTAL AGREEMENT SUMMARY\n";
+        $client_plain .= "Agreement ID: " . $agreement_id . "\n";
+        $client_plain .= "Signer Name: " . $legal_name . "\n";
+        $client_plain .= "Rental Duration: " . $days . " days (" . $start_date . " " . $start_time . " to " . $return_date . " " . $return_time . ")\n";
+        $client_plain .= "Jobsite Delivery Address: " . $jobsite_address . ", " . $jobsite_city_state_zip . "\n\n";
+        $client_plain .= "EQUIPMENT SCHEDULE:\n";
+        foreach ($equipment_list as $eq) {
+            $client_plain .= "- " . $eq['qty'] . "x " . $eq['tool'] . " | Rate: $" . number_format($eq['item_charge'], 2) . "\n";
         }
+        $client_plain .= "\nCHARGES & DEPOSITS:\n";
+        $client_plain .= "- Estimated Rental Fee: $" . number_format($total_rental_charge, 2) . "\n";
+        $client_plain .= "- Refundable Security Deposit: $" . number_format($total_security_deposit, 2) . "\n";
+        $client_plain .= "- Estimated Total: $" . number_format($estimated_total, 2) . "\n\n";
+        $client_plain .= "VIEW & PRINT YOUR SIGNED AGREEMENT:\n";
+        $client_plain .= "You can view, download, or print your official signed agreement anytime at:\n";
+        $client_plain .= $view_agreement_url . "\n\n";
+        $client_plain .= "NEXT STEPS:\n";
+        $client_plain .= "Our equipment dispatch team will contact you at " . $mobile_phone . " prior to delivery to confirm your access window.\n";
+        $client_plain .= "Please have a valid government-issued photo ID available upon delivery.\n\n";
+        $client_plain .= "SUPPORT & ASSISTANCE:\n";
+        $client_plain .= "Phone: " . (defined('SITE_PHONE_DISPLAY') ? SITE_PHONE_DISPLAY : '(702) 504-8128') . "\n";
+        $client_plain .= "Email: " . (defined('SITE_EMAIL') ? SITE_EMAIL : 'info@rmgroupstrategies.com') . "\n";
+        $client_plain .= "RM Group Strategies LLC — Las Vegas, Nevada\n";
+
+        $client_content_html = '
+        <p style="margin: 0 0 16px 0; font-size: 16px;">Dear <strong>' . htmlspecialchars($legal_name) . '</strong>,</p>
+        <p style="margin: 0 0 20px 0; line-height: 1.6;">
+            Thank you for choosing <strong>RM Tools &amp; Equipment</strong>. Your Online Rental Application and Electronic Signature Agreement have been successfully received and recorded under Agreement ID: <strong style="color: #D4AF37;">' . htmlspecialchars($agreement_id) . '</strong>.
+        </p>
+
+        <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin-bottom: 24px;">
+            <h3 style="margin: 0 0 12px 0; font-size: 14px; text-transform: uppercase; color: #0f172a; letter-spacing: 0.5px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">
+                Agreement Details Summary
+            </h3>
+            <table width="100%" cellpadding="6" cellspacing="0" style="font-size: 14px;">
+                <tr><td width="38%" style="color: #64748b;">Agreement ID:</td><td><strong style="color: #0f172a;">' . htmlspecialchars($agreement_id) . '</strong></td></tr>
+                <tr><td style="color: #64748b;">Rental Period:</td><td><strong>' . $days . ' Days</strong> (' . htmlspecialchars($start_date . ' ' . $start_time) . ' to ' . htmlspecialchars($return_date . ' ' . $return_time) . ')</td></tr>
+                <tr><td style="color: #64748b;">Delivery Jobsite:</td><td>' . htmlspecialchars($jobsite_address) . ', ' . htmlspecialchars($jobsite_city_state_zip) . '</td></tr>
+                <tr><td style="color: #64748b;">Fulfillment:</td><td>' . htmlspecialchars(ucfirst($fulfillment_type)) . '</td></tr>
+                <tr><td style="color: #64748b;">Rental Charges:</td><td>$' . number_format($total_rental_charge, 2) . '</td></tr>
+                <tr><td style="color: #64748b;">Security Deposit:</td><td>$' . number_format($total_security_deposit, 2) . ' (Refundable upon return)</td></tr>
+                <tr><td style="color: #64748b;">Estimated Total:</td><td><strong style="font-size: 16px; color: #0f172a;">$' . number_format($estimated_total, 2) . '</strong></td></tr>
+            </table>
+        </div>
+
+        <div style="background-color: #eff6ff; border-left: 4px solid #3b82f6; padding: 14px 18px; border-radius: 4px; margin-bottom: 24px;">
+            <p style="margin: 0 0 4px 0; font-weight: 600; color: #1e40af; font-size: 14px;">What Happens Next?</p>
+            <p style="margin: 0; font-size: 13px; color: #1e3a8a; line-height: 1.5;">
+                Our dispatch coordination team will contact you at <strong>' . htmlspecialchars($mobile_phone) . '</strong> to confirm delivery logistics. Please ensure an authorized operator with valid government-issued photo ID is available on-site at the delivery address.
+            </p>
+        </div>
+
+        <p style="font-size: 14px; color: #475569; line-height: 1.6;">
+            You can access, review, and print your completed, signed rental agreement at any time using the link below:
+        </p>';
+
+        $client_html = build_branded_email_html(
+            "Rental Agreement Confirmation",
+            "RM Tools & Equipment",
+            $client_content_html,
+            $view_agreement_url,
+            "View / Print Signed Agreement"
+        );
+
+        // ── 1. Dispatch Operations / Staff Notification ──
+        list($mail_sent_staff, $method_staff, $msg_staff) = send_system_email(
+            $to,
+            $subject,
+            $mail_body,
+            $staff_html,
+            $email, // Reply-To client
+            SITE_EMAIL,
+            SITE_NAME,
+            null,
+            isset($db) ? $db : null
+        );
+
+        // Small buffer to avoid mail server rate limit / connection bursts
+        usleep(300000); // 0.3s
+
+        // ── 2. Dispatch Customer / Client Confirmation Copy ──
+        list($mail_sent_client, $method_client, $msg_client) = send_system_email(
+            $email,
+            $client_subject,
+            $client_plain,
+            $client_html,
+            SITE_EMAIL, // Reply-To company
+            SITE_EMAIL,
+            SITE_NAME,
+            null,
+            isset($db) ? $db : null
+        );
 
         $completed_agreement = [
             'agreement_id'           => $agreement_id,

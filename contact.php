@@ -206,61 +206,101 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!empty($trades_licenses)) $mail_body .= "Trades/Licenses: $trades_licenses\n";
         if (!empty($project_description)) $mail_body .= "Description:\n$project_description\n";
         
-        // Write backup preview log
-        $log_dir = __DIR__ . '/scratch';
-        if (!file_exists($log_dir)) {
-            @mkdir($log_dir, 0777, true);
-        }
-        $mail_preview_file = $log_dir . '/email_preview_' . ($lead_id ?? time()) . '.txt';
-        @file_put_contents($mail_preview_file, "TO: $to\nSUBJECT: $subject\n\n$mail_body");
-        
-        // Build SMTP-compliant headers
-        $headers = "From: " . SITE_NAME . " <" . SITE_EMAIL . ">\r\n";
-        $headers .= "Reply-To: " . $_POST['email'] . "\r\n";
-        $headers .= "MIME-Version: 1.0\r\n";
-        $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
-        $headers .= "X-Mailer: PHP/" . phpversion();
+        // ── Email Generation & Multi-Tier Dispatch ─────────────────────────────
+        require_once __DIR__ . '/includes/mailer.php';
 
-        // Send actual email
-        $mail_sent = false;
-        $delivery_method = 'mail';
+        $lead_html_content = '
+        <div style="background-color: #f1f5f9; border-left: 4px solid #D4AF37; padding: 16px 20px; border-radius: 4px; margin-bottom: 24px;">
+            <p style="margin: 0 0 6px 0; font-size: 16px; font-weight: bold; color: #0f172a;">New Website Lead Received</p>
+            <p style="margin: 0; font-size: 14px; color: #475569;">Inquiry Type: <strong>' . htmlspecialchars(ucwords(str_replace('_', ' ', $inquiry_type))) . '</strong></p>
+        </div>
 
-        if (in_array($_SERVER['HTTP_HOST'], ['localhost', '127.0.0.1'])) {
-            $status = 'simulated';
-            $mail_sent = true;
-            $delivery_method = 'simulated';
-        } elseif (defined('SMTP_PASS') && !empty(SMTP_PASS)) {
-            $delivery_method = 'authenticated_smtp';
-            require_once __DIR__ . '/includes/mailer.php';
-            $mailer = new SimpleSMTPMailer(SMTP_HOST, defined('SMTP_PORT') ? SMTP_PORT : 465, SMTP_USER, SMTP_PASS, defined('SMTP_ENC') ? SMTP_ENC : 'ssl');
-            list($mail_sent, $smtp_msg) = $mailer->send($to, $subject, $mail_body, SITE_EMAIL, SITE_NAME, $_POST['email']);
-            $status = $mail_sent ? 'sent' : 'failed: ' . substr($smtp_msg, 0, 100);
-        } else {
-            $delivery_method = 'php_mail_envelope';
-            $additional_params = "-f " . SITE_EMAIL;
-            $mail_sent = @mail($to, $subject, $mail_body, $headers, $additional_params);
-            $status = $mail_sent ? 'sent' : 'failed';
-        }
-        
-        // Log delivery attempt in database if DB is available
-        if (isset($db) && $lead_id) {
-            try {
-                $log_stmt = $db->prepare("INSERT INTO email_logs (lead_submission_id, recipient_email, subject, status) VALUES (:lead_id, :recipient, :subject, :status)");
-                $log_stmt->execute([
-                    ':lead_id' => $lead_id,
-                    ':recipient' => $to,
-                    ':subject' => $subject,
-                    ':status' => $status
-                ]);
-            } catch (PDOException $ex) {
-                log_submission_event('WARNING', 'Failed to insert email_log record', ['error' => $ex->getMessage()]);
-            }
-        }
+        <h3 style="font-size: 15px; color: #0f172a; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px; margin: 20px 0 12px 0;">Contact Details</h3>
+        <table width="100%" cellpadding="6" cellspacing="0" style="font-size: 14px; margin-bottom: 20px;">
+            <tr><td width="35%" style="color: #64748b;">Name:</td><td><strong>' . htmlspecialchars($name) . '</strong></td></tr>
+            <tr><td style="color: #64748b;">Email:</td><td><a href="mailto:' . htmlspecialchars($_POST['email']) . '" style="color: #D4AF37;">' . htmlspecialchars($_POST['email']) . '</a></td></tr>
+            ' . (!empty($phone) ? '<tr><td style="color: #64748b;">Phone:</td><td>' . htmlspecialchars($phone) . '</td></tr>' : '') . '
+            ' . (!empty($company) ? '<tr><td style="color: #64748b;">Company:</td><td>' . htmlspecialchars($company) . '</td></tr>' : '') . '
+            ' . (!empty($agency) ? '<tr><td style="color: #64748b;">Agency:</td><td>' . htmlspecialchars($agency) . '</td></tr>' : '') . '
+            ' . (!empty($service_interest) ? '<tr><td style="color: #64748b;">Service Interest:</td><td>' . htmlspecialchars($service_interest) . '</td></tr>' : '') . '
+            ' . (!empty($trades_licenses) ? '<tr><td style="color: #64748b;">Trades/Licenses:</td><td>' . htmlspecialchars($trades_licenses) . '</td></tr>' : '') . '
+        </table>
+        ' . (!empty($project_description) ? '<p style="font-size: 13px; color: #475569; background: #f8fafc; padding: 14px; border-radius: 4px; line-height: 1.6;"><strong>Project Description:</strong><br>' . nl2br(htmlspecialchars($project_description)) . '</p>' : '');
 
-        log_submission_event($mail_sent ? 'INFO' : 'ERROR', 'Email dispatch completed', [
+        $lead_html = build_branded_email_html(
+            "New Website Lead: " . ucwords(str_replace('_', ' ', $inquiry_type)),
+            "Website Inquiry",
+            $lead_html_content
+        );
+
+        // 1. Dispatch Operations / Staff Notification
+        list($mail_sent, $delivery_method, $delivery_msg) = send_system_email(
+            $to,
+            $subject,
+            $mail_body,
+            $lead_html,
+            $_POST['email'], // Reply-To visitor
+            SITE_EMAIL,
+            SITE_NAME,
+            $lead_id,
+            isset($db) ? $db : null
+        );
+
+        // Small buffer to avoid mail server rate limit / connection bursts
+        usleep(300000); // 0.3s
+
+        // 2. Dispatch Customer / Inquirer Confirmation Receipt
+        $ack_subject = "Inquiry Received — RM Group Strategies LLC";
+        $ack_plain = "Dear " . $name . ",\n\n";
+        $ack_plain .= "Thank you for contacting RM Group Strategies LLC. We have received your inquiry regarding " . ucwords(str_replace('_', ' ', $inquiry_type)) . ".\n\n";
+        $ack_plain .= "Our team is reviewing your message and a strategic advisor or division specialist will be in touch with you shortly.\n\n";
+        $ack_plain .= "INQUIRY SUMMARY:\n";
+        $ack_plain .= "- Inquiry Type: " . ucwords(str_replace('_', ' ', $inquiry_type)) . "\n";
+        if (!empty($service_interest)) $ack_plain .= "- Service Interest: " . $service_interest . "\n";
+        $ack_plain .= "\nDirect Contact:\n";
+        $ack_plain .= "Phone: " . (defined('SITE_PHONE_DISPLAY') ? SITE_PHONE_DISPLAY : '(702) 504-8128') . "\n";
+        $ack_plain .= "Email: " . (defined('SITE_EMAIL') ? SITE_EMAIL : 'info@rmgroupstrategies.com') . "\n";
+        $ack_plain .= "Website: https://rmgroupstrategies.com\n\n";
+        $ack_plain .= "RM Group Strategies LLC — Las Vegas, Nevada\n";
+
+        $ack_html_content = '
+        <p style="margin: 0 0 16px 0; font-size: 16px;">Dear <strong>' . htmlspecialchars($name) . '</strong>,</p>
+        <p style="margin: 0 0 20px 0; line-height: 1.6;">
+            Thank you for reaching out to <strong>RM Group Strategies LLC</strong>. We have received your inquiry regarding <strong>' . htmlspecialchars(ucwords(str_replace('_', ' ', $inquiry_type))) . '</strong>.
+        </p>
+        <div style="background-color: #eff6ff; border-left: 4px solid #3b82f6; padding: 14px 18px; border-radius: 4px; margin-bottom: 24px;">
+            <p style="margin: 0; font-size: 14px; color: #1e3a8a; line-height: 1.5;">
+                Our advisory and dispatch team is currently reviewing your project details. A representative will contact you promptly at <strong>' . htmlspecialchars($_POST['email']) . '</strong>' . (!empty($phone) ? ' or <strong>' . htmlspecialchars($phone) . '</strong>' : '') . '.
+            </p>
+        </div>
+        <p style="font-size: 13px; color: #64748b; line-height: 1.5;">
+            If your request requires immediate assistance, please feel free to call our executive team directly at <strong>' . htmlspecialchars(defined('SITE_PHONE_DISPLAY') ? SITE_PHONE_DISPLAY : '(702) 504-8128') . '</strong>.
+        </p>';
+
+        $ack_html = build_branded_email_html(
+            "We Received Your Inquiry",
+            "Inquiry Confirmation",
+            $ack_html_content,
+            (defined('SITE_URL') ? SITE_URL : 'https://rmgroupstrategies.com'),
+            "Visit RM Group Strategies"
+        );
+
+        send_system_email(
+            $_POST['email'],
+            $ack_subject,
+            $ack_plain,
+            $ack_html,
+            SITE_EMAIL, // Reply-To company
+            SITE_EMAIL,
+            SITE_NAME,
+            $lead_id,
+            isset($db) ? $db : null
+        );
+
+        log_submission_event($mail_sent ? 'INFO' : 'WARNING', 'Email dispatch completed', [
             'recipient' => $to,
-            'method' => $delivery_method,
-            'status' => $status
+            'method'    => $delivery_method,
+            'details'   => $delivery_msg
         ]);
         
         if ($mail_sent) {

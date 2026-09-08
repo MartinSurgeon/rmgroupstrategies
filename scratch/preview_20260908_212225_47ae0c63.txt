@@ -1,0 +1,10 @@
+TO: test.client@example.com
+FROM: RM Group Strategies LLC <info@rmgroupstrategies.com>
+REPLY-TO: info@rmgroupstrategies.com
+SUBJECT: Your Signed Rental Agreement Copy — RM Tools & Equipment [RM-AGR-2026-TESTD523]
+DATE: Tue, 08 Sep 2026 21:22:25 +0200
+
+Dear Test Client,
+
+Your agreement RM-AGR-2026-TESTD523 has been recorded.
+View online: https://rmgroupstrategies.com/rental-agreement.php?view=RM-AGR-2026-TESTD523

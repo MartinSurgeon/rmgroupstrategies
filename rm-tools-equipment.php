@@ -146,9 +146,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             $lead_id = null;
         }
 
-        // Send Email Notification
-        $to = defined('EMAIL_EQUIPMENT') ? EMAIL_EQUIPMENT : 'info@rmgroupstrategies.com';
+        // ── Email Generation & Multi-Tier Dispatch ─────────────────────────────
+        require_once __DIR__ . '/includes/mailer.php';
+
+        $base_domain = defined('SITE_URL') ? rtrim(SITE_URL, '/') : 'https://rmgroupstrategies.com';
+        $agreement_page_url = $base_domain . (defined('BASE_URL') ? BASE_URL : '') . '/rental-agreement.php?tool=' . urlencode($rental_tool);
+
+        $to = defined('EMAIL_EQUIPMENT') ? EMAIL_EQUIPMENT : (defined('SITE_EMAIL') ? SITE_EMAIL : 'info@rmgroupstrategies.com');
         $subject = "New Equipment Rental Request: " . $tool_display;
+
+        // Staff Plain-Text Notification
         $mail_body = "A new equipment rental reservation request has been submitted on RM Group Strategies:\n\n";
         $mail_body .= "Client Name: " . $client_name . "\n";
         if (!empty($client_company)) $mail_body .= "Company: " . $client_company . "\n";
@@ -164,16 +171,128 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         $mail_body .= "- Delivery areas: Las Vegas, North Las Vegas, and Henderson.\n\n";
         $mail_body .= "Please contact the client promptly to confirm equipment availability, delivery window, and payment details.";
 
-        if (!in_array($_SERVER['HTTP_HOST'], ['localhost', '127.0.0.1']) && defined('SMTP_PASS') && !empty(SMTP_PASS)) {
-            require_once __DIR__ . '/includes/mailer.php';
-            $mailer = new SimpleSMTPMailer(SMTP_HOST, defined('SMTP_PORT') ? SMTP_PORT : 465, SMTP_USER, SMTP_PASS, defined('SMTP_ENC') ? SMTP_ENC : 'ssl');
-            $mailer->send($to, $subject, $mail_body, SITE_EMAIL, SITE_NAME, $client_email);
-        } else {
-            // Local / fallback logging
-            $log_dir = __DIR__ . '/scratch';
-            if (!file_exists($log_dir)) @mkdir($log_dir, 0777, true);
-            @file_put_contents($log_dir . '/rental_booking_' . time() . '.txt', "TO: $to\nSUBJECT: $subject\n\n$mail_body");
-        }
+        // Staff HTML Notification
+        $staff_html_content = '
+        <div style="background-color: #f1f5f9; border-left: 4px solid #D4AF37; padding: 16px 20px; border-radius: 4px; margin-bottom: 24px;">
+            <p style="margin: 0 0 6px 0; font-size: 16px; font-weight: bold; color: #0f172a;">New Equipment Reservation Request</p>
+            <p style="margin: 0; font-size: 14px; color: #475569;">Equipment: <strong>' . htmlspecialchars($tool_display) . '</strong></p>
+        </div>
+
+        <h3 style="font-size: 15px; color: #0f172a; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px; margin: 20px 0 12px 0;">Client Information</h3>
+        <table width="100%" cellpadding="6" cellspacing="0" style="font-size: 14px; margin-bottom: 20px;">
+            <tr><td width="35%" style="color: #64748b;">Client Name:</td><td><strong>' . htmlspecialchars($client_name) . '</strong></td></tr>
+            ' . (!empty($client_company) ? '<tr><td style="color: #64748b;">Company:</td><td>' . htmlspecialchars($client_company) . '</td></tr>' : '') . '
+            <tr><td style="color: #64748b;">Email:</td><td><a href="mailto:' . htmlspecialchars($client_email) . '" style="color: #D4AF37;">' . htmlspecialchars($client_email) . '</a></td></tr>
+            <tr><td style="color: #64748b;">Phone:</td><td><a href="tel:' . htmlspecialchars($client_phone) . '" style="color: #0f172a; text-decoration: none; font-weight: 600;">' . htmlspecialchars($client_phone) . '</a></td></tr>
+            <tr><td style="color: #64748b;">Delivery City:</td><td>' . htmlspecialchars($delivery_city) . '</td></tr>
+            ' . (!empty($delivery_address) ? '<tr><td style="color: #64748b;">Delivery Address:</td><td>' . htmlspecialchars($delivery_address) . '</td></tr>' : '') . '
+        </table>
+
+        <h3 style="font-size: 15px; color: #0f172a; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px; margin: 20px 0 12px 0;">Reservation Schedule &amp; Estimates</h3>
+        <table width="100%" cellpadding="6" cellspacing="0" style="font-size: 14px; margin-bottom: 20px;">
+            <tr><td width="35%" style="color: #64748b;">Duration:</td><td>' . $days . ' Days (' . htmlspecialchars($start_date) . ' to ' . htmlspecialchars($end_date) . ')</td></tr>
+            <tr><td style="color: #64748b;">Estimated Rental:</td><td>$' . number_format($tool_rental_cost, 2) . '</td></tr>
+            <tr><td style="color: #64748b;">Security Deposit:</td><td>$' . number_format($deposit_cost, 2) . '</td></tr>
+            <tr><td style="color: #64748b;">Estimated Total:</td><td><strong style="color: #0f172a; font-size: 16px;">$' . number_format($total_est, 2) . '</strong></td></tr>
+        </table>
+        ' . (!empty($rental_notes) ? '<p style="font-size: 13px; color: #475569; background: #f8fafc; padding: 12px; border-radius: 4px;"><strong>Client Notes:</strong> ' . nl2br(htmlspecialchars($rental_notes)) . '</p>' : '');
+
+        $staff_html = build_branded_email_html(
+            "Equipment Reservation Request",
+            "Dispatch Lead",
+            $staff_html_content,
+            $agreement_page_url,
+            "View Full Rental Agreement Form"
+        );
+
+        // ── 1. Dispatch Operations / Staff Notification ──
+        send_system_email(
+            $to,
+            $subject,
+            $mail_body,
+            $staff_html,
+            $client_email, // Reply-To client
+            SITE_EMAIL,
+            SITE_NAME,
+            $lead_id,
+            isset($db) ? $db : null
+        );
+
+        // Small buffer to avoid mail server rate limit / connection bursts
+        usleep(300000); // 0.3s
+
+        // ── 2. Dispatch Customer / Client Confirmation Copy ──
+        $cust_subject = "Equipment Rental Request Received — RM Tools & Equipment";
+
+        $cust_plain = "Dear " . $client_name . ",\n\n";
+        $cust_plain .= "Thank you for requesting an equipment rental reservation with RM Tools & Equipment (RM Group Strategies LLC).\n\n";
+        $cust_plain .= "RESERVATION DETAILS:\n";
+        $cust_plain .= "- Equipment: " . $tool_display . "\n";
+        $cust_plain .= "- Duration: " . $days . " days (" . $start_date . " to " . $end_date . ")\n";
+        $cust_plain .= "- Delivery Zone: " . $delivery_city . "\n";
+        if (!empty($delivery_address)) $cust_plain .= "- Delivery Address: " . $delivery_address . "\n";
+        $cust_plain .= "- Estimated Rental Fee: $" . number_format($tool_rental_cost, 2) . "\n";
+        $cust_plain .= "- Refundable Deposit: $" . number_format($deposit_cost, 2) . "\n";
+        $cust_plain .= "- Estimated Total: $" . number_format($total_est, 2) . "\n\n";
+        $cust_plain .= "NEXT STEPS:\n";
+        $cust_plain .= "Our dispatch coordinator will contact you at " . $client_phone . " shortly to confirm availability and schedule your delivery window.\n\n";
+        $cust_plain .= "You can also pre-complete the formal online rental application and electronic signature agreement here:\n";
+        $cust_plain .= $agreement_page_url . "\n\n";
+        $cust_plain .= "QUESTIONS OR IMMEDIATE DISPATCH:\n";
+        $cust_plain .= "Phone: " . (defined('SITE_PHONE_DISPLAY') ? SITE_PHONE_DISPLAY : '(702) 504-8128') . "\n";
+        $cust_plain .= "Email: " . (defined('SITE_EMAIL') ? SITE_EMAIL : 'info@rmgroupstrategies.com') . "\n";
+        $cust_plain .= "RM Group Strategies LLC — Las Vegas, NV\n";
+
+        $cust_html_content = '
+        <p style="margin: 0 0 16px 0; font-size: 16px;">Dear <strong>' . htmlspecialchars($client_name) . '</strong>,</p>
+        <p style="margin: 0 0 20px 0; line-height: 1.6;">
+            Thank you for contacting <strong>RM Tools &amp; Equipment</strong>. We have received your reservation request for the <strong>' . htmlspecialchars($tool_display) . '</strong>.
+        </p>
+
+        <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin-bottom: 24px;">
+            <h3 style="margin: 0 0 12px 0; font-size: 14px; text-transform: uppercase; color: #0f172a; letter-spacing: 0.5px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">
+                Reservation Summary
+            </h3>
+            <table width="100%" cellpadding="6" cellspacing="0" style="font-size: 14px;">
+                <tr><td width="38%" style="color: #64748b;">Equipment:</td><td><strong>' . htmlspecialchars($tool_display) . '</strong></td></tr>
+                <tr><td style="color: #64748b;">Rental Period:</td><td>' . $days . ' Days (' . htmlspecialchars($start_date) . ' to ' . htmlspecialchars($end_date) . ')</td></tr>
+                <tr><td style="color: #64748b;">Delivery Area:</td><td>' . htmlspecialchars($delivery_city) . '</td></tr>
+                <tr><td style="color: #64748b;">Estimated Rental:</td><td>$' . number_format($tool_rental_cost, 2) . '</td></tr>
+                <tr><td style="color: #64748b;">Refundable Deposit:</td><td>$' . number_format($deposit_cost, 2) . '</td></tr>
+                <tr><td style="color: #64748b;">Estimated Total:</td><td><strong style="color: #0f172a; font-size: 16px;">$' . number_format($total_est, 2) . '</strong></td></tr>
+            </table>
+        </div>
+
+        <div style="background-color: #eff6ff; border-left: 4px solid #3b82f6; padding: 14px 18px; border-radius: 4px; margin-bottom: 24px;">
+            <p style="margin: 0 0 4px 0; font-weight: 600; color: #1e40af; font-size: 14px;">What Happens Next?</p>
+            <p style="margin: 0; font-size: 13px; color: #1e3a8a; line-height: 1.5;">
+                Our equipment dispatch coordinator will review unit availability and contact you at <strong>' . htmlspecialchars($client_phone) . '</strong> to confirm your delivery window and delivery address access.
+            </p>
+        </div>
+
+        <p style="font-size: 14px; color: #475569; line-height: 1.6;">
+            To expedite your rental checkout and schedule immediate delivery, you can complete the online rental application &amp; electronic signature agreement here:
+        </p>';
+
+        $cust_html = build_branded_email_html(
+            "Reservation Request Received",
+            "RM Tools & Equipment",
+            $cust_html_content,
+            $agreement_page_url,
+            "Complete E-Sign Rental Agreement"
+        );
+
+        send_system_email(
+            $client_email,
+            $cust_subject,
+            $cust_plain,
+            $cust_html,
+            SITE_EMAIL, // Reply-To company
+            SITE_EMAIL,
+            SITE_NAME,
+            $lead_id,
+            isset($db) ? $db : null
+        );
 
         $success_msg = "Thank you, " . htmlspecialchars($client_name) . "! Your rental reservation request for the " . htmlspecialchars($tool_display) . " has been received. Our equipment dispatch team will contact you at " . htmlspecialchars($client_phone) . " shortly to confirm delivery to " . htmlspecialchars($delivery_city) . " and finalize your reservation.";
         

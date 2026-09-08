@@ -1,0 +1,7 @@
+TO: info@rmgroupstrategies.com
+FROM: RM Group Strategies LLC <info@rmgroupstrategies.com>
+REPLY-TO: test.client@example.com
+SUBJECT: SIGNED RENTAL AGREEMENT [RM-AGR-2026-TESTD523] — Test Client
+DATE: Tue, 08 Sep 2026 21:22:25 +0200
+
+Staff plain text for RM-AGR-2026-TESTD523

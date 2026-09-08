@@ -54,6 +54,7 @@ $is_local_env = (
     php_sapi_name() === 'cli'
 );
 
+define('IS_LOCAL_ENV',        $is_local_env);
 define('BASE_URL',            $is_local_env ? '/rmgroupstrategies' : '');
 define('SITE_YEAR',           date('Y'));
 
