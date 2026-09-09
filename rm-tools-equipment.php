@@ -3,7 +3,6 @@
  * RM Group Strategies LLC — RM Tools & Equipment Division Page
  * Features live rental catalog, actual equipment inventory photos, contractor rental terms, rate calculator & reservation request.
  */
-session_start();
 require_once __DIR__ . '/includes/config.php';
 $current_page = 'companies';
 
@@ -35,6 +34,12 @@ $end_date = '';
 $rental_notes = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'rental_reservation') {
+    // Rate limit check: max 5 requests per 10 minutes
+    $rate_check = check_submission_rate_limit('equipment_reservation', 5, 600);
+    if (!$rate_check['allowed']) {
+        $errors[] = $rate_check['message'];
+    }
+
     // 1. CSRF Verification
     if (!isset($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
         $errors[] = "Security check failed. Please refresh the page and try again.";
@@ -759,7 +764,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             <div class="bg-[#0f1e33] border border-brand-gold/40 rounded-2xl p-6 sm:p-10 shadow-2xl">
                 <form action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>#reservation-form" method="POST" class="space-y-6" id="equipmentRentalForm">
                     <input type="hidden" name="action" value="rental_reservation">
-                    <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8'); ?>">
 
                     <!-- Honeypot Anti-Spam -->
                     <div style="display:none;">
@@ -887,7 +892,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                     <!-- Math Verification Captcha -->
                     <div class="bg-black/30 p-4 rounded-xl border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
                         <label for="captcha_answer" class="text-xs font-medium text-slate-300">
-                            Security Verification: <strong class="text-brand-gold"><?php echo $captcha_question; ?></strong>
+                            Security Verification: <strong class="text-brand-gold"><?php echo htmlspecialchars($captcha_question, ENT_QUOTES, 'UTF-8'); ?></strong>
                         </label>
                         <input type="number" id="captcha_answer" name="captcha_answer" required placeholder="Answer" class="w-28 px-3 py-2 rounded-lg bg-[#0B1727] border border-white/20 text-white text-sm focus:outline-none focus:border-brand-gold text-center">
                     </div>

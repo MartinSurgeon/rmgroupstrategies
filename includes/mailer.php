@@ -29,6 +29,13 @@ class SimpleSMTPMailer {
     }
 
     public function send($to, $subject, $body, $fromEmail, $fromName = '', $replyTo = '', $htmlBody = '') {
+        // CRLF Injection Mitigation
+        $to        = str_replace(["\r", "\n"], '', trim($to));
+        $subject   = str_replace(["\r", "\n"], '', trim($subject));
+        $fromEmail = str_replace(["\r", "\n"], '', trim($fromEmail));
+        $fromName  = str_replace(["\r", "\n"], '', trim($fromName));
+        $replyTo   = str_replace(["\r", "\n"], '', trim($replyTo));
+
         $timeout = 5;
         $remote = ($this->encryption === 'ssl') ? 'ssl://' . $this->host : $this->host;
         $socket = @fsockopen($remote, $this->port, $errno, $errstr, $timeout);
@@ -272,9 +279,12 @@ function send_system_email(
     $lead_id = null,
     $db = null
 ) {
-    $from_email = $from_email ?: (defined('SITE_EMAIL') ? SITE_EMAIL : 'info@rmgroupstrategies.com');
-    $from_name  = $from_name  ?: (defined('SITE_NAME') ? SITE_NAME : 'RM Group Strategies LLC');
-    $reply_to   = $reply_to   ?: $from_email;
+    // CRLF Injection Mitigation
+    $to         = str_replace(["\r", "\n"], '', trim($to));
+    $subject    = str_replace(["\r", "\n"], '', trim($subject));
+    $from_email = str_replace(["\r", "\n"], '', trim($from_email ?: (defined('SITE_EMAIL') ? SITE_EMAIL : 'info@rmgroupstrategies.com')));
+    $from_name  = str_replace(["\r", "\n"], '', trim($from_name  ?: (defined('SITE_NAME') ? SITE_NAME : 'RM Group Strategies LLC')));
+    $reply_to   = str_replace(["\r", "\n"], '', trim($reply_to   ?: $from_email));
 
     $http_host = $_SERVER['HTTP_HOST'] ?? '';
     $host_only = strtolower(explode(':', $http_host)[0]);

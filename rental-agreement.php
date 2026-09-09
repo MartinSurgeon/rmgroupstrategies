@@ -6,7 +6,6 @@
  * Formal Nevada Rental Agreement & Electronic Signature capture
  * Entity: RM Nevada Series LLC - Tools & Equipment
  */
-session_start();
 require_once __DIR__ . '/includes/config.php';
 $current_page = 'companies';
 
@@ -113,49 +112,69 @@ if ($db instanceof PDO) {
 // Form state variables
 $errors = [];
 $completed_agreement = null;
+$view_error = null;
 
-// Handle direct view of an existing signed agreement (e.g. ?view=RM-AGR-2026-XXXXX)
-if (isset($_GET['view']) && !empty($_GET['view']) && isset($db)) {
-    try {
-        $view_stmt = $db->prepare("SELECT * FROM rental_agreements WHERE agreement_id = :aid LIMIT 1");
-        $view_stmt->execute([':aid' => trim($_GET['view'])]);
-        $row = $view_stmt->fetch(PDO::FETCH_ASSOC);
-        if ($row) {
-            $completed_agreement = [
-                'agreement_id'           => $row['agreement_id'],
-                'legal_name'             => $row['legal_name'],
-                'business_name'          => $row['business_name'],
-                'billing_address'        => $row['billing_address'],
-                'city_state_zip'         => $row['city_state_zip'],
-                'mobile_phone'           => $row['mobile_phone'],
-                'email'                  => $row['email'],
-                'driver_license_no'      => $row['driver_license_no'],
-                'driver_license_state'   => $row['driver_license_state'],
-                'driver_license_exp'     => $row['driver_license_exp'],
-                'fulfillment_type'       => $row['fulfillment_type'],
-                'jobsite_address'        => $row['jobsite_address'],
-                'jobsite_city_state_zip' => $row['jobsite_city_state_zip'],
-                'project_type'           => $row['project_type'],
-                'equipment_list'         => json_decode($row['equipment_schedule'], true) ?: [],
-                'start_date'             => $row['rental_start_date'],
-                'start_time'             => $row['rental_start_time'] ?: '08:00 AM',
-                'return_date'            => $row['rental_return_date'],
-                'return_time'            => $row['rental_return_time'] ?: '05:00 PM',
-                'days'                   => $row['rental_duration_days'],
-                'total_rental_charge'    => $row['estimated_rental_charge'],
-                'total_security_deposit' => $row['security_deposit'],
-                'estimated_total'        => $row['estimated_total'],
-                'payment_method'         => $row['payment_method'],
-                'card_last_four'         => $row['card_last_four'],
-                'signature_type'         => $row['signature_type'],
-                'signature_data'         => $row['signature_data'],
-                'signer_printed_name'    => $row['signer_printed_name'],
-                'signer_ip'              => $row['signer_ip'],
-                'signed_timestamp'       => $row['created_at']
-            ];
+// Handle direct view of an existing signed agreement (Protected via HMAC token or current session)
+if (isset($_GET['view']) && !empty($_GET['view'])) {
+    $req_aid = trim($_GET['view']);
+    $req_token = trim($_GET['token'] ?? '');
+    $expected_token = hash_hmac('sha256', $req_aid, APP_SECRET);
+
+    $is_own_session = (isset($_SESSION['last_signed_agreement_id']) && $_SESSION['last_signed_agreement_id'] === $req_aid);
+    $is_token_valid = (!empty($req_token) && hash_equals($expected_token, $req_token));
+
+    if (!$is_own_session && !$is_token_valid) {
+        http_response_code(403);
+        $view_error = "Access denied: A valid security verification token is required to view this rental agreement.";
+    } else {
+        $db_conn = get_rental_db();
+        if ($db_conn instanceof PDO) {
+            try {
+                $view_stmt = $db_conn->prepare("SELECT * FROM rental_agreements WHERE agreement_id = :aid LIMIT 1");
+                $view_stmt->execute([':aid' => $req_aid]);
+                $row = $view_stmt->fetch(PDO::FETCH_ASSOC);
+                if ($row) {
+                    $completed_agreement = [
+                        'agreement_id'           => $row['agreement_id'],
+                        'legal_name'             => $row['legal_name'],
+                        'business_name'          => $row['business_name'],
+                        'billing_address'        => $row['billing_address'],
+                        'city_state_zip'         => $row['city_state_zip'],
+                        'mobile_phone'           => $row['mobile_phone'],
+                        'email'                  => $row['email'],
+                        'driver_license_no'      => $row['driver_license_no'],
+                        'driver_license_state'   => $row['driver_license_state'],
+                        'driver_license_exp'     => $row['driver_license_exp'],
+                        'fulfillment_type'       => $row['fulfillment_type'],
+                        'jobsite_address'        => $row['jobsite_address'],
+                        'jobsite_city_state_zip' => $row['jobsite_city_state_zip'],
+                        'project_type'           => $row['project_type'],
+                        'equipment_list'         => json_decode($row['equipment_schedule'], true) ?: [],
+                        'start_date'             => $row['rental_start_date'],
+                        'start_time'             => $row['rental_start_time'] ?: '08:00 AM',
+                        'return_date'            => $row['rental_return_date'],
+                        'return_time'            => $row['rental_return_time'] ?: '05:00 PM',
+                        'days'                   => $row['rental_duration_days'],
+                        'total_rental_charge'    => $row['estimated_rental_charge'],
+                        'total_security_deposit' => $row['security_deposit'],
+                        'estimated_total'        => $row['estimated_total'],
+                        'payment_method'         => $row['payment_method'],
+                        'card_last_four'         => $row['card_last_four'],
+                        'signature_type'         => $row['signature_type'],
+                        'signature_data'         => $row['signature_data'],
+                        'signer_printed_name'    => $row['signer_printed_name'],
+                        'signer_ip'              => $row['signer_ip'],
+                        'signed_timestamp'       => $row['created_at']
+                    ];
+                } else {
+                    http_response_code(404);
+                    $view_error = "Agreement record not found.";
+                }
+            } catch (Throwable $e) {
+                http_response_code(500);
+                $view_error = "An error occurred while retrieving the agreement.";
+            }
         }
-    } catch (Exception $e) {
-        // Query error logged
     }
 }
 
@@ -163,6 +182,12 @@ if (isset($_GET['view']) && !empty($_GET['view']) && isset($db)) {
 $param_tool = $_GET['tool'] ?? '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'submit_esign_agreement') {
+    // 0. Rate Limiting Check
+    $rate_check = check_submission_rate_limit('rental_agreement', 5, 600);
+    if (!$rate_check['allowed']) {
+        $errors[] = $rate_check['message'];
+    }
+
     // 1. CSRF Verification
     if (!isset($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
         $errors[] = "Security check failed. Please refresh the page and try again.";
@@ -284,6 +309,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
     if (empty($signature_data)) {
         $errors[] = "An electronic signature is required. Please draw your signature or type your name.";
+    } elseif ($signature_type === 'drawn') {
+        if (!preg_match('/^data:image\/png;base64,[A-Za-z0-9+\/]+=*$/', $signature_data)) {
+            $errors[] = "Invalid signature image format detected. Please draw your signature again.";
+        }
+    } else {
+        $signature_data = trim(strip_tags($signature_data));
+        if (strlen($signature_data) > 100) {
+            $signature_data = substr($signature_data, 0, 100);
+        }
     }
 
     if (empty($errors)) {
@@ -432,8 +466,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         // ── Email Generation & Multi-Tier Dispatch ─────────────────────────────
         require_once __DIR__ . '/includes/mailer.php';
 
+        $view_token = hash_hmac('sha256', $agreement_id, APP_SECRET);
+        $_SESSION['last_signed_agreement_id'] = $agreement_id;
+
         $base_domain = defined('SITE_URL') ? rtrim(SITE_URL, '/') : 'https://rmgroupstrategies.com';
-        $view_agreement_url = $base_domain . (defined('BASE_URL') ? BASE_URL : '') . '/rental-agreement.php?view=' . urlencode($agreement_id);
+        $view_agreement_url = $base_domain . (defined('BASE_URL') ? BASE_URL : '') . '/rental-agreement.php?view=' . urlencode($agreement_id) . '&token=' . $view_token;
 
         $to = defined('EMAIL_EQUIPMENT') ? EMAIL_EQUIPMENT : (defined('SITE_EMAIL') ? SITE_EMAIL : 'info@rmgroupstrategies.com');
         $subject = "SIGNED RENTAL AGREEMENT [" . $agreement_id . "] — " . $legal_name;
@@ -741,7 +778,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     <main class="flex-grow py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-5xl mx-auto">
 
-            <?php if ($completed_agreement): ?>
+            <?php if ($view_error): ?>
+            <!-- ═══════════════════════════════════════════════════════
+                 SECURITY / ACCESS RESTRICTED VIEW
+                 ═══════════════════════════════════════════════════════ -->
+            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border-2 border-rose-300 max-w-2xl mx-auto my-12 animate-fade-in-up">
+                <div class="bg-gradient-to-r from-rose-900 to-slate-900 text-white p-6 sm:p-8 text-center">
+                    <div class="w-16 h-16 bg-rose-500/20 border border-rose-400 text-rose-300 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                    </div>
+                    <h1 class="text-2xl font-black text-white">Access Restricted</h1>
+                    <p class="text-xs text-rose-200 mt-1 uppercase tracking-widest font-semibold">Security &amp; Privacy Verification</p>
+                </div>
+                <div class="p-6 sm:p-8 text-center space-y-4">
+                    <p class="text-slate-700 text-sm font-medium">
+                        <?php echo htmlspecialchars($view_error, ENT_QUOTES, 'UTF-8'); ?>
+                    </p>
+                    <p class="text-xs text-slate-500">
+                        For customer privacy and confidentiality, access to completed rental agreements requires an authenticated security token or active session.
+                    </p>
+                    <div class="pt-4 flex flex-col sm:flex-row gap-3 justify-center">
+                        <a href="<?php echo BASE_URL; ?>/rental-agreement.php" class="btn-gold text-xs uppercase tracking-widest font-bold py-3 px-6 shadow-md inline-flex items-center justify-center gap-2">
+                            New Rental Agreement
+                        </a>
+                        <a href="<?php echo BASE_URL; ?>/contact.php" class="px-6 py-3 rounded-lg border border-slate-300 text-xs uppercase tracking-widest font-bold text-slate-700 hover:bg-slate-100 transition inline-flex items-center justify-center">
+                            Contact Support
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <?php elseif ($completed_agreement): ?>
             <!-- ═══════════════════════════════════════════════════════
                  SIGNED CONFIRMATION / OFFICIAL RECEIPT VIEW
                  ═══════════════════════════════════════════════════════ -->
@@ -759,7 +826,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                         </div>
                         <div class="text-left sm:text-right no-print">
                             <span class="text-xs text-slate-400 block">Agreement ID</span>
-                            <span class="text-base sm:text-lg font-mono font-bold text-white"><?php echo $completed_agreement['agreement_id']; ?></span>
+                            <span class="text-base sm:text-lg font-mono font-bold text-white"><?php echo htmlspecialchars($completed_agreement['agreement_id'], ENT_QUOTES, 'UTF-8'); ?></span>
                             <button type="button" onclick="triggerPrintAgreement()" class="mt-3 btn-gold text-xs uppercase tracking-widest font-bold py-2.5 px-5 flex items-center gap-2 shadow-lg">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
                                 Print / Save PDF
@@ -773,32 +840,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                     
                     <!-- Audit Summary Strip -->
                     <div class="bg-slate-100 p-4 rounded-xl border border-slate-300 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                        <div><strong>Agreement ID:</strong> <span class="font-mono"><?php echo $completed_agreement['agreement_id']; ?></span></div>
-                        <div><strong>Signed Date/Time:</strong> <?php echo $completed_agreement['signed_timestamp']; ?> UTC</div>
-                        <div><strong>Signer Audit IP:</strong> <?php echo $completed_agreement['signer_ip']; ?></div>
+                        <div><strong>Agreement ID:</strong> <span class="font-mono"><?php echo htmlspecialchars($completed_agreement['agreement_id'], ENT_QUOTES, 'UTF-8'); ?></span></div>
+                        <div><strong>Signed Date/Time:</strong> <?php echo htmlspecialchars($completed_agreement['signed_timestamp'], ENT_QUOTES, 'UTF-8'); ?> UTC</div>
+                        <div><strong>Signer Audit IP:</strong> <?php echo htmlspecialchars($completed_agreement['signer_ip'], ENT_QUOTES, 'UTF-8'); ?></div>
                     </div>
 
                     <!-- Customer & Jobsite Details -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 border-b border-slate-200 pb-6">
                         <div>
                             <h3 class="font-bold text-xs uppercase tracking-wider text-brand-navy border-b border-slate-300 pb-1.5 mb-2">Customer / Lessee</h3>
-                            <p class="font-bold text-slate-900 text-sm"><?php echo htmlspecialchars($completed_agreement['legal_name']); ?></p>
+                            <p class="font-bold text-slate-900 text-sm"><?php echo htmlspecialchars($completed_agreement['legal_name'], ENT_QUOTES, 'UTF-8'); ?></p>
                             <?php if (!empty($completed_agreement['business_name'])): ?>
-                                <p class="text-slate-600"><strong>Company:</strong> <?php echo htmlspecialchars($completed_agreement['business_name']); ?></p>
+                                <p class="text-slate-600"><strong>Company:</strong> <?php echo htmlspecialchars($completed_agreement['business_name'], ENT_QUOTES, 'UTF-8'); ?></p>
                             <?php endif; ?>
-                            <p class="text-slate-600"><strong>Billing:</strong> <?php echo htmlspecialchars($completed_agreement['billing_address'] . ', ' . $completed_agreement['city_state_zip']); ?></p>
-                            <p class="text-slate-600"><strong>Phone:</strong> <?php echo htmlspecialchars($completed_agreement['mobile_phone']); ?></p>
-                            <p class="text-slate-600"><strong>Email:</strong> <?php echo htmlspecialchars($completed_agreement['email']); ?></p>
-                            <p class="text-slate-600"><strong>Driver's License:</strong> <?php echo htmlspecialchars($completed_agreement['driver_license_no'] . ' (' . $completed_agreement['driver_license_state'] . ') Exp: ' . $completed_agreement['driver_license_exp']); ?></p>
+                            <p class="text-slate-600"><strong>Billing:</strong> <?php echo htmlspecialchars($completed_agreement['billing_address'] . ', ' . $completed_agreement['city_state_zip'], ENT_QUOTES, 'UTF-8'); ?></p>
+                            <p class="text-slate-600"><strong>Phone:</strong> <?php echo htmlspecialchars($completed_agreement['mobile_phone'], ENT_QUOTES, 'UTF-8'); ?></p>
+                            <p class="text-slate-600"><strong>Email:</strong> <?php echo htmlspecialchars($completed_agreement['email'], ENT_QUOTES, 'UTF-8'); ?></p>
+                            <?php 
+                            $dl_raw = trim($completed_agreement['driver_license_no'] ?? '');
+                            $dl_masked = strlen($dl_raw) > 4 ? str_repeat('*', max(0, strlen($dl_raw) - 4)) . substr($dl_raw, -4) : '****';
+                            ?>
+                            <p class="text-slate-600"><strong>Driver's License:</strong> <?php echo htmlspecialchars($dl_masked . ' (' . $completed_agreement['driver_license_state'] . ') Exp: ' . $completed_agreement['driver_license_exp'], ENT_QUOTES, 'UTF-8'); ?></p>
                         </div>
 
                         <div>
                             <h3 class="font-bold text-xs uppercase tracking-wider text-brand-navy border-b border-slate-300 pb-1.5 mb-2">Rental Jobsite &amp; Logistics</h3>
-                            <p class="text-slate-600"><strong>Fulfillment:</strong> <?php echo ucfirst($completed_agreement['fulfillment_type']); ?></p>
-                            <p class="text-slate-600"><strong>Jobsite Address:</strong> <?php echo htmlspecialchars($completed_agreement['jobsite_address'] . ', ' . $completed_agreement['jobsite_city_state_zip']); ?></p>
-                            <p class="text-slate-600"><strong>Start Date:</strong> <?php echo $completed_agreement['start_date'] . ' @ ' . $completed_agreement['start_time']; ?></p>
-                            <p class="text-slate-600"><strong>Return Date:</strong> <?php echo $completed_agreement['return_date'] . ' @ ' . $completed_agreement['return_time']; ?></p>
-                            <p class="text-slate-600"><strong>Duration:</strong> <?php echo $completed_agreement['days']; ?> Days (Min. 2 Days)</p>
+                            <p class="text-slate-600"><strong>Fulfillment:</strong> <?php echo ucfirst(htmlspecialchars($completed_agreement['fulfillment_type'], ENT_QUOTES, 'UTF-8')); ?></p>
+                            <p class="text-slate-600"><strong>Jobsite Address:</strong> <?php echo htmlspecialchars($completed_agreement['jobsite_address'] . ', ' . $completed_agreement['jobsite_city_state_zip'], ENT_QUOTES, 'UTF-8'); ?></p>
+                            <p class="text-slate-600"><strong>Start Date:</strong> <?php echo htmlspecialchars($completed_agreement['start_date'] . ' @ ' . $completed_agreement['start_time'], ENT_QUOTES, 'UTF-8'); ?></p>
+                            <p class="text-slate-600"><strong>Return Date:</strong> <?php echo htmlspecialchars($completed_agreement['return_date'] . ' @ ' . $completed_agreement['return_time'], ENT_QUOTES, 'UTF-8'); ?></p>
+                            <p class="text-slate-600"><strong>Duration:</strong> <?php echo htmlspecialchars($completed_agreement['days'], ENT_QUOTES, 'UTF-8'); ?> Days (Min. 2 Days)</p>
                         </div>
                     </div>
 
@@ -820,9 +891,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                                 <tbody class="divide-y divide-slate-200">
                                     <?php foreach ($completed_agreement['equipment_list'] as $eq): ?>
                                     <tr>
-                                        <td class="p-2.5 font-bold"><?php echo htmlspecialchars($eq['qty'] ?? '1'); ?></td>
-                                        <td class="p-2.5 font-semibold text-slate-900"><?php echo htmlspecialchars($eq['tool'] ?? 'Equipment Item'); ?></td>
-                                        <td class="p-2.5 font-mono text-slate-600"><?php echo htmlspecialchars($eq['serial'] ?? 'BAU-DH15-NV'); ?></td>
+                                        <td class="p-2.5 font-bold"><?php echo htmlspecialchars($eq['qty'] ?? '1', ENT_QUOTES, 'UTF-8'); ?></td>
+                                        <td class="p-2.5 font-semibold text-slate-900"><?php echo htmlspecialchars($eq['tool'] ?? 'Equipment Item', ENT_QUOTES, 'UTF-8'); ?></td>
+                                        <td class="p-2.5 font-mono text-slate-600"><?php echo htmlspecialchars($eq['serial'] ?? 'BAU-DH15-NV', ENT_QUOTES, 'UTF-8'); ?></td>
                                         <td class="p-2.5 text-right">$<?php echo number_format($eq['daily_rate'] ?? 100.00, 2); ?></td>
                                         <td class="p-2.5 text-right">$<?php echo number_format($eq['weekly_rate'] ?? 500.00, 2); ?></td>
                                         <td class="p-2.5 text-right font-bold text-slate-900">$<?php echo number_format($eq['item_charge'] ?? $eq['charge'] ?? 100.00, 2); ?></td>
@@ -853,21 +924,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                         <div class="bg-slate-50 p-6 rounded-xl border border-slate-300 grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
                             <div>
                                 <span class="text-xs text-slate-500 block mb-1">Lessee Electronic Signature:</span>
-                                <?php if ($completed_agreement['signature_type'] === 'drawn' && strpos($completed_agreement['signature_data'], 'data:image') === 0): ?>
-                                    <img src="<?php echo $completed_agreement['signature_data']; ?>" alt="Lessee Signature" class="h-16 max-w-xs border-b-2 border-slate-400">
+                                <?php if ($completed_agreement['signature_type'] === 'drawn' && preg_match('/^data:image\/png;base64,[A-Za-z0-9+\/]+=*$/', $completed_agreement['signature_data'])): ?>
+                                    <img src="<?php echo htmlspecialchars($completed_agreement['signature_data'], ENT_QUOTES, 'UTF-8'); ?>" alt="Lessee Signature" class="h-16 max-w-xs border-b-2 border-slate-400">
                                 <?php else: ?>
                                     <div class="font-signature text-3xl text-brand-navy border-b-2 border-slate-400 py-1">
-                                        <?php echo htmlspecialchars($completed_agreement['signature_data']); ?>
+                                        <?php echo htmlspecialchars($completed_agreement['signature_data'], ENT_QUOTES, 'UTF-8'); ?>
                                     </div>
                                 <?php endif; ?>
-                                <span class="text-xs text-slate-700 font-bold mt-2 block">Printed Name: <?php echo htmlspecialchars($completed_agreement['signer_printed_name']); ?></span>
+                                <span class="text-xs text-slate-700 font-bold mt-2 block">Printed Name: <?php echo htmlspecialchars($completed_agreement['signer_printed_name'], ENT_QUOTES, 'UTF-8'); ?></span>
                             </div>
 
                             <div class="text-xs text-slate-600 space-y-1 sm:border-l sm:border-slate-300 sm:pl-6">
                                 <p><strong>Electronic Consent:</strong> Confirmed &amp; Accepted</p>
                                 <p><strong>Governing Law:</strong> Nevada UCC Article 2A</p>
-                                <p><strong>Timestamp:</strong> <?php echo $completed_agreement['signed_timestamp']; ?> UTC</p>
-                                <p><strong>Audit IP:</strong> <?php echo $completed_agreement['signer_ip']; ?></p>
+                                <p><strong>Timestamp:</strong> <?php echo htmlspecialchars($completed_agreement['signed_timestamp'], ENT_QUOTES, 'UTF-8'); ?> UTC</p>
+                                <p><strong>Audit IP:</strong> <?php echo htmlspecialchars($completed_agreement['signer_ip'], ENT_QUOTES, 'UTF-8'); ?></p>
                                 <p class="text-emerald-700 font-semibold mt-2">✓ Verified Electronic Transaction</p>
                             </div>
                         </div>
@@ -931,7 +1002,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
                 <form action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>" method="POST" id="eSignAgreementForm" class="p-6 sm:p-10 space-y-10">
                     <input type="hidden" name="action" value="submit_esign_agreement">
-                    <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8'); ?>">
 
                     <!-- Honeypot anti-spam -->
                     <div style="position: absolute; left: -9999px; opacity: 0; pointer-events: none;" aria-hidden="true">
@@ -1502,7 +1573,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                                 </div>
                                 <div class="text-xs text-slate-500 flex flex-col justify-end">
                                     <span><strong>Signing Date:</strong> <?php echo date('F j, Y'); ?></span>
-                                    <span><strong>Audit IP Address:</strong> <?php echo $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1'; ?> (Logged)</span>
+                                    <span><strong>Audit IP Address:</strong> <?php echo htmlspecialchars($_SERVER['REMOTE_ADDR'] ?? '127.0.0.1', ENT_QUOTES, 'UTF-8'); ?> (Logged)</span>
                                 </div>
                             </div>
                         </div>
@@ -1510,7 +1581,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                         <!-- Math Captcha -->
                         <div class="bg-slate-100 p-4 rounded-xl border border-slate-300 flex flex-col sm:flex-row items-center justify-between gap-4">
                             <label for="captcha_answer" class="text-xs font-medium text-slate-700">
-                                Security Verification: <strong class="text-brand-navy"><?php echo $captcha_question; ?></strong>
+                                Security Verification: <strong class="text-brand-navy"><?php echo htmlspecialchars($captcha_question, ENT_QUOTES, 'UTF-8'); ?></strong>
                             </label>
                             <input type="number" id="captcha_answer" name="captcha_answer" required placeholder="Answer" class="w-28 px-3 py-2 rounded-lg bg-white border border-slate-300 text-xs sm:text-sm text-center">
                         </div>

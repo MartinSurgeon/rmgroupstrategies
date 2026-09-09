@@ -1,0 +1,26 @@
+<?php
+/**
+ * RM Group Strategies LLC — Local / Production Secrets Template
+ * 
+ * INSTRUCTIONS:
+ * 1. On your live server (or local machine), copy or create:
+ *    `includes/config.local.php`
+ * 2. Replace the placeholder values below with your actual credentials.
+ * 3. Note: `config.local.php` is listed in `.gitignore` and is NEVER tracked by Git.
+ */
+
+// ── Database Configuration ──
+define('DB_HOST', 'localhost');
+define('DB_USER', 'rmgrbkkc_rm');
+define('DB_PASS', 'YOUR_NEW_SECURE_PASSWORD_HERE');
+define('DB_NAME', 'rmgrbkkc_rmgroupstrategies');
+
+// ── Authenticated SMTP Credentials ──
+define('SMTP_HOST', 'mail.privateemail.com');
+define('SMTP_PORT', 465);
+define('SMTP_ENC',  'ssl');
+define('SMTP_USER', 'info@rmgroupstrategies.com');
+define('SMTP_PASS', 'YOUR_PRIVATEEMAIL_PASSWORD_HERE');
+
+// ── Cryptographic Application Secret ──
+define('APP_SECRET', 'YOUR_RANDOM_32_CHAR_SECRET_KEY_HERE');

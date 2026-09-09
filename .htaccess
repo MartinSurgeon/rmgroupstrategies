@@ -8,6 +8,12 @@ RewriteEngine On
 # RewriteCond %{HTTP_HOST} ^www\.rmgroupstrategies\.com$ [NC]
 # RewriteRule ^(.*)$ https://rmgroupstrategies.com/$1 [R=301,L]
 
+# ── Block hidden files and directories (e.g. .git, .env) ──────────
+RewriteRule "(^|/)\.(?!well-known)" - [F,L]
+
+# ── Block direct access to scratch/ directory ────────────────────
+RewriteRule ^scratch/ - [F,L]
+
 # ── Remove .php extension (GET/HEAD only, never redirect POST) ──
 RewriteCond %{REQUEST_METHOD} !POST
 RewriteCond %{THE_REQUEST} \s/+(.+?)\.php[\s?] [NC]
@@ -20,11 +26,40 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME}.php -f
 RewriteRule ^(.+?)/?$ $1.php [L]
 
-# ── Block direct access to sensitive files ───────────────────────
-<FilesMatch "\.(sql|log|env|gitignore|md|json|lock)$">
-    Order Allow,Deny
-    Deny from all
+# ── Block direct access to sensitive extensions ──────────────────
+<FilesMatch "\.(sql|sqlite|sqlite3|db|log|env.*|gitignore|md|json|lock|bak|backup|old|conf|ini|sh|yml|yaml)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order Allow,Deny
+        Deny from all
+    </IfModule>
 </FilesMatch>
+
+# ── HTTP Security Response Headers ───────────────────────────────
+<IfModule mod_headers.c>
+    # Prevent clickjacking by forbidding framing on third-party sites
+    Header set X-Frame-Options "SAMEORIGIN"
+
+    # Prevent MIME-type sniffing
+    Header set X-Content-Type-Options "nosniff"
+
+    # Legacy XSS protection filter for older browsers
+    Header set X-XSS-Protection "1; mode=block"
+
+    # Restrict referrer information to protect token URLs
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # Restrict device sensor and hardware access
+    Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+
+    # Enforce HTTPS via Strict-Transport-Security (1 year)
+    Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+    # Remove server technology fingerprints
+    Header unset X-Powered-By
+</IfModule>
 
 # ── Disable server signature ─────────────────────────────────────
 ServerSignature Off

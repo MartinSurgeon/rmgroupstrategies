@@ -58,16 +58,87 @@ define('IS_LOCAL_ENV',        $is_local_env);
 define('BASE_URL',            $is_local_env ? '/rmgroupstrategies' : '');
 define('SITE_YEAR',           date('Y'));
 
-if ($is_local_env) {
-    define('DB_HOST', 'localhost');
-    define('DB_USER', 'root');
-    define('DB_PASS', '');
-    define('DB_NAME', 'rmgroupstrategies');
+// ─── Environment Error Handling ─────────────────────────────────────
+if (!$is_local_env) {
+    ini_set('display_errors', '0');
+    ini_set('display_startup_errors', '0');
+    ini_set('log_errors', '1');
+    error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
 } else {
-    define('DB_HOST', 'localhost');
-    define('DB_USER', 'rmgrbkkc_rm');
-    define('DB_PASS', 'Monday20$2026');
-    define('DB_NAME', 'rmgrbkkc_rmgroupstrategies');
+    ini_set('display_errors', '1');
+    error_reporting(E_ALL);
+}
+
+// ─── Secure Session Initialization ──────────────────────────────────
+if (session_status() === PHP_SESSION_NONE) {
+    ini_set('session.use_strict_mode', '1');
+    session_set_cookie_params([
+        'lifetime' => 0,
+        'path'     => '/',
+        'domain'   => '',
+        'secure'   => !$is_local_env,
+        'httponly' => true,
+        'samesite' => 'Lax'
+    ]);
+    session_start();
+}
+
+// ─── Cryptographic Application Secret ───────────────────────────────
+if (!defined('APP_SECRET')) {
+    define('APP_SECRET', getenv('APP_SECRET') ?: 'RM_GS_SEC_7f8a9e2b4c6d1f0e3a5b7c9d1e2f4a6b');
+}
+
+// ─── Database Configuration ─────────────────────────────────────────
+if ($is_local_env) {
+    if (!defined('DB_HOST')) define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
+    if (!defined('DB_USER')) define('DB_USER', getenv('DB_USER') ?: 'root');
+    if (!defined('DB_PASS')) define('DB_PASS', getenv('DB_PASS') !== false ? getenv('DB_PASS') : '');
+    if (!defined('DB_NAME')) define('DB_NAME', getenv('DB_NAME') ?: 'rmgroupstrategies');
+} else {
+    if (!defined('DB_HOST')) define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
+    if (!defined('DB_USER')) define('DB_USER', getenv('DB_USER') ?: 'rmgrbkkc_rm');
+    if (!defined('DB_PASS')) define('DB_PASS', getenv('DB_PASS') ?: 'Monday20$2026');
+    if (!defined('DB_NAME')) define('DB_NAME', getenv('DB_NAME') ?: 'rmgrbkkc_rmgroupstrategies');
+}
+
+// ─── Rate Limiter Helper ────────────────────────────────────────────
+/**
+ * Check submission rate limit per IP / Session to prevent abuse
+ *
+ * @param string $action Action key identifier
+ * @param int $max_attempts Maximum allowed attempts within window
+ * @param int $decay_seconds Window length in seconds
+ * @return array ['allowed' => bool, 'message' => string]
+ */
+function check_submission_rate_limit($action, $max_attempts = 5, $decay_seconds = 600) {
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if (!isset($_SESSION['rate_limits'])) {
+        $_SESSION['rate_limits'] = [];
+    }
+    $now = time();
+    if (!isset($_SESSION['rate_limits'][$action]) || !is_array($_SESSION['rate_limits'][$action])) {
+        $_SESSION['rate_limits'][$action] = [];
+    }
+    // Discard attempts older than decay window
+    $_SESSION['rate_limits'][$action] = array_values(array_filter(
+        $_SESSION['rate_limits'][$action],
+        function($timestamp) use ($now, $decay_seconds) {
+            return ($now - $timestamp) < $decay_seconds;
+        }
+    ));
+    if (count($_SESSION['rate_limits'][$action]) >= $max_attempts) {
+        return [
+            'allowed' => false,
+            'message' => 'Too many submission attempts. Please wait a few minutes before trying again.'
+        ];
+    }
+    $_SESSION['rate_limits'][$action][] = $now;
+    return [
+        'allowed' => true,
+        'message' => ''
+    ];
 }
 
 // ─── Brand Colors (for reference in PHP-generated content) ─────────

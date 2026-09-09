@@ -2,11 +2,14 @@
 /**
  * RM Group Strategies LLC — Contact Page & Lead Capture System
  */
-session_start();
 require_once __DIR__ . '/includes/config.php';
 
-// Version verification endpoint for deployment tracking
+// Version verification endpoint for deployment tracking (restricted to local environment)
 if (isset($_GET['version_check'])) {
+    if (!defined('IS_LOCAL_ENV') || !IS_LOCAL_ENV) {
+        http_response_code(403);
+        exit('Forbidden');
+    }
     header('Content-Type: application/json');
     echo json_encode([
         'version' => '2.0.0-SMTP-DIRECT',
@@ -107,6 +110,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'email' => $_POST['email'] ?? '',
         'inquiry_type' => $_POST['inquiry_type'] ?? ''
     ]);
+
+    // Rate Limiting check: max 5 submissions per 10 minutes per IP
+    $rate_check = check_submission_rate_limit('contact_form', 5, 600);
+    if (!$rate_check['allowed']) {
+        $errors[] = $rate_check['message'];
+        log_submission_event('WARNING', 'Rate limit exceeded for contact form', ['ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown']);
+    }
 
     // 1. CSRF Verification
     if (!isset($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
@@ -554,7 +564,7 @@ if (!empty($inquiry_type)) {
                                     <span class="font-bold uppercase tracking-wide text-[10px] text-red-600">Please resolve the following:</span>
                                 </div>
                                 <?php foreach ($errors as $error): ?>
-                                    <p class="pl-6">• <?php echo $error; ?></p>
+                                    <p class="pl-6">• <?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>
                                 <?php endforeach; ?>
                             </div>
                         <?php endif; ?>
@@ -685,7 +695,7 @@ if (!empty($inquiry_type)) {
                             </div>
 
                             <!-- CSRF Token -->
-                            <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+                            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8'); ?>">
 
                             <!-- Select Inquiry Type -->
                             <div>
@@ -764,7 +774,7 @@ if (!empty($inquiry_type)) {
                                     <label for="captcha_answer" class="form-label">Spam Prevention Verification *</label>
                                     <div class="flex items-center gap-3">
                                         <span class="bg-brand-dark-gray border border-white/10 px-4 py-2.5 rounded font-bold font-mono text-xs text-brand-gold select-none">
-                                            <?php echo $captcha_question; ?>
+                                            <?php echo htmlspecialchars($captcha_question, ENT_QUOTES, 'UTF-8'); ?>
                                         </span>
                                         <input type="number" name="captcha_answer" id="captcha_answer" class="form-input w-28 rounded px-4 py-2.5 text-xs text-center" placeholder="Answer" required>
                                     </div>
